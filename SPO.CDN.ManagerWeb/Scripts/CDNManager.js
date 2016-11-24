@@ -7,6 +7,7 @@
         this.EnablePublicCDN = ko.observable(false);
         this.Origins = ko.observableArray([]);
         this.Filetypes = ko.observableArray([]);
+        this.SPOSiteUrl = ko.observable("");
 
         this.InternalFiletypes = ko.observableArray([]);
         this.CurrentOriginID = ko.observable("");
@@ -44,6 +45,7 @@
             cdnManagerViewModel.Filetypes(data.Filetypes);
             cdnManagerViewModel.InternalFiletypes(data.Filetypes);
             cdnManagerViewModel.Origins(data.Origins);
+            cdnManagerViewModel.SPOSiteUrl(data.SPOSiteUrl);
 
             if (cdnManagerViewModel.Origins().length == 0) {
                 cdnManagerViewModel.showEmptyOriginsMsg(true);

@@ -32,6 +32,8 @@ namespace SPO.CDN.ManagerWeb.Controllers
             {
                 var tenant = new Office365Tenant(clientContext);
 
+                clientContext.Load(clientContext.Web, w => w.Url);
+
                 clientContext.Load(tenant,
                     t => t.PublicCdnEnabled,
                     t => t.PublicCdnAllowedFileTypes,
@@ -43,6 +45,7 @@ namespace SPO.CDN.ManagerWeb.Controllers
                 cdnManagerModel.PublicCDNEnabled = tenant.PublicCdnEnabled;
                 cdnManagerModel.Filetypes = ConvertToList(tenant.PublicCdnAllowedFileTypes);
                 cdnManagerModel.Origins = GetCDNOrigins(tenant.PublicCdnOrigins);
+                cdnManagerModel.SPOSiteUrl = clientContext.Web.Url;
 
             }
 
