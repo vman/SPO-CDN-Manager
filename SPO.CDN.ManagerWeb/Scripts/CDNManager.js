@@ -1,12 +1,13 @@
 ﻿(function ($) {
 
-    var hostWebUrl, cdnManagerViewModel;
+    var cdnManagerViewModel;
 
     function CDNManagerViewModel() {
 
         this.EnablePublicCDN = ko.observable(false);
         this.Origins = ko.observableArray([]);
         this.Filetypes = ko.observableArray([]);
+        this.SPOSiteUrl = ko.observable("");
 
         this.InternalFiletypes = ko.observableArray([]);
         this.CurrentOriginID = ko.observable("");
@@ -34,18 +35,17 @@
 
         InitOfficeUIFabricComponents();
 
-        hostWebUrl = decodeURIComponent(getQueryStringParameter("SPHostUrl"));
-
         //fix for I.E caching the ajax calls
         $.ajaxSetup({ cache: false });
 
-        $.ajax("/Home/GetCDNSettings?SPHostUrl=" + hostWebUrl)
+        $.ajax("/Home/GetCDNSettings")
         .then(function (data) {
 
             cdnManagerViewModel.EnablePublicCDN(data.PublicCDNEnabled);
             cdnManagerViewModel.Filetypes(data.Filetypes);
             cdnManagerViewModel.InternalFiletypes(data.Filetypes);
             cdnManagerViewModel.Origins(data.Origins);
+            cdnManagerViewModel.SPOSiteUrl(data.SPOSiteUrl);
 
             if (cdnManagerViewModel.Origins().length == 0) {
                 cdnManagerViewModel.showEmptyOriginsMsg(true);
@@ -64,7 +64,7 @@
             var folderUrl = $("#txt-cdn-origin").val();
 
             $.ajax({
-                url: "/Home/AddOrigin?SPHostUrl=" + hostWebUrl + "&folderUrl=" + folderUrl,
+                url: "/Home/AddOrigin?folderUrl=" + folderUrl,
                 method: "POST",
                 dataType: "json",
                 contentType: "application/json; charset=utf-8"
@@ -113,7 +113,7 @@
     function deleteOrigin() {
 
         $.ajax({
-            url: "/Home/RemoveOrigin?SPHostUrl=" + hostWebUrl + "&originID=" + cdnManagerViewModel.CurrentOriginID()
+            url: "/Home/RemoveOrigin?originID=" + cdnManagerViewModel.CurrentOriginID()
         })
          .then(function (data) {
              cdnManagerViewModel.Origins(data);
@@ -129,7 +129,7 @@
 
         var setCDN = $("#cdn-enabled-Toggle").is(':checked');
         $.ajax({
-            url: "/Home/SetCDN?SPHostUrl=" + hostWebUrl + "&value=" + setCDN
+            url: "/Home/SetCDN?value=" + setCDN
         })
          .then(function (data) {
 
@@ -142,7 +142,7 @@
 
     function SetCDNFiletypes(addFiletype) {
         $.ajax({
-            url: "/Home/SetFiletypes?SPHostUrl=" + hostWebUrl,
+            url: "/Home/SetFiletypes",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({ filetypes: cdnManagerViewModel.InternalFiletypes() }),
@@ -240,16 +240,4 @@
         });
     }
 
-    var getQueryStringParameter = function (paramToRetrieve) {
-        if (document.URL.indexOf("?") > -1) {
-            var params = document.URL.split("?")[1].split("&");
-            var strParams = "";
-            for (var i = 0; i < params.length; i = i + 1) {
-                var singleParam = params[i].split("=");
-                if (singleParam[0] == paramToRetrieve)
-                    return singleParam[1];
-            }
-        }
-        return "";
-    };
 })(jQuery);

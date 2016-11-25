@@ -10,5 +10,6 @@ namespace SPO.CDN.ManagerWeb.DTO
         public bool PublicCDNEnabled { get; set; }
         public IList<string> Filetypes { get; set; }
         public IList<CDNOrigin> Origins { get; set; }
+        public string SPOSiteUrl { get; set; }
     }
 }

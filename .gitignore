@@ -251,3 +251,5 @@ paket-files/
 .idea/
 *.sln.iml
 /BuildProcessTemplates
+
+SPO.CDN.ManagerWeb/Web.config

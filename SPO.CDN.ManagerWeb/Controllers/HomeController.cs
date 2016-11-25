@@ -2,27 +2,28 @@
 using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using SPO.CDN.ManagerWeb.DTO;
+using SPO.CDN.ManagerWeb.Helpers;
+using SPO.CDN.ManagerWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Security;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace SPO.CDN.ManagerWeb.Controllers
 {
     public class HomeController : Controller
     {
-
-
-        [SharePointContextFilter]
+        [Authorize]
         public ActionResult Index()
         {
             return View();
         }
 
-        [SharePointContextFilter]
         public ActionResult GetCDNSettings()
         {
             var cdnManagerModel = new CDNManagerModel();
@@ -30,7 +31,9 @@ namespace SPO.CDN.ManagerWeb.Controllers
             using (var clientContext = GetClientContext())
             {
                 var tenant = new Office365Tenant(clientContext);
-                
+
+                clientContext.Load(clientContext.Web, w => w.Url);
+
                 clientContext.Load(tenant,
                     t => t.PublicCdnEnabled,
                     t => t.PublicCdnAllowedFileTypes,
@@ -42,13 +45,13 @@ namespace SPO.CDN.ManagerWeb.Controllers
                 cdnManagerModel.PublicCDNEnabled = tenant.PublicCdnEnabled;
                 cdnManagerModel.Filetypes = ConvertToList(tenant.PublicCdnAllowedFileTypes);
                 cdnManagerModel.Origins = GetCDNOrigins(tenant.PublicCdnOrigins);
+                cdnManagerModel.SPOSiteUrl = clientContext.Web.Url;
 
             }
 
             return Json(cdnManagerModel, JsonRequestBehavior.AllowGet);
         }
 
-        [SharePointContextFilter]
         public ActionResult SetCDN(bool value)
         {
             bool CDNEnabled = false;
@@ -70,7 +73,7 @@ namespace SPO.CDN.ManagerWeb.Controllers
             return Json(CDNEnabled, JsonRequestBehavior.AllowGet);
         }
 
-        [SharePointContextFilter]
+
         public ActionResult RemoveOrigin(string originID)
         {
             IList<CDNOrigin> origins = new List<CDNOrigin>();
@@ -91,7 +94,6 @@ namespace SPO.CDN.ManagerWeb.Controllers
             return Json(origins, JsonRequestBehavior.AllowGet);
         }
 
-        [SharePointContextFilter]
         [HttpPost]
         public ActionResult AddOrigin(string folderUrl)
         {
@@ -121,7 +123,7 @@ namespace SPO.CDN.ManagerWeb.Controllers
             }
         }
 
-        [SharePointContextFilter]
+
         [HttpPost]
         public ActionResult SetFiletypes(List<string> filetypes)
         {
@@ -155,11 +157,20 @@ namespace SPO.CDN.ManagerWeb.Controllers
 
         private ClientContext GetClientContext()
         {
-            var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+            var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //var userObjectId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+            //var tenantId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
 
-            var clientContext = spContext.CreateUserClientContextForSPHost();
+
+            var clientContext = CDNManagerContextProvider.GetWebApplicationClientContext(new RedisTokenCache(signInUserId));
+
+            //var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+
+            //var clientContext = spContext.CreateUserClientContextForSPHost();
 
             return clientContext;
+
+
         }
 
         private IList<CDNOrigin> GetCDNOrigins(IList<string> publicCdnOrigins)
