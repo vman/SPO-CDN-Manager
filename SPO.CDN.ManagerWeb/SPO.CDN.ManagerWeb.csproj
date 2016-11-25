@@ -341,6 +341,7 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\cdnmanager.pubxml" />
     <None Include="Properties\PublishProfiles\spocdnmanager - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\spocdnmanager.pubxml" />
     <None Include="Properties\PublishProfiles\vrd.pubxml" />
   </ItemGroup>
   <PropertyGroup>
