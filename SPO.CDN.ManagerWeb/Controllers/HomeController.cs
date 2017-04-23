@@ -2,16 +2,12 @@
 using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
 using SPO.CDN.ManagerWeb.DTO;
-using SPO.CDN.ManagerWeb.Helpers;
 using SPO.CDN.ManagerWeb.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Net;
-using System.Security;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace SPO.CDN.ManagerWeb.Controllers
@@ -48,6 +44,36 @@ namespace SPO.CDN.ManagerWeb.Controllers
       }
 
       return Json(cdnManagerModel, JsonRequestBehavior.AllowGet);
+    }
+
+    [HttpPost]
+    public ActionResult CreateDefaultOrigins()
+    {
+
+      try
+      {
+        IList<CDNOrigin> origins = new List<CDNOrigin>();
+
+        using (var clientContext = GetClientContext())
+        {
+          var tenant = new Office365Tenant(clientContext);
+
+          tenant.CreateTenantCdnDefaultOrigins(SPOTenantCdnType.Public);
+
+          var publicCdnOrigins = tenant.GetTenantCdnOrigins(SPOTenantCdnType.Public);
+
+          clientContext.ExecuteQuery();
+
+          origins = GetCDNOrigins(publicCdnOrigins);
+        }
+
+        return Json(origins);
+      }
+      catch (Exception ex)
+      {
+        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        return Json(ex.Message);
+      }
     }
 
     [HttpPost]
