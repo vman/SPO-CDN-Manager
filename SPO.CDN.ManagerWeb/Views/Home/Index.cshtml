@@ -26,11 +26,30 @@
           <div class="ms-Pivot-content" data-content="origins">
             <div class="ms-Grid">
               <div class="ms-Grid-row">
-                <div class="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg9">
+                <div class="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12">
                   <div class="ms-PanelMediumExample ms-PanelExample">
                     <button class="ms-Button ms-Button--primary">
-                      <span class="ms-Button-label">Add Origin</span>
+                      <span class="ms-Button-label">Add New Origin</span>
                     </button>
+                    <button class="ms-Button ms-Button--primary btnDefaultOrigins">
+                      <span class="ms-Button-label">Create Default Origins</span>
+                    </button>
+                    <div class="docs-DialogExample-lgHeader createdefaultorigins-Dialog-Container">
+                      <div class="ms-Dialog  ms-Dialog--lgHeader createdefaultorigins-Dialog">
+                        <div class="ms-Dialog-title">Create default CDN Origins?</div>
+                        <div class="ms-Dialog-content">
+                          <p class="ms-Dialog-subText">Are you sure you want to create the default CDN origins?</p>
+                        </div>
+                        <div class="ms-Dialog-actions">
+                          <button id="createdefault-origin-yes" class="ms-Button ms-Dialog-action ms-Button--primary">
+                            <span class="ms-Button-label">Yes</span>
+                          </button>
+                          <button id="createdefault-origin-no" class="ms-Button ms-Dialog-action">
+                            <span class="ms-Button-label">No</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                     <div class="ms-Panel  ms-Panel--xl">
                       <button id="btnAddOrigin" class="ms-Panel-closeButton ms-PanelAction-close">
                         <i class="ms-Panel-closeIcon ms-Icon ms-Icon--Cancel"></i>
@@ -92,28 +111,6 @@
                           <span class="ms-Button-label">Yes</span>
                         </button>
                         <button id="delete-origin-no" class="ms-Button ms-Dialog-action ms-Button--primary">
-                          <span class="ms-Button-label">No</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg3">
-                  <button class="ms-Button ms-Button--primary btnDefaultOrigins">
-                    <span class="ms-Button-label">Create Default Origins</span>
-                  </button>
-                  <div class="docs-DialogExample-lgHeader createdefaultorigins-Dialog-Container">
-                    <div class="ms-Dialog  ms-Dialog--lgHeader createdefaultorigins-Dialog">
-                      <div class="ms-Dialog-title">Create default CDN Origins?</div>
-                      <div class="ms-Dialog-content">
-                        <p class="ms-Dialog-subText">Are you sure you want to create the default CDN origins?</p>
-                        <span class="ms-Dialog-subText ms-fontWeight-semibold" data-bind="text:CurrentOriginUrl"></span>
-                      </div>
-                      <div class="ms-Dialog-actions">
-                        <button id="createdefault-origin-yes" class="ms-Button ms-Dialog-action ms-Button--primary">
-                          <span class="ms-Button-label">Yes</span>
-                        </button>
-                        <button id="createdefault-origin-no" class="ms-Button ms-Dialog-action">
                           <span class="ms-Button-label">No</span>
                         </button>
                       </div>
