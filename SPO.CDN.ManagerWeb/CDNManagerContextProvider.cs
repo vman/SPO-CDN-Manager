@@ -1,20 +1,15 @@
 ﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core;
 using SPO.CDN.ManagerWeb.Helpers;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Script.Serialization;
 
 namespace SPO.CDN.ManagerWeb
 {
-    public static class CDNManagerContextProvider
+  public static class CDNManagerContextProvider
     {
         public static string GetSharePointResourceID(TokenCache tokenCache)
         {
