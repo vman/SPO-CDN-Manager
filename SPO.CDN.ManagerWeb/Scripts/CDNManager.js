@@ -113,7 +113,10 @@
     function deleteOrigin() {
 
         $.ajax({
-			url: "/Home/RemoveOrigin?originURL=" + cdnManagerViewModel.CurrentOriginUrl()
+			url: "/Home/RemoveOrigin?originURL=" + cdnManagerViewModel.CurrentOriginUrl(),
+			method: "POST",
+			dataType: "json",
+			contentType: "application/json; charset=utf-8"
         })
          .then(function (data) {
              cdnManagerViewModel.Origins(data);
@@ -129,7 +132,10 @@
 
         var setCDN = $("#cdn-enabled-Toggle").is(':checked');
         $.ajax({
-            url: "/Home/SetCDN?value=" + setCDN
+			url: "/Home/SetCDN?value=" + setCDN,
+			method: "POST",
+			dataType: "json",
+			contentType: "application/json; charset=utf-8"
         })
          .then(function (data) {
 
