@@ -116,6 +116,7 @@ function createDefaultOrigins() {
 		.then(function (data) {
 
 			cdnManagerViewModel.Origins(data);
+			cdnManagerViewModel.showEmptyOriginsMsg(false);
 			CreateOfficeUIFabricDialog(".origins-Dialog-Container", ".btnDeleteOrigin", ".origins-Dialog");
 
 		}, function (jqxr, errorCode, errorThrown) {
