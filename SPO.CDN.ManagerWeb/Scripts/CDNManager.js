@@ -113,7 +113,7 @@
     function deleteOrigin() {
 
         $.ajax({
-            url: "/Home/RemoveOrigin?originID=" + cdnManagerViewModel.CurrentOriginID()
+			url: "/Home/RemoveOrigin?originURL=" + cdnManagerViewModel.CurrentOriginUrl()
         })
          .then(function (data) {
              cdnManagerViewModel.Origins(data);
