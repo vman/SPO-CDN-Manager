@@ -1,0 +1,20 @@
+{
+  "name": "spo.cdn.manager",
+  "version": "1.1.0",
+  "description": "Website to manage Office 365 cdn",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "office-ui-fabric-react": "^4.2.0",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "typescript": "^2.3.4",
+    "webpack": "^2.6.1"
+  }
+}

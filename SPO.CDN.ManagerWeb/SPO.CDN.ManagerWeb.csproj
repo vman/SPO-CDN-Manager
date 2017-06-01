@@ -295,7 +295,6 @@
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\knockout-3.4.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\spcontext.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -324,6 +323,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="package.json" />
+    <Content Include="package-lock.json" />
     <None Include="Properties\PublishProfiles\spocdnmanager - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>
