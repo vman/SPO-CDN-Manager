@@ -326,6 +326,7 @@
     <Content Include="package.json" />
     <Content Include="package-lock.json" />
     <None Include="Properties\PublishProfiles\spocdnmanager - Web Deploy.pubxml" />
+    <Content Include="tsconfig.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
