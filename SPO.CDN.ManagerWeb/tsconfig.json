@@ -1,11 +1,23 @@
 {
   "compilerOptions": {
-    "noImplicitAny": false,
+    "outDir": "./Scripts/dist",
+    "noImplicitAny": true,
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
-    "target": "es5"
+    "target": "es5",
+    "jsx": "react",
+    "module": "commonjs",
+    "pretty": true,
+    "alwaysStrict": true,
+    "lib": [
+      "es2015",
+      "dom"
+    ]
   },
+  "include": [
+    "./Scripts/src/**/*"
+  ],
   "exclude": [
     "node_modules",
     "wwwroot"
