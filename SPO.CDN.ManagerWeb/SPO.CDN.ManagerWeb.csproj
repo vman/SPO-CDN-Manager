@@ -327,7 +327,6 @@
   <ItemGroup>
     <Content Include="package.json" />
     <Content Include="package-lock.json" />
-    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\spocdnmanager - Web Deploy.pubxml" />
     <Content Include="tsconfig.json" />
     <Content Include="Views\Home\Index.cshtml" />

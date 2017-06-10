@@ -17898,7 +17898,14 @@ var Office365CDNManager = (function (_super) {
             React.createElement(office_ui_fabric_react_1.Label, null,
                 "Manage Office 365 Public CDN Settings for ",
                 this.state.SPOSiteUrl),
-            React.createElement(office_ui_fabric_react_1.Spinner, { size: office_ui_fabric_react_1.SpinnerSize.large }));
+            React.createElement(office_ui_fabric_react_1.Spinner, { size: office_ui_fabric_react_1.SpinnerSize.large }),
+            React.createElement(office_ui_fabric_react_1.Pivot, { linkSize: office_ui_fabric_react_1.PivotLinkSize.large },
+                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Origins' },
+                    React.createElement(office_ui_fabric_react_1.Label, null, "Pivot Origins")),
+                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Filetypes' },
+                    React.createElement(office_ui_fabric_react_1.Label, null, "Pivot Filetypes")),
+                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Turn CDN On/Off' },
+                    React.createElement(office_ui_fabric_react_1.Label, null, "Pivot Turn CDN On/Off"))));
     };
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();
@@ -17931,26 +17938,7 @@ exports.Office365CDNManager = Office365CDNManager;
 
 
 /***/ }),
-/* 195 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var CdnType;
-(function (CdnType) {
-    CdnType[CdnType["Public"] = 0] = "Public";
-    CdnType[CdnType["Private"] = 1] = "Private";
-})(CdnType = exports.CdnType || (exports.CdnType = {}));
-var Office365Cdn = (function () {
-    function Office365Cdn() {
-    }
-    return Office365Cdn;
-}());
-exports.Office365Cdn = Office365Cdn;
-
-
-/***/ }),
+/* 195 */,
 /* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17960,9 +17948,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var ReactDOM = __webpack_require__(44);
 var Office365CDNManager_1 = __webpack_require__(194);
-var Office365Cdn_1 = __webpack_require__(195);
-var o365cdnProps = { Type: Office365Cdn_1.CdnType.Public, Enabled: true, };
-var o365ManagerElement = React.createElement(Office365CDNManager_1.Office365CDNManager, o365cdnProps);
+//const o365cdnProps: IOffice365Cdn = { Type: CdnType.Public, Enabled: true,  };
+var o365ManagerElement = React.createElement(Office365CDNManager_1.Office365CDNManager);
 ReactDOM.render(o365ManagerElement, document.getElementById("cdnManagerContainer"));
 
 

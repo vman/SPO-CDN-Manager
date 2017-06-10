@@ -1,13 +1,20 @@
 import * as React from "react";
 import * as jQuery from "jquery";
 import { IOffice365Cdn } from "../dto/Office365Cdn";
-import { Spinner, SpinnerSize, Label } from 'office-ui-fabric-react';
+import {
+    Spinner,
+    SpinnerSize,
+    Label,
+    Pivot,
+    PivotItem,
+    PivotLinkSize
+} from 'office-ui-fabric-react';
 
 export interface IOffice365CDNManagerState {
-  CDNEnabled?: boolean;
-  Filetypes?: string[];
-  Origins?: string[];
-  SPOSiteUrl?: string;
+    CDNEnabled?: boolean;
+    Filetypes?: string[];
+    Origins?: string[];
+    SPOSiteUrl?: string;
 }
 
 // State is never set so we use the 'undefined' type.
@@ -15,16 +22,26 @@ export class Office365CDNManager extends React.Component<IOffice365Cdn, IOffice3
 
     public render() {
         return <div className="o365Manager-Container">
-                    <Label>Manage Office 365 Public CDN Settings for {this.state.SPOSiteUrl}</Label>
-                    <Spinner size={SpinnerSize.large} />
-                    
-                </div>;
+            <Label>Manage Office 365 Public CDN Settings for {this.state.SPOSiteUrl}</Label>
+            <Spinner size={SpinnerSize.large} />
+            <Pivot linkSize={PivotLinkSize.large}>
+                <PivotItem linkText='Origins'>
+                    <Label>Pivot Origins</Label>
+                </PivotItem>
+                <PivotItem linkText='Filetypes'>
+                    <Label>Pivot Filetypes</Label>
+                </PivotItem>
+                <PivotItem linkText='Turn CDN On/Off'>
+                    <Label>Pivot Turn CDN On/Off</Label>
+                </PivotItem>
+            </Pivot>
+        </div>;
     }
     constructor() {
-      super();
+        super();
 
-      this.state = {
-      };
+        this.state = {
+        };
     }
     componentDidMount() {
         this._getCDNSettings();

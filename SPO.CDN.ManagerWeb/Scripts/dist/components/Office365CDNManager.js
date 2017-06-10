@@ -59,14 +59,18 @@ var Office365CDNManager = (function (_super) {
         return React.createElement("div", { className: "o365Manager-Container" },
             React.createElement(office_ui_fabric_react_1.Label, null,
                 "Manage Office 365 Public CDN Settings for ",
-                this.props.SPOSiteUrl,
-                "}"),
-            React.createElement(office_ui_fabric_react_1.Spinner, { size: office_ui_fabric_react_1.SpinnerSize.large }));
+                this.state.SPOSiteUrl),
+            React.createElement(office_ui_fabric_react_1.Spinner, { size: office_ui_fabric_react_1.SpinnerSize.large }),
+            React.createElement(office_ui_fabric_react_1.Pivot, { linkSize: office_ui_fabric_react_1.PivotLinkSize.large },
+                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Origins' },
+                    React.createElement(office_ui_fabric_react_1.Label, null, "Pivot Origins")),
+                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Filetypes' },
+                    React.createElement(office_ui_fabric_react_1.Label, null, "Pivot Filetypes")),
+                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Turn CDN On/Off' },
+                    React.createElement(office_ui_fabric_react_1.Label, null, "Pivot Turn CDN On/Off"))));
     };
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();
-    };
-    Office365CDNManager.prototype.componentWillUnmount = function () {
     };
     Office365CDNManager.prototype._getCDNSettings = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -83,7 +87,7 @@ var Office365CDNManager = (function (_super) {
                             CDNEnabled: o365Cdn.Enabled,
                             Filetypes: o365Cdn.FileTypes,
                             Origins: o365Cdn.Origins,
-                            SPOSiteurl: o365Cdn.SPOSiteUrl
+                            SPOSiteUrl: o365Cdn.SPOSiteUrl
                         });
                         return [2 /*return*/];
                 }
