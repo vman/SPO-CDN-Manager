@@ -311,6 +311,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index_old2.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="webpack.config.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -326,6 +327,7 @@
   <ItemGroup>
     <Content Include="package.json" />
     <Content Include="package-lock.json" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\spocdnmanager - Web Deploy.pubxml" />
     <Content Include="tsconfig.json" />
     <Content Include="Views\Home\Index.cshtml" />

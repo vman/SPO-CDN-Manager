@@ -17889,18 +17889,19 @@ var office_ui_fabric_react_1 = __webpack_require__(418);
 var Office365CDNManager = (function (_super) {
     __extends(Office365CDNManager, _super);
     function Office365CDNManager() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        _this.state = {};
+        return _this;
     }
     Office365CDNManager.prototype.render = function () {
-        //return <h2>CDN Enabled {this.props.Enabled} and Type {this.props.Type}!</h2>;
         return React.createElement("div", { className: "o365Manager-Container" },
-            React.createElement(office_ui_fabric_react_1.Label, null, "Large Spinner"),
+            React.createElement(office_ui_fabric_react_1.Label, null,
+                "Manage Office 365 Public CDN Settings for ",
+                this.state.SPOSiteUrl),
             React.createElement(office_ui_fabric_react_1.Spinner, { size: office_ui_fabric_react_1.SpinnerSize.large }));
     };
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();
-    };
-    Office365CDNManager.prototype.componentWillUnmount = function () {
     };
     Office365CDNManager.prototype._getCDNSettings = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -17913,7 +17914,12 @@ var Office365CDNManager = (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         o365Cdn = _a.sent();
-                        console.log(o365Cdn);
+                        this.setState({
+                            CDNEnabled: o365Cdn.Enabled,
+                            Filetypes: o365Cdn.FileTypes,
+                            Origins: o365Cdn.Origins,
+                            SPOSiteUrl: o365Cdn.SPOSiteUrl
+                        });
                         return [2 /*return*/];
                 }
             });
