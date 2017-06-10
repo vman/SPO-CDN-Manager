@@ -7,12 +7,10 @@ import { Spinner, SpinnerSize, Label } from 'office-ui-fabric-react';
 export class Office365CDNManager extends React.Component<Office365Cdn, any> {
 
     public render() {
-        //return <h2>CDN Enabled {this.props.Enabled} and Type {this.props.Type}!</h2>;
         return <div className="o365Manager-Container">
-
-            <Label>Large Spinner</Label>
-            <Spinner size={SpinnerSize.large} />
-        </div>;
+                    <Label>Large Spinner</Label>
+                    <Spinner size={SpinnerSize.large} />
+                </div>;
     }
 
     componentDidMount() {
@@ -26,15 +24,15 @@ export class Office365CDNManager extends React.Component<Office365Cdn, any> {
     private async _getCDNSettings() {
 
         // jQuery.ajax("/Home/GetCDNSettings")
-		// 	.then(function (data: any) {
+        // 	.then(function (data: any) {
 
-		// 		console.log(data);
+        // 		console.log(data);
 
-		// 	}, function () {
-		// 		console.log(arguments);
-		// 	});
+        // 	}, function () {
+        // 		console.log(arguments);
+        // 	});
 
-        const response = await fetch("/Home/GetCDNSettings", { credentials: 'include'});
+        const response = await fetch("/Home/GetCDNSettings", { credentials: 'include' });
 
         const o365Cdn: Office365Cdn = await response.json();
 
