@@ -47,6 +47,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var office_ui_fabric_react_1 = require("office-ui-fabric-react");
+var _columns = [
+    {
+        key: 'column1',
+        name: 'delete',
+        fieldName: 'delete',
+        minWidth: 100,
+        maxWidth: 200,
+        isResizable: false
+    },
+    {
+        key: 'column2',
+        name: 'origin',
+        fieldName: 'origin',
+        minWidth: 100,
+        maxWidth: 200,
+        isResizable: true
+    },
+];
+var _items;
 // State is never set so we use the 'undefined' type.
 var Office365CDNManager = (function (_super) {
     __extends(Office365CDNManager, _super);
@@ -63,18 +82,17 @@ var Office365CDNManager = (function (_super) {
             React.createElement(office_ui_fabric_react_1.Spinner, { size: office_ui_fabric_react_1.SpinnerSize.large }),
             React.createElement(office_ui_fabric_react_1.Pivot, { linkSize: office_ui_fabric_react_1.PivotLinkSize.large },
                 React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Origins' },
-                    React.createElement(office_ui_fabric_react_1.Label, null, "Pivot Origins")),
-                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Filetypes' },
-                    React.createElement(office_ui_fabric_react_1.Label, null, "Pivot Filetypes")),
+                    React.createElement(office_ui_fabric_react_1.DetailsList, { items: _items, columns: _columns, setKey: 'set', layoutMode: office_ui_fabric_react_1.DetailsListLayoutMode.fixedColumns })),
+                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Filetypes' }),
                 React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Turn CDN On/Off' },
-                    React.createElement(office_ui_fabric_react_1.Label, null, "Pivot Turn CDN On/Off"))));
+                    React.createElement(office_ui_fabric_react_1.Toggle, { defaultChecked: this.state.CDNEnabled, label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off' }))));
     };
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();
     };
     Office365CDNManager.prototype._getCDNSettings = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var response, o365Cdn;
+            var response, o365Cdn, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, fetch("/Home/GetCDNSettings", { credentials: 'include' })];
@@ -83,6 +101,13 @@ var Office365CDNManager = (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         o365Cdn = _a.sent();
+                        for (i = 0; i < o365Cdn.Origins.length; i++) {
+                            _items.push({
+                                key: i,
+                                name: o365Cdn.Origins[i],
+                                value: i
+                            });
+                        }
                         this.setState({
                             CDNEnabled: o365Cdn.Enabled,
                             Filetypes: o365Cdn.FileTypes,
