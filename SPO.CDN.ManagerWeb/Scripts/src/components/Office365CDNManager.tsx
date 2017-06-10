@@ -7,7 +7,8 @@ import {
     Label,
     Pivot,
     PivotItem,
-    PivotLinkSize
+    PivotLinkSize,
+    Toggle
 } from 'office-ui-fabric-react';
 
 export interface IOffice365CDNManagerState {
@@ -26,13 +27,17 @@ export class Office365CDNManager extends React.Component<IOffice365Cdn, IOffice3
             <Spinner size={SpinnerSize.large} />
             <Pivot linkSize={PivotLinkSize.large}>
                 <PivotItem linkText='Origins'>
-                    <Label>Pivot Origins</Label>
+
                 </PivotItem>
                 <PivotItem linkText='Filetypes'>
-                    <Label>Pivot Filetypes</Label>
+
                 </PivotItem>
                 <PivotItem linkText='Turn CDN On/Off'>
-                    <Label>Pivot Turn CDN On/Off</Label>
+                    <Toggle
+                        defaultChecked={false}
+                        label='Use Office 365 Public CDN'
+                        onText='On'
+                        offText='Off' />
                 </PivotItem>
             </Pivot>
         </div>;
