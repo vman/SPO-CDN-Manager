@@ -82,7 +82,7 @@ var Office365CDNManager = (function (_super) {
             React.createElement(office_ui_fabric_react_1.Spinner, { size: office_ui_fabric_react_1.SpinnerSize.large }),
             React.createElement(office_ui_fabric_react_1.Pivot, { linkSize: office_ui_fabric_react_1.PivotLinkSize.large },
                 React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Origins' },
-                    React.createElement(office_ui_fabric_react_1.DetailsList, { items: _items, columns: _columns, setKey: 'set', layoutMode: office_ui_fabric_react_1.DetailsListLayoutMode.fixedColumns })),
+                    React.createElement(office_ui_fabric_react_1.DetailsList, { items: this.state.Origins, columns: _columns, setKey: 'set', layoutMode: office_ui_fabric_react_1.DetailsListLayoutMode.fixedColumns })),
                 React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Filetypes' }),
                 React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Turn CDN On/Off' },
                     React.createElement(office_ui_fabric_react_1.Toggle, { defaultChecked: this.state.CDNEnabled, label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off' }))));
@@ -101,6 +101,7 @@ var Office365CDNManager = (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         o365Cdn = _a.sent();
+                        //no orgins are selected in the current tenant so .length is throwing an error
                         for (i = 0; i < o365Cdn.Origins.length; i++) {
                             _items.push({
                                 key: i,
