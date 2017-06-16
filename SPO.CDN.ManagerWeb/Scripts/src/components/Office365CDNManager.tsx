@@ -14,10 +14,10 @@ import {
 } from 'office-ui-fabric-react';
 
 export interface IOffice365CDNManagerState {
-  CDNEnabled: boolean;
-  Filetypes: string[];
-  Origins: any[];
-  SPOSiteUrl: string;
+  CDNEnabled?: boolean;
+  Filetypes?: string[];
+  Origins?: string[];
+  SPOSiteUrl?: string;
 }
 
 
@@ -41,7 +41,7 @@ let _columns = [
   },
 ];
 
-let _items:any = [];
+let _items: any[];
 
 // State is never set so we use the 'undefined' type.
 export class Office365CDNManager extends React.Component<IOffice365Cdn, IOffice365CDNManagerState> {
@@ -56,6 +56,7 @@ export class Office365CDNManager extends React.Component<IOffice365Cdn, IOffice3
           <DetailsList
             items={this.state.Origins}
             columns={_columns}
+            setKey='set'
             layoutMode={DetailsListLayoutMode.fixedColumns}
           />
         </PivotItem>
@@ -77,10 +78,6 @@ export class Office365CDNManager extends React.Component<IOffice365Cdn, IOffice3
     super();
 
     this.state = {
-        CDNEnabled: false,
-        Origins: [],
-        Filetypes: [],
-        SPOSiteUrl: ""
     };
   }
 
@@ -91,19 +88,26 @@ export class Office365CDNManager extends React.Component<IOffice365Cdn, IOffice3
 
   private async _getCDNSettings() {
 
+    // jQuery.ajax("/Home/GetCDNSettings")
+    // 	.then(function (data: any) {
+
+    // 		console.log(data);
+
+    // 	}, function () {
+    // 		console.log(arguments);
+    // 	});
+
     const response = await fetch("/Home/GetCDNSettings", { credentials: 'include' });
 
     const o365Cdn: IOffice365Cdn = await response.json();
 
     //no orgins are selected in the current tenant so .length is throwing an error
-    if (o365Cdn.Origins.length > 0) {
-        for (let i = 0; i < o365Cdn.Origins.length; i++) {
-            _items.push({
-                key: i,
-                name: o365Cdn.Origins[i],
-                value: i
-            });
-        }
+    for (let i = 0; i < o365Cdn.Origins.length; i++) {
+      _items.push({
+        key: i,
+        name: o365Cdn.Origins[i],
+        value: i
+      });
     }
 
     this.setState({
