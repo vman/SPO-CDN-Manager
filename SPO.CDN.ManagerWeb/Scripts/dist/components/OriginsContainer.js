@@ -11,20 +11,18 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var office_ui_fabric_react_1 = require("office-ui-fabric-react");
 require("./O365CDNManager.module.scss");
-var Header = (function (_super) {
-    __extends(Header, _super);
-    function Header(props) {
+var List_1 = require("office-ui-fabric-react/lib/List");
+var OriginsContainer = (function (_super) {
+    __extends(OriginsContainer, _super);
+    function OriginsContainer(props) {
         return _super.call(this, props) || this;
     }
-    Header.prototype.render = function () {
-        return React.createElement("div", { className: "o365Manager-Header" },
-            React.createElement(office_ui_fabric_react_1.Label, { className: "ms-font-su ms-fontSize-xxl" },
-                "Manage Office 365 Public CDN settings for ",
-                this.props.SPOSiteUrl));
+    OriginsContainer.prototype.render = function () {
+        return React.createElement("div", { className: "o365Manager-OriginsContainer" },
+            React.createElement(List_1.List, { items: this.props.Origins, onRenderCell: function (origin, index) { return (React.createElement("li", null, origin)); } }));
     };
-    return Header;
+    return OriginsContainer;
 }(React.Component));
-exports.Header = Header;
-//# sourceMappingURL=Header.js.map
+exports.OriginsContainer = OriginsContainer;
+//# sourceMappingURL=OriginsContainer.js.map

@@ -1,11 +1,5 @@
 import * as React from "react";
-
-// import {
-//     DetailsList,
-//     DetailsListLayoutMode,
-//     Selection,
-//     SelectionMode
-// } from 'office-ui-fabric-react/lib/DetailsList';
+import "./O365CDNManager.module.scss";
 
 import { List } from 'office-ui-fabric-react/lib/List';
 

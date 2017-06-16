@@ -47,18 +47,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var Header_1 = require("./Header");
-var Origins_1 = require("./Origins");
+var OriginsContainer_1 = require("./OriginsContainer");
+var FileTypesContainer_1 = require("./FileTypesContainer");
+var ToggleCDNContainer_1 = require("./ToggleCDNContainer");
 var Office365CDNManager = (function (_super) {
     __extends(Office365CDNManager, _super);
     function Office365CDNManager(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = {};
+        _this.state = {
+            PublicCDNEnabled: false,
+            Filetypes: [],
+            Origins: [],
+            SPOSiteUrl: ""
+        };
         return _this;
     }
     Office365CDNManager.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-Container" },
             React.createElement(Header_1.Header, { SPOSiteUrl: this.state.SPOSiteUrl }),
-            React.createElement(Origins_1.Origins, { Origins: this.state.Origins }));
+            React.createElement(OriginsContainer_1.OriginsContainer, { Origins: this.state.Origins }),
+            React.createElement(FileTypesContainer_1.FileTypesContainer, { FileTypes: this.state.Filetypes }),
+            React.createElement(ToggleCDNContainer_1.ToggleCDNContainer, { Enabled: this.state.PublicCDNEnabled }));
     };
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();

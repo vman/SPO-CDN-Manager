@@ -11,20 +11,17 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var office_ui_fabric_react_1 = require("office-ui-fabric-react");
-require("./O365CDNManager.module.scss");
-var Header = (function (_super) {
-    __extends(Header, _super);
-    function Header(props) {
+var Toggle_1 = require("office-ui-fabric-react/lib/Toggle");
+var ToggleCDNContainer = (function (_super) {
+    __extends(ToggleCDNContainer, _super);
+    function ToggleCDNContainer(props) {
         return _super.call(this, props) || this;
     }
-    Header.prototype.render = function () {
-        return React.createElement("div", { className: "o365Manager-Header" },
-            React.createElement(office_ui_fabric_react_1.Label, { className: "ms-font-su ms-fontSize-xxl" },
-                "Manage Office 365 Public CDN settings for ",
-                this.props.SPOSiteUrl));
+    ToggleCDNContainer.prototype.render = function () {
+        return React.createElement("div", { className: "o365Manager-ToggleCDNContainer" },
+            React.createElement(Toggle_1.Toggle, { label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off', checked: this.props.Enabled }));
     };
-    return Header;
+    return ToggleCDNContainer;
 }(React.Component));
-exports.Header = Header;
-//# sourceMappingURL=Header.js.map
+exports.ToggleCDNContainer = ToggleCDNContainer;
+//# sourceMappingURL=ToggleCDNContainer.js.map
