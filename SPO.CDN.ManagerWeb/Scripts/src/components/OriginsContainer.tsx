@@ -1,0 +1,33 @@
+import * as React from "react";
+
+// import {
+//     DetailsList,
+//     DetailsListLayoutMode,
+//     Selection,
+//     SelectionMode
+// } from 'office-ui-fabric-react/lib/DetailsList';
+
+import { List } from 'office-ui-fabric-react/lib/List';
+
+export interface IOriginsContainerProps {
+    Origins: string[];
+}
+
+export class OriginsContainer extends React.Component<IOriginsContainerProps, null> {
+    private _selection: Selection;
+
+    constructor(props: IOriginsContainerProps) {
+        super(props);
+    }
+
+    public render() {
+        return <div className="o365Manager-OriginsContainer">
+            <List
+                items={this.props.Origins}
+                onRenderCell={(origin, index) => (
+                    <li>{origin}</li>
+                )}
+             />
+        </div>
+    }
+}

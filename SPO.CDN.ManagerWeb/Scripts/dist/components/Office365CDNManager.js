@@ -46,77 +46,40 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var office_ui_fabric_react_1 = require("office-ui-fabric-react");
-var _columns = [
-    {
-        key: 'column1',
-        name: 'delete',
-        fieldName: 'delete',
-        minWidth: 100,
-        maxWidth: 200,
-        isResizable: false
-    },
-    {
-        key: 'column2',
-        name: 'origin',
-        fieldName: 'origin',
-        minWidth: 100,
-        maxWidth: 200,
-        isResizable: true
-    },
-];
-var _items;
-// State is never set so we use the 'undefined' type.
+var Header_1 = require("./Header");
+var Origins_1 = require("./Origins");
 var Office365CDNManager = (function (_super) {
     __extends(Office365CDNManager, _super);
-    function Office365CDNManager() {
-        var _this = _super.call(this) || this;
+    function Office365CDNManager(props) {
+        var _this = _super.call(this, props) || this;
         _this.state = {};
         return _this;
     }
     Office365CDNManager.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-Container" },
-            React.createElement(office_ui_fabric_react_1.Label, null,
-                "Manage Office 365 Public CDN Settings for ",
-                this.state.SPOSiteUrl),
-            React.createElement(office_ui_fabric_react_1.Spinner, { size: office_ui_fabric_react_1.SpinnerSize.large }),
-            React.createElement(office_ui_fabric_react_1.Pivot, { linkSize: office_ui_fabric_react_1.PivotLinkSize.large },
-                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Origins' },
-                    React.createElement(office_ui_fabric_react_1.DetailsList, { items: this.state.Origins, columns: _columns, setKey: 'set', layoutMode: office_ui_fabric_react_1.DetailsListLayoutMode.fixedColumns })),
-                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Filetypes' }),
-                React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Turn CDN On/Off' },
-                    React.createElement(office_ui_fabric_react_1.Toggle, { defaultChecked: this.state.CDNEnabled, label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off' }))));
+            React.createElement(Header_1.Header, { SPOSiteUrl: this.state.SPOSiteUrl }),
+            React.createElement(Origins_1.Origins, { Origins: this.state.Origins }));
     };
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();
     };
     Office365CDNManager.prototype._getCDNSettings = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var response, o365Cdn, i;
+            var _this = this;
+            var o365Cdn;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, fetch("/Home/GetCDNSettings", { credentials: 'include' })];
-                    case 1:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 2:
-                        o365Cdn = _a.sent();
-                        //no orgins are selected in the current tenant so .length is throwing an error
-                        for (i = 0; i < o365Cdn.Origins.length; i++) {
-                            _items.push({
-                                key: i,
-                                name: o365Cdn.Origins[i],
-                                value: i
-                            });
-                        }
-                        this.setState({
-                            CDNEnabled: o365Cdn.Enabled,
-                            Filetypes: o365Cdn.FileTypes,
-                            Origins: o365Cdn.Origins,
-                            SPOSiteUrl: o365Cdn.SPOSiteUrl
-                        });
-                        return [2 /*return*/];
-                }
+                o365Cdn = {
+                    "PublicCDNEnabled": true,
+                    "Filetypes": ["CSS", "EOT", "GIF", "ICO", "JPEG", "JPG", "JS", "MAP", "PNG", "SVG", "TTF", "WOFF"],
+                    "Origins": ["*/MASTERPAGE (configuration pending)",
+                        "*/STYLE LIBRARY (configuration pending)"
+                    ],
+                    "SPOSiteUrl": "https://dummy.sharepoint.com"
+                };
+                setTimeout(function () {
+                    _this.setState(o365Cdn);
+                }, 1000);
+                return [2 /*return*/];
             });
         });
     };

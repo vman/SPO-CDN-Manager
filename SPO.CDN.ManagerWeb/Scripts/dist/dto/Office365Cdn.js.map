@@ -1,1 +1,1 @@
-{"version":3,"file":"Office365Cdn.js","sourceRoot":"","sources":["../../src/dto/Office365Cdn.ts"],"names":[],"mappings":";;AAAA,IAAY,OAGX;AAHD,WAAY,OAAO;IACf,yCAAM,CAAA;IACN,2CAAO,CAAA;AACX,CAAC,EAHW,OAAO,GAAP,eAAO,KAAP,eAAO,QAGlB;AAUD;IAAA;IAMA,CAAC;IAAD,mBAAC;AAAD,CAAC,AAND,IAMC;AANY,oCAAY"}
+{"version":3,"file":"Office365Cdn.js","sourceRoot":"","sources":["../../src/dto/Office365Cdn.ts"],"names":[],"mappings":""}

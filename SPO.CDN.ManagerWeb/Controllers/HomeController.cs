@@ -36,7 +36,7 @@ namespace SPO.CDN.ManagerWeb.Controllers
         clientContext.ExecuteQuery();
 
         cdnManagerModel.PublicCDNEnabled = publicCDNEnabled.Value;
-        cdnManagerModel.Origins = GetCDNOrigins(publicCdnOrigins);
+        cdnManagerModel.Origins = GetCDNOrigins(publicCdnOrigins); //Origins will need refactor. It is just a string now, not an object
         var fileTypes = publicCDNPolicies.Where(s => s.StartsWith(SPOTenantCdnPolicyType.IncludeFileExtensions.ToString())).First();
         cdnManagerModel.Filetypes = ConvertToList(fileTypes);
         cdnManagerModel.SPOSiteUrl = clientContext.Web.Url;
