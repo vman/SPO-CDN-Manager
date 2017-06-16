@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Label } from 'office-ui-fabric-react';
-import "./O365CDNManager.module.scss";
 
 export interface IHeaderProps {
     SPOSiteUrl?: string;

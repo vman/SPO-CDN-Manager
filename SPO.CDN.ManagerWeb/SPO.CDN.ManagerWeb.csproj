@@ -315,6 +315,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\src\dto\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -331,11 +332,16 @@
     <Content Include="tsconfig.json" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\dist\spo.cdn.manager.bundle.js.map" />
+    <Content Include="Scripts\src\components\O365CDNManager.module.scss" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\src\app.tsx" />
+    <TypeScriptCompile Include="Scripts\src\components\FileTypesContainer.tsx" />
+    <TypeScriptCompile Include="Scripts\src\components\Header.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\Office365CDNManager.tsx" />
-    <TypeScriptCompile Include="Scripts\src\dto\Office365Cdn.ts" />
+    <TypeScriptCompile Include="Scripts\src\components\OriginsContainer.tsx" />
+    <TypeScriptCompile Include="Scripts\src\components\ToggleCDNContainer.tsx" />
+    <TypeScriptCompile Include="snippets.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
