@@ -17885,6 +17885,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var office_ui_fabric_react_1 = __webpack_require__(417);
+var CdnType;
+(function (CdnType) {
+    CdnType[CdnType["Public"] = 0] = "Public";
+    CdnType[CdnType["Private"] = 1] = "Private";
+})(CdnType = exports.CdnType || (exports.CdnType = {}));
+//export interface IOffice365CDNManagerProps { 
+//    SPOSiteUrl?: string;
+//    Origins?: string[];
+//    FileTypes?: string[];
+//}
+//export class Office365Cdn implements IOffice365Cdn {
+//    Type?: CdnType;
+//    Enabled?: boolean;
+//    SPOSiteUrl?: string;
+//    Origins?: string[];
+//    FileTypes?: string[];
+//}
 var _columns = [
     {
         key: 'column1',
@@ -17923,7 +17940,7 @@ var Office365CDNManager = (function (_super) {
                     React.createElement(office_ui_fabric_react_1.DetailsList, { items: this.state.Origins, columns: _columns, setKey: 'set', layoutMode: office_ui_fabric_react_1.DetailsListLayoutMode.fixedColumns })),
                 React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Filetypes' }),
                 React.createElement(office_ui_fabric_react_1.PivotItem, { linkText: 'Turn CDN On/Off' },
-                    React.createElement(office_ui_fabric_react_1.Toggle, { defaultChecked: this.state.CDNEnabled, label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off' }))));
+                    React.createElement(office_ui_fabric_react_1.Toggle, { defaultChecked: this.state.Enabled, label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off' }))));
     };
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();
@@ -17948,8 +17965,8 @@ var Office365CDNManager = (function (_super) {
                             });
                         }
                         this.setState({
-                            CDNEnabled: o365Cdn.Enabled,
-                            Filetypes: o365Cdn.FileTypes,
+                            Enabled: o365Cdn.Enabled,
+                            FileTypes: o365Cdn.FileTypes,
                             Origins: o365Cdn.Origins,
                             SPOSiteUrl: o365Cdn.SPOSiteUrl
                         });
@@ -17973,9 +17990,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var ReactDOM = __webpack_require__(44);
 var Office365CDNManager_1 = __webpack_require__(194);
-//const o365cdnProps: IOffice365Cdn = { Type: CdnType.Public, Enabled: true,  };
-var o365ManagerElement = React.createElement(Office365CDNManager_1.Office365CDNManager);
-ReactDOM.render(o365ManagerElement, document.getElementById("cdnManagerContainer"));
+ReactDOM.render(React.createElement(Office365CDNManager_1.Office365CDNManager, null), document.getElementById("cdnManagerContainer"));
 
 
 /***/ }),
