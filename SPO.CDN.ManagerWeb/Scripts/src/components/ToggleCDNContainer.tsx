@@ -12,9 +12,9 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
             <Toggle
                 defaultChecked={this.props.Enabled}
                 label='Use Office 365 Public CDN'
-                onText='On' 
+                onText='On'
                 offText='Off'
-                checked={this.props.Enabled}  />
-        </div>;
+                checked={this.props.Enabled} />
+        </div>
     }
 }

@@ -3,6 +3,7 @@ import { Header } from './Header';
 import { OriginsContainer } from './OriginsContainer';
 import { FileTypesContainer } from './FileTypesContainer';
 import { ToggleCDNContainer } from './ToggleCDNContainer';
+import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
 
 interface IOffice365CDNManagerState {
     PublicCDNEnabled: boolean;
@@ -18,13 +19,31 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 
     public render() {
         return <div className="o365Manager-Container">
-            <Header SPOSiteUrl={this.state.SPOSiteUrl} />
-            <OriginsContainer Origins={this.state.Origins} />
-            <FileTypesContainer FileTypes={this.state.Filetypes} />
-            <ToggleCDNContainer Enabled={this.state.PublicCDNEnabled} />
-        </div>;
+            <div className="ms-Grid">
+                <div className="ms-Grid-row">
+                    <div className="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12">
+                        <Header SPOSiteUrl={this.state.SPOSiteUrl} />
+                    </div>
+                </div>
+                <div className="ms-Grid-row">
+                    <div className="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12">
+                        <Pivot linkSize={PivotLinkSize.large}>
+                            <PivotItem linkText='Origins'>
+                                <OriginsContainer Origins={this.state.Origins} />
+                            </PivotItem>
+                            <PivotItem linkText='Filetypes'>
+                                <FileTypesContainer FileTypes={this.state.Filetypes} />
+                            </PivotItem>
+                            <PivotItem linkText='Turn CDN On/Off'>
+                                <ToggleCDNContainer Enabled={this.state.PublicCDNEnabled} />
+                            </PivotItem>
+                        </Pivot>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
-    
+
     constructor(props: IOffice365CDNManagerProps) {
         super(props);
         this.state = {
