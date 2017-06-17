@@ -13,8 +13,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var FileTypesContainer = (function (_super) {
     __extends(FileTypesContainer, _super);
-    function FileTypesContainer(props) {
-        return _super.call(this, props) || this;
+    function FileTypesContainer() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     FileTypesContainer.prototype.render = function () {
         //need to check if this.props.FileTypes is not undefined before rendering

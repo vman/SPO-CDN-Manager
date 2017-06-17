@@ -14,8 +14,8 @@ var React = require("react");
 var Toggle_1 = require("office-ui-fabric-react/lib/Toggle");
 var ToggleCDNContainer = (function (_super) {
     __extends(ToggleCDNContainer, _super);
-    function ToggleCDNContainer(props) {
-        return _super.call(this, props) || this;
+    function ToggleCDNContainer() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     ToggleCDNContainer.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-ToggleCDNContainer" },

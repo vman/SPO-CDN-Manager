@@ -12,11 +12,10 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var office_ui_fabric_react_1 = require("office-ui-fabric-react");
-require("./O365CDNManager.module.scss");
 var Header = (function (_super) {
     __extends(Header, _super);
-    function Header(props) {
-        return _super.call(this, props) || this;
+    function Header() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Header.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-Header" },

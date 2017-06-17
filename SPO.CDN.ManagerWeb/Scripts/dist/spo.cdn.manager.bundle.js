@@ -18853,6 +18853,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(1);
 var Toggle_1 = __webpack_require__(123);
+//Think if checked should be state instead of props as needs to be canged
 var ToggleCDNContainer = (function (_super) {
     __extends(ToggleCDNContainer, _super);
     function ToggleCDNContainer() {
@@ -18860,7 +18861,7 @@ var ToggleCDNContainer = (function (_super) {
     }
     ToggleCDNContainer.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-ToggleCDNContainer" },
-            React.createElement(Toggle_1.Toggle, { label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off', checked: this.props.Enabled }));
+            React.createElement(Toggle_1.Toggle, { defaultChecked: this.props.Enabled, label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off', checked: this.props.Enabled }));
     };
     return ToggleCDNContainer;
 }(React.Component));

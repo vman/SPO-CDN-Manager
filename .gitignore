@@ -253,3 +253,4 @@ paket-files/
 /BuildProcessTemplates
 
 SPO.CDN.ManagerWeb/Web.config
+SPO.CDN.ManagerWeb/Scripts/dist

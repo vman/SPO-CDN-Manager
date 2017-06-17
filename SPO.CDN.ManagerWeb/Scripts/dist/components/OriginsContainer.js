@@ -15,8 +15,8 @@ require("./O365CDNManager.module.scss");
 var List_1 = require("office-ui-fabric-react/lib/List");
 var OriginsContainer = (function (_super) {
     __extends(OriginsContainer, _super);
-    function OriginsContainer(props) {
-        return _super.call(this, props) || this;
+    function OriginsContainer() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     OriginsContainer.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-OriginsContainer" },
