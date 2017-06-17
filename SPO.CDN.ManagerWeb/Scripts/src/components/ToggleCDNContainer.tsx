@@ -6,10 +6,6 @@ export interface IToggleCDNContainerProps {
 }
 
 export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps, null> {
-    constructor(props: IToggleCDNContainerProps) {
-        super(props);
-    }
-
     public render() {
         return <div className="o365Manager-ToggleCDNContainer">
             <Toggle

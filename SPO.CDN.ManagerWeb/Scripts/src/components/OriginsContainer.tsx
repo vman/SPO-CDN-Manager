@@ -8,12 +8,6 @@ export interface IOriginsContainerProps {
 }
 
 export class OriginsContainer extends React.Component<IOriginsContainerProps, null> {
-    private _selection: Selection;
-
-    constructor(props: IOriginsContainerProps) {
-        super(props);
-    }
-
     public render() {
         return <div className="o365Manager-OriginsContainer">
             <List

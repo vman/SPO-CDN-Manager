@@ -5,10 +5,6 @@ export interface IFileTypesContainerProps {
 }
 
 export class FileTypesContainer extends React.Component<IFileTypesContainerProps, null> {
-    constructor(props: IFileTypesContainerProps) {
-        super(props);
-    }
-
     public render() {
         //need to check if this.props.FileTypes is not undefined before rendering
         return <div className="o365Manager-FileTypesContainer">
