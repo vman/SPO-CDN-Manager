@@ -93,15 +93,6 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 
         const o365Cdn: IOffice365CDNManagerState = await response.json();
 
-        // const o365Cdn: IOffice365CDNManagerState = {
-        //     "PublicCDNEnabled": true,
-        //     "Filetypes": ["CSS", "EOT", "GIF", "ICO", "JPEG", "JPG", "JS", "MAP", "PNG", "SVG", "TTF", "WOFF"],
-        //     "Origins": ["*/MASTERPAGE (configuration pending)",
-        //         "*/STYLE LIBRARY (configuration pending)"
-        //     ],
-        //     "SPOSiteUrl": "https://dummy.sharepoint.com"
-        // };
-
         setTimeout(() => {
             this.setState(o365Cdn);
         }, 1000);

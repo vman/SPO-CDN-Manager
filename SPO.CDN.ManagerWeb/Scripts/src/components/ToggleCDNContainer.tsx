@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
 
 export interface IToggleCDNContainerProps {
     Enabled: boolean
@@ -29,7 +29,7 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
                 label='Use Office 365 Public CDN'
                 onText='On'
                 offText='Off'
-                checked={this.props.Enabled}
+                checked={this.state.isChecked}
                 onChanged={this._checked.bind(this)} />
 
             <Dialog

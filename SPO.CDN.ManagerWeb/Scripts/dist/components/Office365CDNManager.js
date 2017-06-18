@@ -78,7 +78,7 @@ var Office365CDNManager = (function (_super) {
                             React.createElement(Pivot_1.PivotItem, { linkText: 'Filetypes' },
                                 React.createElement(FileTypesContainer_1.FileTypesContainer, { FileTypes: this.state.Filetypes })),
                             React.createElement(Pivot_1.PivotItem, { linkText: 'Turn CDN On/Off' },
-                                React.createElement(ToggleCDNContainer_1.ToggleCDNContainer, { Enabled: this.state.PublicCDNEnabled, onChanged: this.toggleCDN.bind(this) })))))));
+                                React.createElement(ToggleCDNContainer_1.ToggleCDNContainer, { Enabled: this.state.PublicCDNEnabled, toggleCDN: this.toggleCDN.bind(this) })))))));
     };
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();
@@ -131,14 +131,6 @@ var Office365CDNManager = (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         o365Cdn = _a.sent();
-                        // const o365Cdn: IOffice365CDNManagerState = {
-                        //     "PublicCDNEnabled": true,
-                        //     "Filetypes": ["CSS", "EOT", "GIF", "ICO", "JPEG", "JPG", "JS", "MAP", "PNG", "SVG", "TTF", "WOFF"],
-                        //     "Origins": ["*/MASTERPAGE (configuration pending)",
-                        //         "*/STYLE LIBRARY (configuration pending)"
-                        //     ],
-                        //     "SPOSiteUrl": "https://dummy.sharepoint.com"
-                        // };
                         setTimeout(function () {
                             _this.setState(o365Cdn);
                         }, 1000);

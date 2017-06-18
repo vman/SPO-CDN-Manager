@@ -11,13 +11,18 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var Button_1 = require("office-ui-fabric-react/lib/Button");
 var OriginsContainer = (function (_super) {
     __extends(OriginsContainer, _super);
-    function OriginsContainer() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function OriginsContainer(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = { showPanel: false };
+        return _this;
     }
     OriginsContainer.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-OriginsContainer" },
+            React.createElement(Button_1.PrimaryButton, { text: 'Add New Origin', onClick: function () { return alert('Clicked'); } }),
+            React.createElement(Button_1.PrimaryButton, { text: 'Create Default Origins', onClick: function () { return alert('Clicked'); } }),
             React.createElement("ul", null, this.props.Origins.map(function (origin, index) {
                 return React.createElement("li", { key: index }, origin);
             })));

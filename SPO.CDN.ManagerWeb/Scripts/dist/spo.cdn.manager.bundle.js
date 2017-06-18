@@ -15066,14 +15066,6 @@ var Office365CDNManager = (function (_super) {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         o365Cdn = _a.sent();
-                        // const o365Cdn: IOffice365CDNManagerState = {
-                        //     "PublicCDNEnabled": true,
-                        //     "Filetypes": ["CSS", "EOT", "GIF", "ICO", "JPEG", "JPG", "JS", "MAP", "PNG", "SVG", "TTF", "WOFF"],
-                        //     "Origins": ["*/MASTERPAGE (configuration pending)",
-                        //         "*/STYLE LIBRARY (configuration pending)"
-                        //     ],
-                        //     "SPOSiteUrl": "https://dummy.sharepoint.com"
-                        // };
                         setTimeout(function () {
                             _this.setState(o365Cdn);
                         }, 1000);
@@ -15186,16 +15178,32 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(4);
+var Panel_1 = __webpack_require__(344);
+var Button_1 = __webpack_require__(47);
 var OriginsContainer = (function (_super) {
     __extends(OriginsContainer, _super);
-    function OriginsContainer() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function OriginsContainer(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            showPanel: false
+        };
+        return _this;
     }
     OriginsContainer.prototype.render = function () {
+        var _this = this;
         return React.createElement("div", { className: "o365Manager-OriginsContainer" },
+            React.createElement(Button_1.PrimaryButton, { text: 'Add New Origin', onClick: this._showPanel.bind(this) }),
+            React.createElement(Button_1.PrimaryButton, { text: 'Create Default Origins', onClick: function () { return alert('Clicked'); } }),
             React.createElement("ul", null, this.props.Origins.map(function (origin, index) {
                 return React.createElement("li", { key: index }, origin);
-            })));
+            })),
+            React.createElement(Panel_1.Panel, { isOpen: this.state.showPanel, onDismiss: function () { return _this.setState({ showPanel: false }); }, type: Panel_1.PanelType.medium, isLightDismiss: true, headerText: 'Add New CDN Origin' },
+                React.createElement("span", { className: 'ms-font-m' }, "Content goes here.")));
+    };
+    OriginsContainer.prototype._showPanel = function () {
+        this.setState({
+            showPanel: true
+        });
     };
     return OriginsContainer;
 }(React.Component));
@@ -15235,7 +15243,7 @@ var ToggleCDNContainer = (function (_super) {
     }
     ToggleCDNContainer.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-ToggleCDNContainer" },
-            React.createElement(Toggle_1.Toggle, { label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off', checked: this.props.Enabled, onChanged: this._checked.bind(this) }),
+            React.createElement(Toggle_1.Toggle, { label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off', checked: this.state.isChecked, onChanged: this._checked.bind(this) }),
             React.createElement(Dialog_1.Dialog, { isOpen: this.state.showDialog, type: Dialog_1.DialogType.largeHeader, onDismiss: this._closeDialog.bind(this), title: 'Change CDN Settings?', subText: 'Are you sure you want to change the CDN settings for your tenant?', isBlocking: true },
                 React.createElement(Dialog_1.DialogFooter, null,
                     React.createElement(Button_1.DefaultButton, { onClick: this._dialogYesClicked.bind(this), text: 'Yes' }),
@@ -37968,6 +37976,338 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 343 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var PanelType;
+(function (PanelType) {
+    /**
+     * Renders the panel in 'small' mode, anchored to the far side (right in LTR mode), and has a fluid width.
+     * Only used on Small screen breakpoints.
+     * Small: 320-479px width (full screen), 16px Left/Right padding
+     * Medium: <unused>
+     * Large: <unused>
+     * XLarge: <unused>
+     * XXLarge: <unused>
+     */
+    PanelType[PanelType["smallFluid"] = 0] = "smallFluid";
+    /**
+     * Renders the panel in 'small' mode, anchored to the far side (right in LTR mode), and has a fixed width.
+     * Small: 272px width, 16px Left/Right padding
+     * Medium: 340px width, 16px Left/Right padding
+     * Large: 340px width, 32px Left/Right padding
+     * XLarge: 340px width, 32px Left/Right padding
+     * XXLarge: 340px width, 40px Left/Right padding
+     */
+    PanelType[PanelType["smallFixedFar"] = 1] = "smallFixedFar";
+    /**
+     * Renders the panel in 'small' mode, anchored to the near side (left in LTR mode), and has a fixed width.
+     * Small: 272px width, 16px Left/Right padding
+     * Medium: 272px width, 16px Left/Right padding
+     * Large: 272px width, 32px Left/Right padding
+     * XLarge: 272px width, 32px Left/Right padding
+     * XXLarge: 272px width, 32px Left/Right padding
+     */
+    PanelType[PanelType["smallFixedNear"] = 2] = "smallFixedNear";
+    /**
+     * Renders the panel in 'medium' mode, anchored to the far side (right in LTR mode).
+     * Small: <adapts to smallFluid>
+     * Medium: <adapts to smallFixedFar>
+     * Large: 48px fixed left margin, 32px Left/Right padding
+     * XLarge: 644px width, 32px Left/Right padding
+     * XXLarge: 643px width, 40px Left/Right padding
+     */
+    PanelType[PanelType["medium"] = 3] = "medium";
+    /**
+     * Renders the panel in 'large' mode, anchored to the far side (right in LTR mode), and is fluid at XXX-Large breakpoint.
+     * Small: <adapts to smallFluid>
+     * Medium:  <adapts to smallFixedFar>
+     * Large: <adapts to medium>
+     * XLarge: 48px fixed left margin, 32px Left/Right padding
+     * XXLarge: 48px fixed left margin, 32px Left/Right padding
+     * XXXLarge: 48px fixed left margin, (no redlines for padding, assuming previous breakpoint)
+     */
+    PanelType[PanelType["large"] = 4] = "large";
+    /**
+     * Renders the panel in 'large' mode, anchored to the far side (right in LTR mode), and is fixed at XXX-Large breakpoint.
+     * Small: <adapts to smallFluid>
+     * Medium:  <adapts to smallFixedFar>
+     * Large: <adapts to medium>
+     * XLarge: 48px fixed left margin, 32px Left/Right padding
+     * XXLarge: 48px fixed left margin, 32px Left/Right padding
+     * XXXLarge: 940px width, (no redlines for padding, assuming previous breakpoint)
+     */
+    PanelType[PanelType["largeFixed"] = 5] = "largeFixed";
+    /**
+     * Renders the panel in 'extra large' mode, anchored to the far side (right in LTR mode).
+     * Small: <adapts to smallFluid>
+     * Medium: <adapts to smallFixedFar>
+     * Large: <adapts to medium>
+     * XLarge: <adapts to large>
+     * XXLarge: 176px fixed left margin, 40px Left/Right padding
+     * XXXLarge: 176px fixed left margin, 40px Left/Right padding
+     */
+    PanelType[PanelType["extraLarge"] = 6] = "extraLarge";
+    /**
+     * Renders the panel in 'custom' mode using customWidth, anchored to the far side (right in LTR mode).
+     * Small: <adapts to smallFluid>
+     * Medium: <adapts to smallFixedFar>
+     * Large: 48px fixed left margin, 32px Left/Right padding
+     * XLarge: 644px width, 32px Left/Right padding
+     * XXLarge: 643px width, 40px Left/Right padding
+     */
+    PanelType[PanelType["custom"] = 7] = "custom";
+})(PanelType = exports.PanelType || (exports.PanelType = {}));
+
+
+
+/***/ }),
+/* 344 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(347));
+
+
+
+/***/ }),
+/* 345 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var tslib_1 = __webpack_require__(5);
+/* tslint:disable:no-unused-variable */
+var React = __webpack_require__(4);
+/* tslint:enable:no-unused-variable */
+var Utilities_1 = __webpack_require__(3);
+var index_1 = __webpack_require__(224);
+var Panel_Props_1 = __webpack_require__(343);
+var Layer_1 = __webpack_require__(103);
+var Overlay_1 = __webpack_require__(202);
+var Popup_1 = __webpack_require__(204);
+var Button_1 = __webpack_require__(47);
+var Styling_1 = __webpack_require__(10);
+var stylesImport = __webpack_require__(346);
+var styles = stylesImport;
+var Panel = (function (_super) {
+    tslib_1.__extends(Panel, _super);
+    function Panel(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            isFooterSticky: false,
+            isOpen: false,
+            isAnimating: false,
+            id: Utilities_1.getId('Panel')
+        };
+        return _this;
+    }
+    Panel.prototype.componentDidMount = function () {
+        this._events.on(window, 'resize', this._updateFooterPosition);
+        if (this.props.isOpen) {
+            this.open();
+        }
+    };
+    Panel.prototype.componentWillReceiveProps = function (newProps) {
+        if (newProps.isOpen !== this.state.isOpen) {
+            if (newProps.isOpen) {
+                this.open();
+            }
+            else {
+                this.dismiss();
+            }
+        }
+    };
+    Panel.prototype.render = function () {
+        var _a = this.props, children = _a.children, _b = _a.className, className = _b === void 0 ? '' : _b, closeButtonAriaLabel = _a.closeButtonAriaLabel, elementToFocusOnDismiss = _a.elementToFocusOnDismiss, firstFocusableSelector = _a.firstFocusableSelector, forceFocusInsideTrap = _a.forceFocusInsideTrap, hasCloseButton = _a.hasCloseButton, headerText = _a.headerText, ignoreExternalFocusing = _a.ignoreExternalFocusing, isBlocking = _a.isBlocking, isLightDismiss = _a.isLightDismiss, layerProps = _a.layerProps, type = _a.type, customWidth = _a.customWidth, _c = _a.onRenderNavigation, onRenderNavigation = _c === void 0 ? this._onRenderNavigation : _c, _d = _a.onRenderHeader, onRenderHeader = _d === void 0 ? this._onRenderHeader : _d, _e = _a.onRenderBody, onRenderBody = _e === void 0 ? this._onRenderBody : _e, _f = _a.onRenderFooter, onRenderFooter = _f === void 0 ? this._onRenderFooter : _f;
+        var _g = this.state, isOpen = _g.isOpen, isAnimating = _g.isAnimating, id = _g.id, isFooterSticky = _g.isFooterSticky;
+        var isLeft = type === Panel_Props_1.PanelType.smallFixedNear ? true : false;
+        var isRTL = Utilities_1.getRTL();
+        var isOnRightSide = isRTL ? isLeft : !isLeft;
+        var headerTextId = id + '-headerText';
+        var customWidthStyles = (type === Panel_Props_1.PanelType.custom) ? { width: customWidth } : {};
+        if (!isOpen && !isAnimating) {
+            return null;
+        }
+        var overlay;
+        if (isBlocking) {
+            overlay = (React.createElement(Overlay_1.Overlay, { className: Utilities_1.css(styles.overlay, isOpen && isAnimating && Styling_1.AnimationClassNames.fadeIn200, !isOpen && isAnimating && Styling_1.AnimationClassNames.fadeOut200), isDarkThemed: false, onClick: isLightDismiss ? this._onPanelClick : null }));
+        }
+        return (React.createElement(Layer_1.Layer, tslib_1.__assign({}, layerProps),
+            React.createElement(Popup_1.Popup, { role: 'dialog', ariaLabelledBy: headerText && headerTextId, onDismiss: this.dismiss },
+                React.createElement("div", { className: Utilities_1.css('ms-Panel', styles.root, className, 
+                    // because the RTL animations are not being used, we need to set a class
+                    isOpen && ('is-open ' + styles.rootIsOpen), type === Panel_Props_1.PanelType.smallFluid && ('ms-Panel--smFluid ' + styles.rootIsSmallFluid), type === Panel_Props_1.PanelType.smallFixedNear && ('ms-Panel--smLeft ' + styles.rootIsSmallLeft), type === Panel_Props_1.PanelType.smallFixedFar && ('ms-Panel--sm ' + styles.rootIsSmall), type === Panel_Props_1.PanelType.medium && ('ms-Panel--md ' + styles.rootIsMedium), (type === Panel_Props_1.PanelType.large || type === Panel_Props_1.PanelType.largeFixed) && ('ms-Panel--lg ' + styles.rootIsLarge), type === Panel_Props_1.PanelType.largeFixed && ('ms-Panel--fixed ' + styles.rootIsFixed), type === Panel_Props_1.PanelType.extraLarge && ('ms-Panel--xl ' + styles.rootIsXLarge), type === Panel_Props_1.PanelType.custom && ('ms-Panel--custom ' + styles.rootIsCustom), hasCloseButton && ('ms-Panel--hasCloseButton ' + styles.rootHasCloseButton)) },
+                    overlay,
+                    React.createElement(index_1.FocusTrapZone, { className: Utilities_1.css('ms-Panel-main', styles.main, isOpen && isAnimating && !isOnRightSide && Styling_1.AnimationClassNames.slideRightIn40, isOpen && isAnimating && isOnRightSide && Styling_1.AnimationClassNames.slideLeftIn40, !isOpen && isAnimating && !isOnRightSide && Styling_1.AnimationClassNames.slideLeftOut40, !isOpen && isAnimating && isOnRightSide && Styling_1.AnimationClassNames.slideRightOut40), style: customWidthStyles, elementToFocusOnDismiss: elementToFocusOnDismiss, isClickableOutsideFocusTrap: isLightDismiss, ignoreExternalFocusing: ignoreExternalFocusing, forceFocusInsideTrap: forceFocusInsideTrap, firstFocusableSelector: firstFocusableSelector },
+                        React.createElement("div", { className: Utilities_1.css('ms-Panel-commands'), "data-is-visible": true }, onRenderNavigation(this.props, this._onRenderNavigation)),
+                        React.createElement("div", { className: Utilities_1.css('ms-Panel-contentInner', styles.contentInner) },
+                            onRenderHeader(this.props, this._onRenderHeader),
+                            onRenderBody(this.props, this._onRenderBody),
+                            onRenderFooter(this.props, this._onRenderFooter)))))));
+    };
+    Panel.prototype.open = function () {
+        var _this = this;
+        if (!this.state.isOpen) {
+            this.setState({
+                isOpen: true,
+                isAnimating: true
+            }, function () {
+                _this._async.setTimeout(_this._onTransitionComplete, 200);
+            });
+        }
+    };
+    Panel.prototype.dismiss = function () {
+        var _this = this;
+        if (this.state.isOpen) {
+            this.setState({
+                isOpen: false,
+                isAnimating: true
+            }, function () {
+                _this._async.setTimeout(_this._onTransitionComplete, 200);
+            });
+            if (this.props.onDismiss) {
+                this.props.onDismiss();
+            }
+        }
+    };
+    Panel.prototype._onRenderNavigation = function (props) {
+        var closeButtonAriaLabel = props.closeButtonAriaLabel, hasCloseButton = props.hasCloseButton;
+        return (hasCloseButton &&
+            React.createElement(Button_1.IconButton, { className: Utilities_1.css('ms-Panel-closeButton ms-PanelAction-close', styles.closeButton), onClick: this._onPanelClick, ariaLabel: closeButtonAriaLabel, "data-is-visible": true, iconProps: { iconName: 'Cancel' } }));
+    };
+    Panel.prototype._onRenderHeader = function (props) {
+        var headerText = props.headerText, headerTextId = props.headerTextId, _a = props.headerClassName, headerClassName = _a === void 0 ? '' : _a;
+        return (headerText &&
+            React.createElement("div", { className: Utilities_1.css('ms-Panel-header', styles.header) },
+                React.createElement("p", { className: Utilities_1.css('ms-Panel-headerText', styles.headerText, headerClassName), id: headerTextId, role: 'heading' }, headerText)));
+    };
+    Panel.prototype._onRenderBody = function (props) {
+        return (React.createElement("div", { className: Utilities_1.css('ms-Panel-content', styles.content), ref: this._resolveRef('_content') }, props.children));
+    };
+    Panel.prototype._onRenderFooter = function (props) {
+        var isFooterSticky = this.state.isFooterSticky;
+        var _a = this.props.onRenderFooterContent, onRenderFooterContent = _a === void 0 ? null : _a;
+        return (onRenderFooterContent != null &&
+            React.createElement("div", { className: Utilities_1.css('ms-Panel-footer', styles.footer, isFooterSticky && styles.footerIsSticky) },
+                React.createElement("div", { className: Utilities_1.css('ms-Panel-footerInner', styles.footerInner) }, onRenderFooterContent())));
+    };
+    Panel.prototype._updateFooterPosition = function () {
+        var _content = this._content;
+        if (_content) {
+            var height = _content.clientHeight;
+            var innerHeight_1 = _content.scrollHeight;
+            this.setState({
+                isFooterSticky: height < innerHeight_1 ? true : false
+            });
+        }
+    };
+    Panel.prototype._onPanelClick = function () {
+        this.dismiss();
+    };
+    Panel.prototype._onTransitionComplete = function () {
+        this.setState({
+            isAnimating: false
+        });
+        if (!this.state.isOpen && this.props.onDismissed) {
+            this.props.onDismissed();
+        }
+    };
+    return Panel;
+}(Utilities_1.BaseComponent));
+Panel.defaultProps = {
+    isOpen: false,
+    isBlocking: true,
+    hasCloseButton: true,
+    type: Panel_Props_1.PanelType.smallFixedFar,
+};
+tslib_1.__decorate([
+    Utilities_1.autobind
+], Panel.prototype, "dismiss", null);
+tslib_1.__decorate([
+    Utilities_1.autobind
+], Panel.prototype, "_onRenderNavigation", null);
+tslib_1.__decorate([
+    Utilities_1.autobind
+], Panel.prototype, "_onRenderHeader", null);
+tslib_1.__decorate([
+    Utilities_1.autobind
+], Panel.prototype, "_onRenderBody", null);
+tslib_1.__decorate([
+    Utilities_1.autobind
+], Panel.prototype, "_onRenderFooter", null);
+tslib_1.__decorate([
+    Utilities_1.autobind
+], Panel.prototype, "_onPanelClick", null);
+tslib_1.__decorate([
+    Utilities_1.autobind
+], Panel.prototype, "_onTransitionComplete", null);
+exports.Panel = Panel;
+
+
+
+/***/ }),
+/* 346 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/* tslint:disable */
+var load_themed_styles_1 = __webpack_require__(14);
+var styles = {
+    root: 'root_e57bee34',
+    overlay: 'overlay_e57bee34',
+    main: 'main_e57bee34',
+    rootIsSmall: 'rootIsSmall_e57bee34',
+    rootIsSmallLeft: 'rootIsSmallLeft_e57bee34',
+    rootIsSmallFluid: 'rootIsSmallFluid_e57bee34',
+    rootIsMedium: 'rootIsMedium_e57bee34',
+    rootIsLarge: 'rootIsLarge_e57bee34',
+    rootIsXLarge: 'rootIsXLarge_e57bee34',
+    rootIsCustom: 'rootIsCustom_e57bee34',
+    rootIsFixed: 'rootIsFixed_e57bee34',
+    rootIsOpen: 'rootIsOpen_e57bee34',
+    closeButton: 'closeButton_e57bee34',
+    contentInner: 'contentInner_e57bee34',
+    rootHasCloseButton: 'rootHasCloseButton_e57bee34',
+    header: 'header_e57bee34',
+    content: 'content_e57bee34',
+    footerInner: 'footerInner_e57bee34',
+    footer: 'footer_e57bee34',
+    footerIsSticky: 'footerIsSticky_e57bee34',
+    headerText: 'headerText_e57bee34',
+};
+load_themed_styles_1.loadStyles([{ "rawString": ".root_e57bee34{pointer-events:none;position:absolute;top:0;left:0;right:0;bottom:0}.root_e57bee34 .overlay_e57bee34{pointer-events:none;opacity:1;cursor:pointer;transition:opacity 367ms cubic-bezier(.1,.9,.2,1)}.main_e57bee34{background-color:" }, { "theme": "white", "defaultValue": "#ffffff" }, { "rawString": ";position:absolute;width:100%;bottom:0;top:0;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}[dir=ltr] .main_e57bee34{right:0}[dir=rtl] .main_e57bee34{left:0}@media (min-width:480px){.main_e57bee34{border-left:1px solid " }, { "theme": "neutralLight", "defaultValue": "#eaeaea" }, { "rawString": ";border-right:1px solid " }, { "theme": "neutralLight", "defaultValue": "#eaeaea" }, { "rawString": ";pointer-events:auto;width:340px;box-shadow:-30px 0 30px -30px rgba(0,0,0,.2)}[dir=ltr] .main_e57bee34{left:auto}[dir=rtl] .main_e57bee34{right:auto}}.root_e57bee34.rootIsSmall_e57bee34 .main_e57bee34{width:272px}@media (min-width:480px){.root_e57bee34.rootIsSmall_e57bee34 .main_e57bee34{width:340px}}.root_e57bee34.rootIsSmallLeft_e57bee34 .main_e57bee34{width:272px;box-shadow:30px 0 30px -30px rgba(0,0,0,.2)}[dir=ltr] .root_e57bee34.rootIsSmallLeft_e57bee34 .main_e57bee34{right:auto}[dir=rtl] .root_e57bee34.rootIsSmallLeft_e57bee34 .main_e57bee34{left:auto}[dir=ltr] .root_e57bee34.rootIsSmallLeft_e57bee34 .main_e57bee34{left:0}[dir=rtl] .root_e57bee34.rootIsSmallLeft_e57bee34 .main_e57bee34{right:0}.root_e57bee34.rootIsSmallFluid_e57bee34 .main_e57bee34{width:100%}@media (min-width:640px){.root_e57bee34.rootIsCustom_e57bee34 .main_e57bee34,.root_e57bee34.rootIsLarge_e57bee34 .main_e57bee34,.root_e57bee34.rootIsMedium_e57bee34 .main_e57bee34,.root_e57bee34.rootIsXLarge_e57bee34 .main_e57bee34{width:auto}[dir=ltr] .root_e57bee34.rootIsCustom_e57bee34 .main_e57bee34,[dir=ltr] .root_e57bee34.rootIsLarge_e57bee34 .main_e57bee34,[dir=ltr] .root_e57bee34.rootIsMedium_e57bee34 .main_e57bee34,[dir=ltr] .root_e57bee34.rootIsXLarge_e57bee34 .main_e57bee34{left:48px}[dir=rtl] .root_e57bee34.rootIsCustom_e57bee34 .main_e57bee34,[dir=rtl] .root_e57bee34.rootIsLarge_e57bee34 .main_e57bee34,[dir=rtl] .root_e57bee34.rootIsMedium_e57bee34 .main_e57bee34,[dir=rtl] .root_e57bee34.rootIsXLarge_e57bee34 .main_e57bee34{right:48px}}@media (min-width:1024px){.root_e57bee34.rootIsMedium_e57bee34 .main_e57bee34{width:643px}[dir=ltr] .root_e57bee34.rootIsMedium_e57bee34 .main_e57bee34{left:auto}[dir=rtl] .root_e57bee34.rootIsMedium_e57bee34 .main_e57bee34{right:auto}}@media (min-width:1366px){[dir=ltr] .root_e57bee34.rootIsLarge_e57bee34 .main_e57bee34{left:428px}[dir=rtl] .root_e57bee34.rootIsLarge_e57bee34 .main_e57bee34{right:428px}}@media (min-width:1366px){.root_e57bee34.rootIsLarge_e57bee34.rootIsFixed_e57bee34 .main_e57bee34{width:940px}[dir=ltr] .root_e57bee34.rootIsLarge_e57bee34.rootIsFixed_e57bee34 .main_e57bee34{left:auto}[dir=rtl] .root_e57bee34.rootIsLarge_e57bee34.rootIsFixed_e57bee34 .main_e57bee34{right:auto}}@media (min-width:1366px){[dir=ltr] .root_e57bee34.rootIsXLarge_e57bee34 .main_e57bee34{left:176px}[dir=rtl] .root_e57bee34.rootIsXLarge_e57bee34 .main_e57bee34{right:176px}}@media (min-width:1024px){[dir=ltr] .root_e57bee34.rootIsCustom_e57bee34 .main_e57bee34{left:auto}[dir=rtl] .root_e57bee34.rootIsCustom_e57bee34 .main_e57bee34{right:auto}}.root_e57bee34.rootIsOpen_e57bee34 .main_e57bee34{pointer-events:auto}.root_e57bee34.rootIsOpen_e57bee34 .overlay_e57bee34{cursor:pointer;pointer-events:auto}@media screen and (-ms-high-contrast:active){.root_e57bee34.rootIsOpen_e57bee34 .overlay_e57bee34{opacity:0}}.closeButton_e57bee34{background:0 0;border:0;cursor:pointer;position:absolute;top:0;height:44px;width:44px;line-height:44px;padding:0;color:" }, { "theme": "neutralSecondary", "defaultValue": "#666666" }, { "rawString": ";font-size:20px}[dir=ltr] .closeButton_e57bee34{right:4px}[dir=rtl] .closeButton_e57bee34{left:4px}.closeButton_e57bee34:hover{color:" }, { "theme": "neutralPrimary", "defaultValue": "#333333" }, { "rawString": "}.contentInner_e57bee34{position:absolute;top:0;bottom:0;left:0;right:0;overflow-y:hidden;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-overflow-scrolling:touch;-webkit-transform:translateZ(0);transform:translateZ(0)}.rootHasCloseButton_e57bee34 .contentInner_e57bee34{top:44px}.content_e57bee34,.footerInner_e57bee34,.header_e57bee34{padding-left:16px;padding-right:16px}@media (min-width:640px){.content_e57bee34,.footerInner_e57bee34,.header_e57bee34{padding-left:32px;padding-right:32px}}@media (min-width:1366px){.content_e57bee34,.footerInner_e57bee34,.header_e57bee34{padding-left:40px;padding-right:40px}}.header_e57bee34{margin:14px 0;-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0}@media (min-width:1024px){.header_e57bee34{margin-top:30px}}.content_e57bee34{margin-bottom:0;overflow-y:auto}.footer_e57bee34{-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;border-top:1px solid transparent;transition:border 367ms cubic-bezier(.1,.25,.75,.9)}.footerInner_e57bee34{padding-bottom:20px;padding-top:20px}.footerIsSticky_e57bee34{background:" }, { "theme": "white", "defaultValue": "#ffffff" }, { "rawString": ";border-top-color:" }, { "theme": "neutralLight", "defaultValue": "#eaeaea" }, { "rawString": "}.headerText_e57bee34{font-size:21px;font-weight:100;color:" }, { "theme": "neutralPrimary", "defaultValue": "#333333" }, { "rawString": ";line-height:32px;margin:0}" }]);
+module.exports = styles;
+/* tslint:enable */ 
+
+
+
+/***/ }),
+/* 347 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(345));
+__export(__webpack_require__(343));
+
+
 
 /***/ })
 /******/ ]);
