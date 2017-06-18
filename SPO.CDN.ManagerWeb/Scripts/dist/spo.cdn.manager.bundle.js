@@ -14664,13 +14664,11 @@ var OriginsContainer_1 = __webpack_require__(132);
 var FileTypesContainer_1 = __webpack_require__(130);
 var ToggleCDNContainer_1 = __webpack_require__(133);
 var Pivot_1 = __webpack_require__(193);
+__webpack_require__(326);
 var Office365CDNManager = (function (_super) {
     __extends(Office365CDNManager, _super);
     function Office365CDNManager(props) {
         var _this = _super.call(this, props) || this;
-        _this.toggleCDN = function (isChecked) {
-            _this.setState({ PublicCDNEnabled: isChecked });
-        };
         _this.state = {
             PublicCDNEnabled: false,
             Filetypes: [],
@@ -14693,28 +14691,72 @@ var Office365CDNManager = (function (_super) {
                             React.createElement(Pivot_1.PivotItem, { linkText: 'Filetypes' },
                                 React.createElement(FileTypesContainer_1.FileTypesContainer, { FileTypes: this.state.Filetypes })),
                             React.createElement(Pivot_1.PivotItem, { linkText: 'Turn CDN On/Off' },
-                                React.createElement(ToggleCDNContainer_1.ToggleCDNContainer, { Enabled: this.state.PublicCDNEnabled, onChanged: this.toggleCDN })))))));
+                                React.createElement(ToggleCDNContainer_1.ToggleCDNContainer, { Enabled: this.state.PublicCDNEnabled, onChanged: this.toggleCDN.bind(this) })))))));
     };
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();
     };
+    Office365CDNManager.prototype.toggleCDN = function (isChecked) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, responseText, responseJSON, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 5, , 6]);
+                        this.setState({ PublicCDNEnabled: isChecked });
+                        return [4 /*yield*/, fetch("/Home/SetCDN?value=" + isChecked, {
+                                credentials: 'include',
+                                method: "POST"
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        if (!!response.ok) return [3 /*break*/, 3];
+                        return [4 /*yield*/, response.text()];
+                    case 2:
+                        responseText = _a.sent();
+                        throw new Error(responseText);
+                    case 3:
+                        ;
+                        return [4 /*yield*/, response.json()];
+                    case 4:
+                        responseJSON = _a.sent();
+                        this.setState({ PublicCDNEnabled: responseJSON });
+                        return [3 /*break*/, 6];
+                    case 5:
+                        error_1 = _a.sent();
+                        this.setState({ PublicCDNEnabled: !isChecked });
+                        console.log(error_1);
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
     Office365CDNManager.prototype._getCDNSettings = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
-            var o365Cdn;
+            var response, o365Cdn;
             return __generator(this, function (_a) {
-                o365Cdn = {
-                    "PublicCDNEnabled": true,
-                    "Filetypes": ["CSS", "EOT", "GIF", "ICO", "JPEG", "JPG", "JS", "MAP", "PNG", "SVG", "TTF", "WOFF"],
-                    "Origins": ["*/MASTERPAGE (configuration pending)",
-                        "*/STYLE LIBRARY (configuration pending)"
-                    ],
-                    "SPOSiteUrl": "https://dummy.sharepoint.com"
-                };
-                setTimeout(function () {
-                    _this.setState(o365Cdn);
-                }, 1000);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fetch("/Home/GetCDNSettings", { credentials: 'include' })];
+                    case 1:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 2:
+                        o365Cdn = _a.sent();
+                        // const o365Cdn: IOffice365CDNManagerState = {
+                        //     "PublicCDNEnabled": true,
+                        //     "Filetypes": ["CSS", "EOT", "GIF", "ICO", "JPEG", "JPG", "JS", "MAP", "PNG", "SVG", "TTF", "WOFF"],
+                        //     "Origins": ["*/MASTERPAGE (configuration pending)",
+                        //         "*/STYLE LIBRARY (configuration pending)"
+                        //     ],
+                        //     "SPOSiteUrl": "https://dummy.sharepoint.com"
+                        // };
+                        setTimeout(function () {
+                            _this.setState(o365Cdn);
+                        }, 1000);
+                        return [2 /*return*/];
+                }
             });
         });
     };
@@ -14760,10 +14802,9 @@ var FileTypesContainer = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     FileTypesContainer.prototype.render = function () {
-        //need to check if this.props.FileTypes is not undefined before rendering
-        return React.createElement("div", { className: "o365Manager-FileTypesContainer" }, this.props.FileTypes &&
-            React.createElement("ul", null, this.props.FileTypes.map(function (filetype) {
-                return React.createElement("li", { key: filetype.toString() }, filetype);
+        return React.createElement("div", { className: "o365Manager-FileTypesContainer" },
+            React.createElement("ul", null, this.props.FileTypes.map(function (filetype, index) {
+                return React.createElement("li", { key: index }, filetype);
             })));
     };
     return FileTypesContainer;
@@ -14789,7 +14830,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(4);
-var Label_1 = __webpack_require__(86);
 var Header = (function (_super) {
     __extends(Header, _super);
     function Header() {
@@ -14797,9 +14837,9 @@ var Header = (function (_super) {
     }
     Header.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-Header" },
-            React.createElement(Label_1.Label, { className: "ms-font-su ms-fontSize-xxl" },
+            React.createElement("span", { className: "ms-font-xxl ms-fontSize-xxl" },
                 "Manage Office 365 Public CDN Settings for ",
-                React.createElement("span", { className: "ms-font-xl ms-fontSize-xl" }, this.props.SPOSiteUrl)));
+                React.createElement("span", { className: "ms-font-xl ms-fontSize-xl ms-u-slideDownIn20" }, this.props.SPOSiteUrl)));
     };
     return Header;
 }(React.Component));
@@ -14824,8 +14864,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(4);
-__webpack_require__(326);
-var List_1 = __webpack_require__(192);
 var OriginsContainer = (function (_super) {
     __extends(OriginsContainer, _super);
     function OriginsContainer() {
@@ -14833,7 +14871,9 @@ var OriginsContainer = (function (_super) {
     }
     OriginsContainer.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-OriginsContainer" },
-            React.createElement(List_1.List, { items: this.props.Origins, onRenderCell: function (origin, index) { return (React.createElement("li", null, origin)); } }));
+            React.createElement("ul", null, this.props.Origins.map(function (origin, index) {
+                return React.createElement("li", { key: index }, origin);
+            })));
     };
     return OriginsContainer;
 }(React.Component));
@@ -22364,20 +22404,7 @@ __export(__webpack_require__(225));
 
 
 /***/ }),
-/* 192 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(227));
-
-
-
-/***/ }),
+/* 192 */,
 /* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24607,621 +24634,8 @@ __export(__webpack_require__(224));
 
 
 /***/ }),
-/* 226 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(6);
-var React = __webpack_require__(4);
-var Utilities_1 = __webpack_require__(3);
-var RESIZE_DELAY = 16;
-var MIN_SCROLL_UPDATE_DELAY = 100;
-var MAX_SCROLL_UPDATE_DELAY = 500;
-var IDLE_DEBOUNCE_DELAY = 200;
-var DEFAULT_ITEMS_PER_PAGE = 10;
-var DEFAULT_PAGE_HEIGHT = 30;
-var DEFAULT_RENDERED_WINDOWS_BEHIND = 2;
-var DEFAULT_RENDERED_WINDOWS_AHEAD = 2;
-var EMPTY_RECT = {
-    top: -1,
-    bottom: -1,
-    left: -1,
-    right: -1,
-    width: 0,
-    height: 0
-};
-// Naming expensive measures so that they're named in profiles.
-var _measurePageRect = function (element) { return element.getBoundingClientRect(); };
-var _measureSurfaceRect = _measurePageRect;
-var _measureScrollRect = _measurePageRect;
-/**
- * The List renders virtualized pages of items. Each page's item count is determined by the getItemCountForPage callback if
- * provided by the caller, or 10 as default. Each page's height is determined by the getPageHeight callback if provided by
- * the caller, or by cached measurements if available, or by a running average, or a default fallback.
- *
- * The algorithm for rendering pages works like this:
- *
- * 1. Predict visible pages based on "current measure data" (page heights, surface position, visible window)
- * 2. If changes are necessary, apply changes (add/remove pages)
- * 3. For pages that are added, measure the page heights if we need to using getBoundingClientRect
- * 4. If measurements don't match predictions, update measure data and goto step 1 asynchronously
- *
- * Measuring too frequently can pull performance down significantly. To compensate, we cache measured values so that
- * we can avoid re-measuring during operations that should not alter heights, like scrolling.
- *
- * However, certain operations can make measure data stale. For example, resizing the list, or passing in new props,
- * or forcing an update change cause pages to shrink/grow. When these operations occur, we increment a measureVersion
- * number, which we associate with cached measurements and use to determine if a remeasure should occur.
- */
-var List = (function (_super) {
-    tslib_1.__extends(List, _super);
-    function List(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
-            pages: []
-        };
-        _this._estimatedPageHeight = 0;
-        _this._totalEstimates = 0;
-        _this._requiredWindowsAhead = 0;
-        _this._requiredWindowsBehind = 0;
-        // Track the measure version for everything.
-        _this._measureVersion = 0;
-        // Ensure that scrolls are lazy updated.
-        _this._onAsyncScroll = _this._async.debounce(_this._onAsyncScroll, MIN_SCROLL_UPDATE_DELAY, {
-            leading: false,
-            maxWait: MAX_SCROLL_UPDATE_DELAY
-        });
-        _this._onAsyncIdle = _this._async.debounce(_this._onAsyncIdle, IDLE_DEBOUNCE_DELAY, {
-            leading: false
-        });
-        _this._onAsyncResize = _this._async.debounce(_this._onAsyncResize, RESIZE_DELAY, {
-            leading: false
-        });
-        _this._cachedPageHeights = {};
-        _this._estimatedPageHeight = 0;
-        _this._focusedIndex = -1;
-        _this._scrollingToIndex = -1;
-        return _this;
-    }
-    /**
-     * Scroll to the given index. By default will bring the page the specified item is on into the view. If a callback
-     * to measure the height of an individual item is specified, will only scroll to bring the specific item into view.
-     *
-     * Note: with items of variable height and no passed in `getPageHeight` method, the list might jump after scrolling
-     * when windows before/ahead are being rendered, and the estimated height is replaced using actual elements.
-     *
-     * @param index Index of item to scroll to
-     * @param measureItem Optional callback to measure the height of an individual item
-     */
-    List.prototype.scrollToIndex = function (index, measureItem) {
-        var startIndex = this.props.startIndex;
-        var renderCount = this._getRenderCount();
-        var endIndex = startIndex + renderCount;
-        var scrollTop = 0;
-        var itemsPerPage = 1;
-        for (var itemIndex = startIndex; itemIndex < endIndex; itemIndex += itemsPerPage) {
-            itemsPerPage = this._getItemCountForPage(itemIndex, this._allowedRect);
-            var requestedIndexIsInPage = itemIndex <= index && (itemIndex + itemsPerPage) > index;
-            if (requestedIndexIsInPage) {
-                // We have found the page. If the user provided a way to measure an individual item, we will try to scroll in just
-                // the given item, otherwise we'll only bring the page into view
-                if (measureItem) {
-                    // Adjust for actual item position within page
-                    var itemPositionWithinPage = index - itemIndex;
-                    for (var itemIndexInPage = 0; itemIndexInPage < itemPositionWithinPage; ++itemIndexInPage) {
-                        scrollTop += measureItem(itemIndex + itemIndexInPage);
-                    }
-                    var scrollBottom = scrollTop + measureItem(index);
-                    var scrollRect = _measureScrollRect(this._scrollElement);
-                    var scrollWindow = {
-                        top: this._scrollElement.scrollTop,
-                        bottom: this._scrollElement.scrollTop + scrollRect.height
-                    };
-                    var itemIsFullyVisible = scrollTop >= scrollWindow.top && scrollBottom <= scrollWindow.bottom;
-                    if (itemIsFullyVisible) {
-                        // Item is already visible, do nothing.
-                        return;
-                    }
-                    var itemIsPartiallyAbove = scrollTop < scrollWindow.top;
-                    var itemIsPartiallyBelow = scrollBottom > scrollWindow.bottom;
-                    if (itemIsPartiallyAbove) {
-                        // We will just scroll to 'scrollTop'
-                        //  ______
-                        // |Item  |   - scrollTop
-                        // |  ____|_
-                        // |_|____| | - scrollWindow.top
-                        //   |      |
-                        //   |______|
-                    }
-                    else if (itemIsPartiallyBelow) {
-                        // Adjust scrollTop position to just bring in the element
-                        //  ______   - scrollTop
-                        // |      |
-                        // |  ____|_  - scrollWindow.bottom
-                        // |_|____| |
-                        //   | Item |
-                        //   |______| - scrollBottom
-                        scrollTop = this._scrollElement.scrollTop + (scrollBottom - scrollWindow.bottom);
-                    }
-                }
-                this._scrollElement.scrollTop = scrollTop;
-                break;
-            }
-            scrollTop += this._getPageHeight(itemIndex, itemsPerPage, this._surfaceRect);
-        }
-    };
-    List.prototype.componentDidMount = function () {
-        this._updatePages();
-        this._measureVersion++;
-        this._scrollElement = Utilities_1.findScrollableParent(this.refs.root);
-        this._events.on(window, 'resize', this._onAsyncResize);
-        this._events.on(this.refs.root, 'focus', this._onFocus, true);
-        if (this._scrollElement) {
-            this._events.on(this._scrollElement, 'scroll', this._onScroll);
-            this._events.on(this._scrollElement, 'scroll', this._onAsyncScroll);
-        }
-    };
-    List.prototype.componentWillReceiveProps = function (newProps) {
-        if (newProps.items !== this.props.items ||
-            newProps.renderCount !== this.props.renderCount ||
-            newProps.startIndex !== this.props.startIndex) {
-            this._measureVersion++;
-            this._updatePages(newProps);
-        }
-    };
-    List.prototype.shouldComponentUpdate = function (newProps, newState) {
-        var _a = this.props, renderedWindowsAhead = _a.renderedWindowsAhead, renderedWindowsBehind = _a.renderedWindowsBehind;
-        var oldPages = this.state.pages;
-        var newPages = newState.pages, measureVersion = newState.measureVersion;
-        var shouldComponentUpdate = false;
-        if (this._measureVersion === measureVersion &&
-            newProps.renderedWindowsAhead === renderedWindowsAhead,
-            newProps.renderedWindowsBehind === renderedWindowsBehind,
-            newProps.items === this.props.items &&
-                oldPages.length === newPages.length) {
-            for (var i = 0; i < oldPages.length; i++) {
-                var oldPage = oldPages[i];
-                var newPage = newPages[i];
-                if ((oldPage.key !== newPage.key ||
-                    oldPage.itemCount !== newPage.itemCount)) {
-                    shouldComponentUpdate = true;
-                    break;
-                }
-            }
-        }
-        else {
-            shouldComponentUpdate = true;
-        }
-        return shouldComponentUpdate;
-    };
-    List.prototype.forceUpdate = function () {
-        // Ensure that when the list is force updated we update the pages first before render.
-        this._updateRenderRects(this.props, true);
-        this._updatePages();
-        this._measureVersion++;
-        _super.prototype.forceUpdate.call(this);
-    };
-    List.prototype.render = function () {
-        var _a = this.props, className = _a.className, role = _a.role;
-        var pages = this.state.pages;
-        var pageElements = [];
-        var divProps = Utilities_1.getNativeProps(this.props, Utilities_1.divProperties);
-        // assign list if no role
-        role = (role === undefined) ? 'list' : role;
-        for (var i = 0; i < pages.length; i++) {
-            pageElements.push(this._renderPage(pages[i]));
-        }
-        return (React.createElement("div", tslib_1.__assign({ ref: 'root' }, divProps, { role: role, className: Utilities_1.css('ms-List', className) }),
-            React.createElement("div", { ref: 'surface', className: 'ms-List-surface', role: 'presentation' }, pageElements)));
-    };
-    List.prototype._renderPage = function (page) {
-        var _a = this.props, onRenderCell = _a.onRenderCell, role = _a.role;
-        var cells = [];
-        var pageStyle = this._getPageStyle(page);
-        // only assign list item role if no role is assigned
-        role = (role === undefined) ? 'listitem' : 'presentation';
-        for (var i = 0; page.items && i < page.items.length; i++) {
-            var item = page.items[i];
-            var index = page.startIndex + i;
-            var itemKey = this.props.getKey
-                ? this.props.getKey(item, index)
-                : item && item.key;
-            if (itemKey === null || itemKey === undefined) {
-                itemKey = index;
-            }
-            cells.push(React.createElement("div", { role: role, className: 'ms-List-cell', key: itemKey, "data-list-index": i + page.startIndex, "data-automationid": 'ListCell' }, onRenderCell(item, page.startIndex + i)));
-        }
-        return (React.createElement("div", { className: 'ms-List-page', key: page.key, ref: page.key, style: pageStyle, role: 'presentation' }, cells));
-    };
-    /** Generate the style object for the page. */
-    List.prototype._getPageStyle = function (page) {
-        var style;
-        var getPageStyle = this.props.getPageStyle;
-        if (getPageStyle) {
-            style = getPageStyle(page);
-        }
-        if (!page.items) {
-            style = style || {};
-            style.height = page.height;
-        }
-        return style;
-    };
-    /** Track the last item index focused so that we ensure we keep it rendered. */
-    List.prototype._onFocus = function (ev) {
-        var target = ev.target;
-        while (target !== this.refs.surface) {
-            var indexString = target.getAttribute('data-list-index');
-            if (indexString) {
-                this._focusedIndex = Number(indexString);
-                break;
-            }
-            target = Utilities_1.getParent(target);
-        }
-    };
-    /**
-     * Called synchronously to reset the required render range to 0 on scrolling. After async scroll has executed,
-     * we will call onAsyncIdle which will reset it back to it's correct value.
-     */
-    List.prototype._onScroll = function () {
-        this._requiredWindowsAhead = 0;
-        this._requiredWindowsBehind = 0;
-    };
-    /**
-     * Debounced method to asynchronously update the visible region on a scroll event.
-     */
-    List.prototype._onAsyncScroll = function () {
-        this._updateRenderRects();
-        // Only update pages when the visible rect falls outside of the materialized rect.
-        if (!this._materializedRect || !_isContainedWithin(this._requiredRect, this._materializedRect)) {
-            this._updatePages();
-        }
-        else {
-            // console.log('requiredRect contained in materialized', this._requiredRect, this._materializedRect);
-        }
-    };
-    /**
-     * This is an async debounced method that will try and increment the windows we render. If we can increment
-     * either, we increase the amount we render and re-evaluate.
-     */
-    List.prototype._onAsyncIdle = function () {
-        var _a = this.props, renderedWindowsAhead = _a.renderedWindowsAhead, renderedWindowsBehind = _a.renderedWindowsBehind;
-        var _b = this, requiredWindowsAhead = _b._requiredWindowsAhead, requiredWindowsBehind = _b._requiredWindowsBehind;
-        var windowsAhead = Math.min(renderedWindowsAhead, requiredWindowsAhead + 1);
-        var windowsBehind = Math.min(renderedWindowsBehind, requiredWindowsBehind + 1);
-        if (windowsAhead !== requiredWindowsAhead || windowsBehind !== requiredWindowsBehind) {
-            // console.log('idling', windowsBehind, windowsAhead);
-            this._requiredWindowsAhead = windowsAhead;
-            this._requiredWindowsBehind = windowsBehind;
-            this._updateRenderRects();
-            this._updatePages();
-        }
-        if (renderedWindowsAhead > windowsAhead || renderedWindowsBehind > windowsBehind) {
-            // Async increment on next tick.
-            this._onAsyncIdle();
-        }
-    };
-    List.prototype._onAsyncResize = function () {
-        this.forceUpdate();
-    };
-    List.prototype._updatePages = function (props) {
-        var _this = this;
-        var _a = (props || this.props), items = _a.items, startIndex = _a.startIndex, renderCount = _a.renderCount;
-        renderCount = this._getRenderCount(props);
-        // console.log('updating pages');
-        if (!this._requiredRect) {
-            this._updateRenderRects(props);
-        }
-        var newListState = this._buildPages(items, startIndex, renderCount);
-        var oldListPages = this.state.pages;
-        this.setState(newListState, function () {
-            // If measured version is invalid since we've updated the DOM
-            var heightsChanged = _this._updatePageMeasurements(oldListPages, newListState.pages);
-            // On first render, we should re-measure so that we don't get a visual glitch.
-            if (heightsChanged) {
-                _this._materializedRect = null;
-                if (!_this._hasCompletedFirstRender) {
-                    _this._hasCompletedFirstRender = true;
-                    _this._updatePages();
-                }
-                else {
-                    _this._onAsyncScroll();
-                }
-            }
-            else {
-                // Enqueue an idle bump.
-                _this._onAsyncIdle();
-            }
-        });
-    };
-    List.prototype._updatePageMeasurements = function (oldPages, newPages) {
-        var renderedIndexes = {};
-        var heightChanged = false;
-        var renderCount = this._getRenderCount();
-        for (var i = 0; i < oldPages.length; i++) {
-            var page = oldPages[i];
-            if (page.items) {
-                renderedIndexes[page.startIndex] = page;
-            }
-        }
-        for (var i = 0; i < newPages.length; i++) {
-            var page = newPages[i];
-            if (page.items) {
-                heightChanged = this._measurePage(page) || heightChanged;
-                if (!renderedIndexes[page.startIndex]) {
-                    this._onPageAdded(page);
-                }
-                else {
-                    delete renderedIndexes[page.startIndex];
-                }
-            }
-        }
-        for (var index in renderedIndexes) {
-            if (renderedIndexes.hasOwnProperty(index)) {
-                this._onPageRemoved(renderedIndexes[index]);
-            }
-        }
-        return heightChanged;
-    };
-    /**
-     * Given a page, measure its dimensions, update cache.
-     * @returns True if the height has changed.
-     */
-    List.prototype._measurePage = function (page) {
-        var hasChangedHeight = false;
-        var pageElement = this.refs[page.key];
-        var cachedHeight = this._cachedPageHeights[page.startIndex];
-        // console.log('   * measure attempt', page.startIndex, cachedHeight);
-        if (pageElement && (!cachedHeight || cachedHeight.measureVersion !== this._measureVersion)) {
-            var newClientRect = {
-                width: pageElement.clientWidth,
-                height: pageElement.clientHeight
-            };
-            if (newClientRect.height || newClientRect.width) {
-                hasChangedHeight = page.height !== newClientRect.height;
-                // console.warn(' *** expensive page measure', page.startIndex, page.height, newClientRect.height);
-                page.height = newClientRect.height;
-                this._cachedPageHeights[page.startIndex] = {
-                    height: newClientRect.height,
-                    measureVersion: this._measureVersion
-                };
-                this._estimatedPageHeight = Math.round(((this._estimatedPageHeight * this._totalEstimates) + newClientRect.height) /
-                    (this._totalEstimates + 1));
-                this._totalEstimates++;
-            }
-        }
-        return hasChangedHeight;
-    };
-    /** Called when a page has been added to the DOM. */
-    List.prototype._onPageAdded = function (page) {
-        var onPageAdded = this.props.onPageAdded;
-        // console.log('page added', page.startIndex, this.state.pages.map(page=>page.key).join(', '));
-        if (onPageAdded) {
-            onPageAdded(page);
-        }
-    };
-    /** Called when a page has been removed from the DOM. */
-    List.prototype._onPageRemoved = function (page) {
-        var onPageRemoved = this.props.onPageRemoved;
-        // console.log('  --- page removed', page.startIndex, this.state.pages.map(page=>page.key).join(', '));
-        if (onPageRemoved) {
-            onPageRemoved(page);
-        }
-    };
-    /** Build up the pages that should be rendered. */
-    List.prototype._buildPages = function (items, startIndex, renderCount) {
-        var materializedRect = Utilities_1.assign({}, EMPTY_RECT);
-        var itemsPerPage = 1;
-        var pages = [];
-        var pageTop = 0;
-        var currentSpacer = null;
-        var focusedIndex = this._focusedIndex;
-        var endIndex = startIndex + renderCount;
-        // First render is very important to track; when we render cells, we have no idea of estimated page height.
-        // So we should default to rendering only the first page so that we can get information.
-        // However if the user provides a measure function, let's just assume they know the right heights.
-        var isFirstRender = this._estimatedPageHeight === 0 && !this.props.getPageHeight;
-        var _loop_1 = function (itemIndex) {
-            itemsPerPage = this_1._getItemCountForPage(itemIndex, this_1._allowedRect);
-            var pageHeight = this_1._getPageHeight(itemIndex, itemsPerPage, this_1._surfaceRect);
-            var pageBottom = pageTop + pageHeight - 1;
-            var isPageRendered = Utilities_1.findIndex(this_1.state.pages, function (page) { return page.items && page.startIndex === itemIndex; }) > -1;
-            var isPageInAllowedRange = pageBottom >= this_1._allowedRect.top && pageTop <= this_1._allowedRect.bottom;
-            var isPageInRequiredRange = pageBottom >= this_1._requiredRect.top && pageTop <= this_1._requiredRect.bottom;
-            var isPageVisible = !isFirstRender && (isPageInRequiredRange || (isPageInAllowedRange && isPageRendered));
-            var isPageFocused = focusedIndex >= itemIndex && focusedIndex < (itemIndex + itemsPerPage);
-            var isFirstPage = itemIndex === startIndex;
-            // console.log('building page', itemIndex, 'pageTop: ' + pageTop, 'inAllowed: ' + isPageInAllowedRange, 'inRequired: ' + isPageInRequiredRange);
-            // Only render whats visible, focused, or first page.
-            if (isPageVisible || isPageFocused || isFirstPage) {
-                if (currentSpacer) {
-                    pages.push(currentSpacer);
-                    currentSpacer = null;
-                }
-                var itemsInPage = Math.min(itemsPerPage, endIndex - itemIndex);
-                var newPage = this_1._createPage(null, items.slice(itemIndex, itemIndex + itemsInPage), itemIndex);
-                newPage.top = pageTop;
-                newPage.height = pageHeight;
-                pages.push(newPage);
-                if (isPageInRequiredRange) {
-                    _mergeRect(materializedRect, {
-                        top: pageTop,
-                        bottom: pageBottom,
-                        height: pageHeight,
-                        left: this_1._allowedRect.left,
-                        right: this_1._allowedRect.right,
-                        width: this_1._allowedRect.width
-                    });
-                }
-            }
-            else {
-                if (!currentSpacer) {
-                    currentSpacer = this_1._createPage('spacer-' + itemIndex, null, itemIndex, 0);
-                }
-                currentSpacer.height = (currentSpacer.height || 0) + (pageBottom - pageTop) + 1;
-                currentSpacer.itemCount += itemsPerPage;
-            }
-            pageTop += (pageBottom - pageTop + 1);
-            if (isFirstRender) {
-                return "break";
-            }
-        };
-        var this_1 = this;
-        for (var itemIndex = startIndex; itemIndex < endIndex; itemIndex += itemsPerPage) {
-            var state_1 = _loop_1(itemIndex);
-            if (state_1 === "break")
-                break;
-        }
-        if (currentSpacer) {
-            currentSpacer.key = 'spacer-end';
-            pages.push(currentSpacer);
-        }
-        this._materializedRect = materializedRect;
-        // console.log('materialized: ', materializedRect);
-        return {
-            pages: pages,
-            measureVersion: this._measureVersion
-        };
-    };
-    /**
-     * Get the pixel height of a give page. Will use the props getPageHeight first, and if not provided, fallback to
-     * cached height, or estimated page height, or default page height.
-     */
-    List.prototype._getPageHeight = function (itemIndex, itemsPerPage, visibleRect) {
-        if (this.props.getPageHeight) {
-            return this.props.getPageHeight(itemIndex, visibleRect);
-        }
-        else {
-            var cachedHeight = (this._cachedPageHeights[itemIndex]);
-            return cachedHeight ? cachedHeight.height : (this._estimatedPageHeight || DEFAULT_PAGE_HEIGHT);
-        }
-    };
-    List.prototype._getItemCountForPage = function (itemIndex, visibileRect) {
-        var itemsPerPage = this.props.getItemCountForPage ? this.props.getItemCountForPage(itemIndex, visibileRect) : DEFAULT_ITEMS_PER_PAGE;
-        return itemsPerPage ? itemsPerPage : DEFAULT_ITEMS_PER_PAGE;
-    };
-    List.prototype._createPage = function (pageKey, items, startIndex, count, style) {
-        pageKey = pageKey || ('page-' + startIndex);
-        // Fill undefined cells because array.map will ignore undefined cells.
-        if (items) {
-            for (var i = 0; i < items.length; i++) {
-                items[i] = items[i] || null;
-            }
-        }
-        return {
-            key: pageKey,
-            startIndex: startIndex === undefined ? -1 : startIndex,
-            itemCount: (count === undefined) ? (items ? items.length : 0) : count,
-            items: items,
-            style: style || {},
-            top: 0,
-            height: 0
-        };
-    };
-    List.prototype._getRenderCount = function (props) {
-        var _a = props || this.props, items = _a.items, startIndex = _a.startIndex, renderCount = _a.renderCount;
-        return (renderCount === undefined ? (items ? items.length - startIndex : 0) : renderCount);
-    };
-    /** Calculate the visible rect within the list where top: 0 and left: 0 is the top/left of the list. */
-    List.prototype._updateRenderRects = function (props, forceUpdate) {
-        var _a = (props || this.props), renderedWindowsAhead = _a.renderedWindowsAhead, renderedWindowsBehind = _a.renderedWindowsBehind;
-        var pages = this.state.pages;
-        var renderCount = this._getRenderCount(props);
-        var surfaceRect = this._surfaceRect;
-        var scrollHeight = this._scrollElement && this._scrollElement.scrollHeight;
-        var scrollTop = this._scrollElement ? this._scrollElement.scrollTop : 0;
-        // WARNING: EXPENSIVE CALL! We need to know the surface top relative to the window.
-        // This needs to be called to recalculate when new pages should be loaded.
-        // We check to see how far we've scrolled and if it's further than a third of a page we run it again.
-        if (forceUpdate ||
-            !pages ||
-            !this._surfaceRect ||
-            !scrollHeight ||
-            scrollHeight !== this._scrollHeight ||
-            Math.abs(this._scrollTop - scrollTop) > this._estimatedPageHeight / 3) {
-            surfaceRect = this._surfaceRect = _measureSurfaceRect(this.refs.surface);
-            this._scrollTop = scrollTop;
-        }
-        // If the scroll height has changed, something in the container likely resized and
-        // we should redo the page heights incase their content resized.
-        if (forceUpdate ||
-            !scrollHeight ||
-            scrollHeight !== this._scrollHeight) {
-            this._measureVersion++;
-        }
-        this._scrollHeight = scrollHeight;
-        // If the surface is above the container top or below the container bottom, or if this is not the first
-        // render return empty rect.
-        // The first time the list gets rendered we need to calculate the rectangle. The width of the list is
-        // used to calculate the width of the list items.
-        var visibleTop = Math.max(0, -surfaceRect.top);
-        var visibleRect = {
-            top: visibleTop,
-            left: surfaceRect.left,
-            bottom: visibleTop + window.innerHeight,
-            right: surfaceRect.right,
-            width: surfaceRect.width,
-            height: window.innerHeight
-        };
-        // The required/allowed rects are adjusted versions of the visible rect.
-        this._requiredRect = _expandRect(visibleRect, this._requiredWindowsBehind, this._requiredWindowsAhead);
-        this._allowedRect = _expandRect(visibleRect, renderedWindowsBehind, renderedWindowsAhead);
-    };
-    return List;
-}(Utilities_1.BaseComponent));
-List.defaultProps = {
-    startIndex: 0,
-    onRenderCell: function (item, index, containsFocus) { return (React.createElement("div", null, (item && item.name) || '')); },
-    renderedWindowsAhead: DEFAULT_RENDERED_WINDOWS_AHEAD,
-    renderedWindowsBehind: DEFAULT_RENDERED_WINDOWS_BEHIND
-};
-exports.List = List;
-function _expandRect(rect, pagesBefore, pagesAfter) {
-    var top = rect.top - (pagesBefore * rect.height);
-    var height = rect.height + ((pagesBefore + pagesAfter) * rect.height);
-    return {
-        top: top,
-        bottom: top + height,
-        height: height,
-        left: rect.left,
-        right: rect.right,
-        width: rect.width
-    };
-}
-function _isContainedWithin(innerRect, outerRect) {
-    return (innerRect.top >= outerRect.top &&
-        innerRect.left >= outerRect.left &&
-        innerRect.bottom <= outerRect.bottom &&
-        innerRect.right <= outerRect.right);
-}
-function _mergeRect(targetRect, newRect) {
-    targetRect.top = (newRect.top < targetRect.top || targetRect.top === -1) ? newRect.top : targetRect.top;
-    targetRect.left = (newRect.left < targetRect.left || targetRect.left === -1) ? newRect.left : targetRect.left;
-    targetRect.bottom = (newRect.bottom > targetRect.bottom || targetRect.bottom === -1) ? newRect.bottom : targetRect.bottom;
-    targetRect.right = (newRect.right > targetRect.right || targetRect.right === -1) ? newRect.right : targetRect.right;
-    targetRect.width = targetRect.right - targetRect.left + 1;
-    targetRect.height = targetRect.bottom - targetRect.top + 1;
-    return targetRect;
-}
-
-
-
-/***/ }),
-/* 227 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(226));
-
-
-
-/***/ }),
+/* 226 */,
+/* 227 */,
 /* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 

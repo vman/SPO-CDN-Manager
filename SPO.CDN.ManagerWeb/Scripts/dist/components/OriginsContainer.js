@@ -11,16 +11,16 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-require("./O365CDNManager.module.scss");
-var List_1 = require("office-ui-fabric-react/lib/List");
 var OriginsContainer = (function (_super) {
     __extends(OriginsContainer, _super);
     function OriginsContainer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     OriginsContainer.prototype.render = function () {
-        return React.createElement("div", { className: "o365Manager-OriginsContainer" },
-            React.createElement(List_1.List, { items: this.props.Origins, onRenderCell: function (origin, index) { return (React.createElement("li", null, origin)); } }));
+        var origins = this.props.Origins;
+        return (React.createElement("ul", null, origins.map(function (origin, index) {
+            return React.createElement("li", { key: index }, origin);
+        })));
     };
     return OriginsContainer;
 }(React.Component));

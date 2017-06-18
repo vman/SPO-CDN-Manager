@@ -6,7 +6,10 @@ export interface IToggleCDNContainerProps {
     onChanged: (checked: boolean) => void
 }
 
-export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps, null> {
+export interface IToggleCDNContainerState {
+}
+
+export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps, IToggleCDNContainerState> {
     public render() {
         return <div className="o365Manager-ToggleCDNContainer">
             <Toggle

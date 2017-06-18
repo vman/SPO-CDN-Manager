@@ -1,22 +1,24 @@
 import * as React from "react";
+import { Label } from 'office-ui-fabric-react/lib/Label'
+import { List } from 'office-ui-fabric-react/lib/List';
 
 export interface IFileTypesContainerProps {
     FileTypes: string[];
 }
 
-export class FileTypesContainer extends React.Component<IFileTypesContainerProps, null> {
+export interface IFileTypesContainerState {
+}
+
+export class FileTypesContainer extends React.Component<IFileTypesContainerProps, IFileTypesContainerState> {
     public render() {
-        //need to check if this.props.FileTypes is not undefined before rendering
         return <div className="o365Manager-FileTypesContainer">
-            {this.props.FileTypes && 
-                <ul>
-                    {this.props.FileTypes.map((filetype) =>
-                        <li key={filetype.toString()}>
-                            {filetype}
-                        </li>
-                    )}
-                </ul>
-            }
+            <ul>
+                {this.props.FileTypes.map((filetype, index) =>
+                    <li key={index}>
+                        {filetype}
+                    </li>
+                )}
+            </ul>
         </div>;
     }
 }

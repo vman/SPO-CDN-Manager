@@ -17,10 +17,9 @@ var FileTypesContainer = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     FileTypesContainer.prototype.render = function () {
-        //need to check if this.props.FileTypes is not undefined before rendering
-        return React.createElement("div", { className: "o365Manager-FileTypesContainer" }, this.props.FileTypes &&
-            React.createElement("ul", null, this.props.FileTypes.map(function (filetype) {
-                return React.createElement("li", { key: filetype.toString() }, filetype);
+        return React.createElement("div", { className: "o365Manager-FileTypesContainer" },
+            React.createElement("ul", null, this.props.FileTypes.map(function (filetype, index) {
+                return React.createElement("li", { key: index }, filetype);
             })));
     };
     return FileTypesContainer;

@@ -1,21 +1,25 @@
 import * as React from "react";
-import "./O365CDNManager.module.scss";
 
 import { List } from 'office-ui-fabric-react/lib/List';
+import { Label } from 'office-ui-fabric-react/lib/Label'
 
 export interface IOriginsContainerProps {
     Origins: string[];
 }
 
-export class OriginsContainer extends React.Component<IOriginsContainerProps, null> {
+export interface IOriginsContainerState {
+}
+
+export class OriginsContainer extends React.Component<IOriginsContainerProps, IOriginsContainerState> {
     public render() {
         return <div className="o365Manager-OriginsContainer">
-            <List
-                items={this.props.Origins}
-                onRenderCell={(origin, index) => (
-                    <li>{origin}</li>
+            <ul>
+                {this.props.Origins.map((origin, index) =>
+                    <li key={index}>
+                        {origin}
+                    </li>
                 )}
-             />
+            </ul>
         </div>
     }
 }

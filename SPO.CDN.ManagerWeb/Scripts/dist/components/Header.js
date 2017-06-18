@@ -11,7 +11,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
-var office_ui_fabric_react_1 = require("office-ui-fabric-react");
 var Header = (function (_super) {
     __extends(Header, _super);
     function Header() {
@@ -19,9 +18,9 @@ var Header = (function (_super) {
     }
     Header.prototype.render = function () {
         return React.createElement("div", { className: "o365Manager-Header" },
-            React.createElement(office_ui_fabric_react_1.Label, { className: "ms-font-su ms-fontSize-xxl" },
-                "Manage Office 365 Public CDN settings for ",
-                this.props.SPOSiteUrl));
+            React.createElement("span", { className: "ms-font-xxl ms-fontSize-xxl" },
+                "Manage Office 365 Public CDN Settings for ",
+                React.createElement("span", { className: "ms-font-xl ms-fontSize-xl ms-u-slideDownIn20" }, this.props.SPOSiteUrl)));
     };
     return Header;
 }(React.Component));

@@ -5,6 +5,8 @@ import { FileTypesContainer } from './FileTypesContainer';
 import { ToggleCDNContainer } from './ToggleCDNContainer';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
 
+import "./O365CDNManager.module.scss";
+
 interface IOffice365CDNManagerState {
     PublicCDNEnabled: boolean;
     Filetypes: string[];
@@ -35,7 +37,7 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
                                 <FileTypesContainer FileTypes={this.state.Filetypes} />
                             </PivotItem>
                             <PivotItem linkText='Turn CDN On/Off'>
-                                <ToggleCDNContainer Enabled={this.state.PublicCDNEnabled} onChanged={this.toggleCDN} />
+                                <ToggleCDNContainer Enabled={this.state.PublicCDNEnabled} onChanged={this.toggleCDN.bind(this)} />
                             </PivotItem>
                         </Pivot>
                     </div>
@@ -58,24 +60,45 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
         this._getCDNSettings();
     }
 
-    private toggleCDN = (isChecked: boolean) => {
-        this.setState({ PublicCDNEnabled: isChecked });
+    private async toggleCDN(isChecked: boolean) {
+
+        try {
+            this.setState({ PublicCDNEnabled: isChecked });
+
+            const response = await fetch(`/Home/SetCDN?value=${isChecked}`, {
+                credentials: 'include',
+                method: "POST"
+            });
+
+            if (!response.ok) {
+                const responseText = await response.text();
+                throw new Error(responseText);
+            };
+
+            const responseJSON: boolean = await response.json();
+
+            this.setState({ PublicCDNEnabled: responseJSON });
+
+        } catch (error) {
+            this.setState({ PublicCDNEnabled: !isChecked });
+            console.log(error);
+        }
     }
 
     private async _getCDNSettings() {
 
-        //const response = await fetch("/Home/GetCDNSettings", { credentials: 'include' });
+        const response = await fetch("/Home/GetCDNSettings", { credentials: 'include' });
 
-        //const o365Cdn: IOffice365CDNManagerState = await response.json();
+        const o365Cdn: IOffice365CDNManagerState = await response.json();
 
-        const o365Cdn: IOffice365CDNManagerState = {
-            "PublicCDNEnabled": true,
-            "Filetypes": ["CSS", "EOT", "GIF", "ICO", "JPEG", "JPG", "JS", "MAP", "PNG", "SVG", "TTF", "WOFF"],
-            "Origins": ["*/MASTERPAGE (configuration pending)",
-                "*/STYLE LIBRARY (configuration pending)"
-            ],
-            "SPOSiteUrl": "https://dummy.sharepoint.com"
-        };
+        // const o365Cdn: IOffice365CDNManagerState = {
+        //     "PublicCDNEnabled": true,
+        //     "Filetypes": ["CSS", "EOT", "GIF", "ICO", "JPEG", "JPG", "JS", "MAP", "PNG", "SVG", "TTF", "WOFF"],
+        //     "Origins": ["*/MASTERPAGE (configuration pending)",
+        //         "*/STYLE LIBRARY (configuration pending)"
+        //     ],
+        //     "SPOSiteUrl": "https://dummy.sharepoint.com"
+        // };
 
         setTimeout(() => {
             this.setState(o365Cdn);
