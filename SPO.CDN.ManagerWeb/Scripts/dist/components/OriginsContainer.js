@@ -17,10 +17,10 @@ var OriginsContainer = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     OriginsContainer.prototype.render = function () {
-        var origins = this.props.Origins;
-        return (React.createElement("ul", null, origins.map(function (origin, index) {
-            return React.createElement("li", { key: index }, origin);
-        })));
+        return React.createElement("div", { className: "o365Manager-OriginsContainer" },
+            React.createElement("ul", null, this.props.Origins.map(function (origin, index) {
+                return React.createElement("li", { key: index }, origin);
+            })));
     };
     return OriginsContainer;
 }(React.Component));

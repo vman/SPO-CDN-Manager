@@ -37,7 +37,9 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
                                 <FileTypesContainer FileTypes={this.state.Filetypes} />
                             </PivotItem>
                             <PivotItem linkText='Turn CDN On/Off'>
-                                <ToggleCDNContainer Enabled={this.state.PublicCDNEnabled} onChanged={this.toggleCDN.bind(this)} />
+                                <ToggleCDNContainer 
+                                Enabled={this.state.PublicCDNEnabled} 
+                                toggleCDN={this.toggleCDN.bind(this)} />
                             </PivotItem>
                         </Pivot>
                     </div>

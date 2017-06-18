@@ -56,9 +56,6 @@ var Office365CDNManager = (function (_super) {
     __extends(Office365CDNManager, _super);
     function Office365CDNManager(props) {
         var _this = _super.call(this, props) || this;
-        _this.toggleCDN = function (isChecked) {
-            _this.setState({ PublicCDNEnabled: isChecked });
-        };
         _this.state = {
             PublicCDNEnabled: false,
             Filetypes: [],
@@ -81,10 +78,46 @@ var Office365CDNManager = (function (_super) {
                             React.createElement(Pivot_1.PivotItem, { linkText: 'Filetypes' },
                                 React.createElement(FileTypesContainer_1.FileTypesContainer, { FileTypes: this.state.Filetypes })),
                             React.createElement(Pivot_1.PivotItem, { linkText: 'Turn CDN On/Off' },
-                                React.createElement(ToggleCDNContainer_1.ToggleCDNContainer, { Enabled: this.state.PublicCDNEnabled, onChanged: this.toggleCDN })))))));
+                                React.createElement(ToggleCDNContainer_1.ToggleCDNContainer, { Enabled: this.state.PublicCDNEnabled, onChanged: this.toggleCDN.bind(this) })))))));
     };
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();
+    };
+    Office365CDNManager.prototype.toggleCDN = function (isChecked) {
+        return __awaiter(this, void 0, void 0, function () {
+            var response, responseText, responseJSON, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 5, , 6]);
+                        this.setState({ PublicCDNEnabled: isChecked });
+                        return [4 /*yield*/, fetch("/Home/SetCDN?value=" + isChecked, {
+                                credentials: 'include',
+                                method: "POST"
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        if (!!response.ok) return [3 /*break*/, 3];
+                        return [4 /*yield*/, response.text()];
+                    case 2:
+                        responseText = _a.sent();
+                        throw new Error(responseText);
+                    case 3:
+                        ;
+                        return [4 /*yield*/, response.json()];
+                    case 4:
+                        responseJSON = _a.sent();
+                        this.setState({ PublicCDNEnabled: responseJSON });
+                        return [3 /*break*/, 6];
+                    case 5:
+                        error_1 = _a.sent();
+                        this.setState({ PublicCDNEnabled: !isChecked });
+                        console.log(error_1);
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
     };
     Office365CDNManager.prototype._getCDNSettings = function () {
         return __awaiter(this, void 0, void 0, function () {
