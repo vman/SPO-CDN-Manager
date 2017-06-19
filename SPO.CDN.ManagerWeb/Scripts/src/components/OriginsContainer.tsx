@@ -1,11 +1,34 @@
 import * as React from 'react';
 
-import { List } from 'office-ui-fabric-react/lib/List';
+//import { List } from 'office-ui-fabric-react/lib/List';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
-import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import { MessageBar } from 'office-ui-fabric-react/lib/MessageBar';
+import {
+    DetailsList,
+    DetailsListLayoutMode, SelectionMode 
+} from 'office-ui-fabric-react/lib/DetailsList';
+
+
+
+let _columns = [
+    {
+        key: 'column1',
+        name: '',
+        fieldName: 'delete',
+        minWidth: 50,
+        isResizable: false
+    },
+    {
+        key: 'column2',
+        name: 'Origin',
+        fieldName: 'origin',
+        minWidth: 700,
+        isResizable: false
+    },
+];
 
 export interface IOriginsContainerProps {
     Origins: string[];
@@ -25,6 +48,14 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
     }
 
     public render() {
+        let _items: any = [];
+        this.props.Origins.map((_origin, index) =>
+            _items.push({
+                key: index,
+                delete: '',
+                origin: _origin
+            })
+        );
         return <div className='o365Manager-OriginsContainer'>
 
             <div className='ms-Grid'>
@@ -36,13 +67,12 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
                 </div>
                 <div className='ms-Grid-row'>
                     <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
-                        <ul>
-                            {this.props.Origins.map((origin, index) =>
-                                <li key={index}>
-                                    {origin}
-                                </li>
-                            )}
-                        </ul>
+                        <DetailsList
+                            items={_items}
+                            columns={_columns}
+                            selectionMode={SelectionMode.none}
+                            layoutMode={DetailsListLayoutMode.justified}
+                        />
                     </div>
                 </div>
             </div>

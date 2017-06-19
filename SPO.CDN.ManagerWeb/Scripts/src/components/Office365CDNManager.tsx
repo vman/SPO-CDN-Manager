@@ -4,6 +4,7 @@ import { OriginsContainer } from './OriginsContainer';
 import { FileTypesContainer } from './FileTypesContainer';
 import { ToggleCDNContainer } from './ToggleCDNContainer';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
+import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 
 import './O365CDNManager.module.scss';
 
@@ -20,34 +21,36 @@ interface IOffice365CDNManagerProps {
 export class Office365CDNManager extends React.Component<IOffice365CDNManagerProps, IOffice365CDNManagerState> {
 
     public render() {
-        return <div className='o365Manager-Container'>
-            <div className='ms-Grid'>
-                <div className='ms-Grid-row'>
-                    <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
-                        <Header SPOSiteUrl={this.state.SPOSiteUrl} />
+        return <Fabric>
+            <div className='o365Manager-Container'>
+                <div className='ms-Grid'>
+                    <div className='ms-Grid-row'>
+                        <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
+                            <Header SPOSiteUrl={this.state.SPOSiteUrl} />
+                        </div>
                     </div>
-                </div>
-                <div className='ms-Grid-row'>
-                    <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
-                        <Pivot linkSize={PivotLinkSize.large}>
-                            <PivotItem linkText='Origins'>
-                                <OriginsContainer
-                                    Origins={this.state.Origins}
-                                    handleCreateDefaultOrigins={this._createDefaultOrigins.bind(this)} />
-                            </PivotItem>
-                            <PivotItem linkText='Filetypes'>
-                                <FileTypesContainer FileTypes={this.state.Filetypes} />
-                            </PivotItem>
-                            <PivotItem linkText='Turn CDN On/Off'>
-                                <ToggleCDNContainer
-                                    Enabled={this.state.PublicCDNEnabled}
-                                    toggleCDN={this._toggleCDN.bind(this)} />
-                            </PivotItem>
-                        </Pivot>
+                    <div className='ms-Grid-row'>
+                        <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
+                            <Pivot linkSize={PivotLinkSize.large}>
+                                <PivotItem linkText='Origins'>
+                                    <OriginsContainer
+                                        Origins={this.state.Origins}
+                                        handleCreateDefaultOrigins={this._createDefaultOrigins.bind(this)} />
+                                </PivotItem>
+                                <PivotItem linkText='Filetypes'>
+                                    <FileTypesContainer FileTypes={this.state.Filetypes} />
+                                </PivotItem>
+                                <PivotItem linkText='Turn CDN On/Off'>
+                                    <ToggleCDNContainer
+                                        Enabled={this.state.PublicCDNEnabled}
+                                        toggleCDN={this._toggleCDN.bind(this)} />
+                                </PivotItem>
+                            </Pivot>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </Fabric>
     }
 
     constructor(props: IOffice365CDNManagerProps) {

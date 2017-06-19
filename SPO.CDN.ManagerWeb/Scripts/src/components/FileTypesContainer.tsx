@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Label } from 'office-ui-fabric-react/lib/Label'
-import { List } from 'office-ui-fabric-react/lib/List';
+//import { Label } from 'office-ui-fabric-react/lib/Label'
+//import { List } from 'office-ui-fabric-react/lib/List';
 
 export interface IFileTypesContainerProps {
     FileTypes: string[];
