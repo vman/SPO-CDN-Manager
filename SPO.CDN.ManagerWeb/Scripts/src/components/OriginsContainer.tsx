@@ -1,12 +1,15 @@
-import * as React from "react";
+import * as React from 'react';
 
 import { List } from 'office-ui-fabric-react/lib/List';
-import { Label } from 'office-ui-fabric-react/lib/Label'
+import { Label } from 'office-ui-fabric-react/lib/Label';
+import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 
 export interface IOriginsContainerProps {
     Origins: string[];
+    handleCreateDefaultOrigins: () => void
 }
 
 export interface IOriginsContainerState {
@@ -22,7 +25,7 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
     }
 
     public render() {
-        return <div className="o365Manager-OriginsContainer">
+        return <div className='o365Manager-OriginsContainer'>
 
             <PrimaryButton text='Add New Origin' onClick={this._showPanel.bind(this)} />
             <PrimaryButton text='Create Default Origins' onClick={() => alert('Clicked')} />
@@ -38,17 +41,21 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
             <Panel
                 isOpen={this.state.showPanel}
                 onDismiss={() => this.setState({ showPanel: false })}
-                type={PanelType.medium}
-                isLightDismiss={ true }
+                type={PanelType.largeFixed}
+                isLightDismiss={true}
                 headerText='Add New CDN Origin'>
-                <span className='ms-font-m'>Content goes here.</span>
+                <Label>Add the relative url of a SharePoint folder to be set as CDN Origin. Wildcards beginning with */ are also supported.</Label>
+                <TextField label='Relative Url of Folder' placeholder='/sites/intranet/publishingimages' />
+                <PrimaryButton text='Add' /*onClick={this._showPanel.bind(this)}*/ />
+                <MessageBar>It can take up to 15 minutes for the CDN origin to be available for publishing assets</MessageBar>
             </Panel>
         </div>
     }
 
-    private _showPanel(){
+    private _showPanel() {
         this.setState({
             showPanel: true
         });
     }
+
 }

@@ -17,10 +17,10 @@ var Header = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Header.prototype.render = function () {
-        return React.createElement("div", { className: "o365Manager-Header" },
-            React.createElement("span", { className: "ms-font-xxl ms-fontSize-xxl" },
+        return React.createElement("div", { className: 'o365Manager-Header' },
+            React.createElement("span", { className: 'ms-font-xxl ms-fontSize-xxl' },
                 "Manage Office 365 Public CDN Settings for ",
-                React.createElement("span", { className: "ms-font-xl ms-fontSize-xl ms-u-slideDownIn20" }, this.props.SPOSiteUrl)));
+                React.createElement("span", { className: 'ms-font-xl ms-fontSize-xl ms-u-slideDownIn20' }, this.props.SPOSiteUrl)));
     };
     return Header;
 }(React.Component));

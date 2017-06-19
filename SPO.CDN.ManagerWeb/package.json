@@ -4,7 +4,8 @@
   "description": "Website to manage Office 365 cdn",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack"
   },
   "private": true,
   "author": "",
@@ -24,6 +25,8 @@
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
+    "tslint": "^5.4.3",
+    "tslint-loader": "^3.5.3",
     "typescript": "^2.3.4",
     "webpack": "^2.6.1"
   }

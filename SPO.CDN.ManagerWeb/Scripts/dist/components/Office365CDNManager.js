@@ -60,21 +60,21 @@ var Office365CDNManager = (function (_super) {
             PublicCDNEnabled: false,
             Filetypes: [],
             Origins: [],
-            SPOSiteUrl: ""
+            SPOSiteUrl: ''
         };
         return _this;
     }
     Office365CDNManager.prototype.render = function () {
-        return React.createElement("div", { className: "o365Manager-Container" },
-            React.createElement("div", { className: "ms-Grid" },
-                React.createElement("div", { className: "ms-Grid-row" },
-                    React.createElement("div", { className: "ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12" },
+        return React.createElement("div", { className: 'o365Manager-Container' },
+            React.createElement("div", { className: 'ms-Grid' },
+                React.createElement("div", { className: 'ms-Grid-row' },
+                    React.createElement("div", { className: 'ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12' },
                         React.createElement(Header_1.Header, { SPOSiteUrl: this.state.SPOSiteUrl }))),
-                React.createElement("div", { className: "ms-Grid-row" },
-                    React.createElement("div", { className: "ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12" },
+                React.createElement("div", { className: 'ms-Grid-row' },
+                    React.createElement("div", { className: 'ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12' },
                         React.createElement(Pivot_1.Pivot, { linkSize: Pivot_1.PivotLinkSize.large },
                             React.createElement(Pivot_1.PivotItem, { linkText: 'Origins' },
-                                React.createElement(OriginsContainer_1.OriginsContainer, { Origins: this.state.Origins })),
+                                React.createElement(OriginsContainer_1.OriginsContainer, { Origins: this.state.Origins, handleCreateDefaultOrigins: this.createDefaultOrigins.bind(this) })),
                             React.createElement(Pivot_1.PivotItem, { linkText: 'Filetypes' },
                                 React.createElement(FileTypesContainer_1.FileTypesContainer, { FileTypes: this.state.Filetypes })),
                             React.createElement(Pivot_1.PivotItem, { linkText: 'Turn CDN On/Off' },
@@ -83,17 +83,30 @@ var Office365CDNManager = (function (_super) {
     Office365CDNManager.prototype.componentDidMount = function () {
         this._getCDNSettings();
     };
+    Office365CDNManager.prototype.createDefaultOrigins = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
+            });
+        });
+    };
     Office365CDNManager.prototype.toggleCDN = function (isChecked) {
         return __awaiter(this, void 0, void 0, function () {
-            var response, responseText, responseJSON, error_1;
+            var reqHeaders, response, responseText, responseJSON, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 5, , 6]);
                         this.setState({ PublicCDNEnabled: isChecked });
-                        return [4 /*yield*/, fetch("/Home/SetCDN?value=" + isChecked, {
+                        reqHeaders = new Headers({
+                            datatype: 'json',
+                            contentType: 'application/json; charset=utf-8'
+                        });
+                        return [4 /*yield*/, fetch("/Home/SetCDN", {
                                 credentials: 'include',
-                                method: "POST"
+                                method: 'POST',
+                                headers: reqHeaders,
+                                body: JSON.stringify({ value: isChecked })
                             })];
                     case 1:
                         response = _a.sent();
@@ -125,7 +138,7 @@ var Office365CDNManager = (function (_super) {
             var response, o365Cdn;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, fetch("/Home/GetCDNSettings", { credentials: 'include' })];
+                    case 0: return [4 /*yield*/, fetch('/Home/GetCDNSettings', { credentials: 'include' })];
                     case 1:
                         response = _a.sent();
                         return [4 /*yield*/, response.json()];

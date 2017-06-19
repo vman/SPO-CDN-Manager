@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
 import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
@@ -24,7 +24,7 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
     }
 
     public render() {
-        return <div className="o365Manager-ToggleCDNContainer">
+        return <div className='o365Manager-ToggleCDNContainer'>
             <Toggle
                 label='Use Office 365 Public CDN'
                 onText='On'

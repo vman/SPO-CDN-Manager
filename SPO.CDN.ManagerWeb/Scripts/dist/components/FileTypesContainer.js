@@ -17,7 +17,7 @@ var FileTypesContainer = (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     FileTypesContainer.prototype.render = function () {
-        return React.createElement("div", { className: "o365Manager-FileTypesContainer" },
+        return React.createElement("div", { className: 'o365Manager-FileTypesContainer' },
             React.createElement("ul", null, this.props.FileTypes.map(function (filetype, index) {
                 return React.createElement("li", { key: index }, filetype);
             })));

@@ -25,7 +25,7 @@ var ToggleCDNContainer = (function (_super) {
         return _this;
     }
     ToggleCDNContainer.prototype.render = function () {
-        return React.createElement("div", { className: "o365Manager-ToggleCDNContainer" },
+        return React.createElement("div", { className: 'o365Manager-ToggleCDNContainer' },
             React.createElement(Toggle_1.Toggle, { label: 'Use Office 365 Public CDN', onText: 'On', offText: 'Off', checked: this.state.isChecked, onChanged: this._checked.bind(this) }),
             React.createElement(Dialog_1.Dialog, { isOpen: this.state.showDialog, type: Dialog_1.DialogType.largeHeader, onDismiss: this._closeDialog.bind(this), title: 'Change CDN Settings?', subText: 'Are you sure you want to change the CDN settings for your tenant?', isBlocking: true },
                 React.createElement(Dialog_1.DialogFooter, null,

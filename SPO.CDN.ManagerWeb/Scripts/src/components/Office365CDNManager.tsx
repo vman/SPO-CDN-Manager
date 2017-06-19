@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 import { Header } from './Header';
 import { OriginsContainer } from './OriginsContainer';
 import { FileTypesContainer } from './FileTypesContainer';
 import { ToggleCDNContainer } from './ToggleCDNContainer';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
 
-import "./O365CDNManager.module.scss";
+import './O365CDNManager.module.scss';
 
 interface IOffice365CDNManagerState {
     PublicCDNEnabled: boolean;
@@ -20,26 +20,28 @@ interface IOffice365CDNManagerProps {
 export class Office365CDNManager extends React.Component<IOffice365CDNManagerProps, IOffice365CDNManagerState> {
 
     public render() {
-        return <div className="o365Manager-Container">
-            <div className="ms-Grid">
-                <div className="ms-Grid-row">
-                    <div className="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12">
+        return <div className='o365Manager-Container'>
+            <div className='ms-Grid'>
+                <div className='ms-Grid-row'>
+                    <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
                         <Header SPOSiteUrl={this.state.SPOSiteUrl} />
                     </div>
                 </div>
-                <div className="ms-Grid-row">
-                    <div className="ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12">
+                <div className='ms-Grid-row'>
+                    <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
                         <Pivot linkSize={PivotLinkSize.large}>
                             <PivotItem linkText='Origins'>
-                                <OriginsContainer Origins={this.state.Origins} />
+                                <OriginsContainer 
+                                    Origins={this.state.Origins}
+                                    handleCreateDefaultOrigins={this.createDefaultOrigins.bind(this)} />
                             </PivotItem>
                             <PivotItem linkText='Filetypes'>
                                 <FileTypesContainer FileTypes={this.state.Filetypes} />
                             </PivotItem>
                             <PivotItem linkText='Turn CDN On/Off'>
-                                <ToggleCDNContainer 
-                                Enabled={this.state.PublicCDNEnabled} 
-                                toggleCDN={this.toggleCDN.bind(this)} />
+                                <ToggleCDNContainer
+                                    Enabled={this.state.PublicCDNEnabled}
+                                    toggleCDN={this.toggleCDN.bind(this)} />
                             </PivotItem>
                         </Pivot>
                     </div>
@@ -54,12 +56,16 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
             PublicCDNEnabled: false,
             Filetypes: [],
             Origins: [],
-            SPOSiteUrl: ""
+            SPOSiteUrl: ''
         };
     }
 
     componentDidMount() {
         this._getCDNSettings();
+    }
+
+    private async createDefaultOrigins(){
+
     }
 
     private async toggleCDN(isChecked: boolean) {
@@ -68,8 +74,8 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
             this.setState({ PublicCDNEnabled: isChecked });
 
             const response = await fetch(`/Home/SetCDN?value=${isChecked}`, {
-                credentials: 'include',
-                method: "POST"
+                credentials: 'same-origin',
+                method: 'POST'
             });
 
             if (!response.ok) {
@@ -89,7 +95,7 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 
     private async _getCDNSettings() {
 
-        const response = await fetch("/Home/GetCDNSettings", { credentials: 'include' });
+        const response = await fetch('/Home/GetCDNSettings', { credentials: 'include' });
 
         const o365Cdn: IOffice365CDNManagerState = await response.json();
 
