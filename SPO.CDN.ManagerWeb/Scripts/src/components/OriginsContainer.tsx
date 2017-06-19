@@ -27,17 +27,25 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
     public render() {
         return <div className='o365Manager-OriginsContainer'>
 
-            <PrimaryButton text='Add New Origin' onClick={this._showPanel.bind(this)} />
-            <PrimaryButton text='Create Default Origins' onClick={() => alert('Clicked')} />
-
-            <ul>
-                {this.props.Origins.map((origin, index) =>
-                    <li key={index}>
-                        {origin}
-                    </li>
-                )}
-            </ul>
-
+            <div className='ms-Grid'>
+                <div className='ms-Grid-row'>
+                    <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
+                        <PrimaryButton text='Add New Origin' onClick={this._showPanel.bind(this)} />
+                        <PrimaryButton text='Create Default Origins' onClick={this.props.handleCreateDefaultOrigins.bind(this)} />
+                    </div>
+                </div>
+                <div className='ms-Grid-row'>
+                    <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
+                        <ul>
+                            {this.props.Origins.map((origin, index) =>
+                                <li key={index}>
+                                    {origin}
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <Panel
                 isOpen={this.state.showPanel}
                 onDismiss={() => this.setState({ showPanel: false })}

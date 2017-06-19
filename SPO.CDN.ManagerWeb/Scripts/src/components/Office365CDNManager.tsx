@@ -31,9 +31,9 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
                     <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
                         <Pivot linkSize={PivotLinkSize.large}>
                             <PivotItem linkText='Origins'>
-                                <OriginsContainer 
+                                <OriginsContainer
                                     Origins={this.state.Origins}
-                                    handleCreateDefaultOrigins={this.createDefaultOrigins.bind(this)} />
+                                    handleCreateDefaultOrigins={this._createDefaultOrigins.bind(this)} />
                             </PivotItem>
                             <PivotItem linkText='Filetypes'>
                                 <FileTypesContainer FileTypes={this.state.Filetypes} />
@@ -41,7 +41,7 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
                             <PivotItem linkText='Turn CDN On/Off'>
                                 <ToggleCDNContainer
                                     Enabled={this.state.PublicCDNEnabled}
-                                    toggleCDN={this.toggleCDN.bind(this)} />
+                                    toggleCDN={this._toggleCDN.bind(this)} />
                             </PivotItem>
                         </Pivot>
                     </div>
@@ -64,11 +64,25 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
         this._getCDNSettings();
     }
 
-    private async createDefaultOrigins(){
+    private async _createDefaultOrigins() {
+
+        const response = await fetch(`/Home/CreateDefaultOrigins`, {
+            credentials: 'same-origin',
+            method: 'POST'
+        });
+
+        if (!response.ok) {
+            const responseText = await response.text();
+            throw new Error(responseText);
+        };
+
+        const _origins: string[] = await response.json();
+
+        this.setState({ Origins: _origins });
 
     }
 
-    private async toggleCDN(isChecked: boolean) {
+    private async _toggleCDN(isChecked: boolean) {
 
         try {
             this.setState({ PublicCDNEnabled: isChecked });
