@@ -8,10 +8,8 @@ import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 import { MessageBar } from 'office-ui-fabric-react/lib/MessageBar';
 import {
     DetailsList,
-    DetailsListLayoutMode, SelectionMode 
+    DetailsListLayoutMode, SelectionMode
 } from 'office-ui-fabric-react/lib/DetailsList';
-
-
 
 let _columns = [
     {
@@ -33,36 +31,42 @@ let _columns = [
 export interface IOriginsContainerProps {
     Origins: string[];
     handleCreateDefaultOrigins: () => void
+    handleAddNewOrigin: (origin: string) => void
 }
 
 export interface IOriginsContainerState {
     showPanel: boolean;
+    newOrigin: string;
 }
 
 export class OriginsContainer extends React.Component<IOriginsContainerProps, IOriginsContainerState> {
     constructor(props: IOriginsContainerProps) {
         super(props);
         this.state = {
-            showPanel: false
+            showPanel: false,
+            newOrigin: ''
         };
     }
 
     public render() {
         let _items: any = [];
-        this.props.Origins.map((_origin, index) =>
+        this.props.Origins.map((_origin) =>
             _items.push({
-                key: index,
+                key: _origin.toString(),
                 delete: '',
                 origin: _origin
             })
         );
+
         return <div className='o365Manager-OriginsContainer'>
 
             <div className='ms-Grid'>
                 <div className='ms-Grid-row'>
                     <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
-                        <PrimaryButton text='Add New Origin' onClick={this._showPanel.bind(this)} />
-                        <PrimaryButton text='Create Default Origins' onClick={this.props.handleCreateDefaultOrigins.bind(this)} />
+                        <div className='Origins-Button-Container'>
+                            <PrimaryButton className='Origins-AddNewOrigins' text='Add New Origin' onClick={this._showPanel.bind(this)} />
+                            <PrimaryButton text='Create Default Origins' onClick={this.props.handleCreateDefaultOrigins.bind(this)} />
+                        </div>
                     </div>
                 </div>
                 <div className='ms-Grid-row'>
@@ -70,6 +74,7 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
                         <DetailsList
                             items={_items}
                             columns={_columns}
+                            setKey='set'
                             selectionMode={SelectionMode.none}
                             layoutMode={DetailsListLayoutMode.justified}
                         />
@@ -83,13 +88,22 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
                 isLightDismiss={true}
                 headerText='Add New CDN Origin'>
                 <Label>Add the relative url of a SharePoint folder to be set as CDN Origin. Wildcards beginning with */ are also supported.</Label>
-                <TextField label='Relative Url of Folder' placeholder='/sites/intranet/publishingimages' />
-                <PrimaryButton text='Add' /*onClick={this._showPanel.bind(this)}*/ />
+                <TextField label='Relative Url of Folder' placeholder='/sites/intranet/publishingimages' onChanged={this._ontxtAddOriginChanged.bind(this)} />
+                <PrimaryButton text='Add' onClick={this._handleAddNewOrigin.bind(this)} />
                 <MessageBar>It can take up to 15 minutes for the CDN origin to be available for publishing assets</MessageBar>
             </Panel>
         </div>
     }
 
+    private _handleAddNewOrigin() {
+        this.props.handleAddNewOrigin(this.state.newOrigin);
+    }
+
+    private _ontxtAddOriginChanged(value: string): void {
+        return this.setState({
+            newOrigin: value
+        });
+    }
     private _showPanel() {
         this.setState({
             showPanel: true

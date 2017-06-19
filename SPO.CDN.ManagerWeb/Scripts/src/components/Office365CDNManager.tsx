@@ -35,7 +35,8 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
                                 <PivotItem linkText='Origins'>
                                     <OriginsContainer
                                         Origins={this.state.Origins}
-                                        handleCreateDefaultOrigins={this._createDefaultOrigins.bind(this)} />
+                                        handleCreateDefaultOrigins={this._createDefaultOrigins.bind(this)}
+                                        handleAddNewOrigin={this._addNewOrigin.bind(this)} />
                                 </PivotItem>
                                 <PivotItem linkText='Filetypes'>
                                     <FileTypesContainer FileTypes={this.state.Filetypes} />
@@ -65,6 +66,24 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 
     componentDidMount() {
         this._getCDNSettings();
+    }
+
+    private async _addNewOrigin(origin: string) {
+
+        const response = await fetch(`/Home/AddOrigin?folderUrl=${origin}`, {
+            credentials: 'same-origin',
+            method: 'POST'
+        });
+
+        if (!response.ok) {
+            const responseText = await response.text();
+            throw new Error(responseText);
+        };
+
+        const _origins: string[] = await response.json();
+
+        this.setState({ Origins: _origins });
+
     }
 
     private async _createDefaultOrigins() {
@@ -116,10 +135,6 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 
         const o365Cdn: IOffice365CDNManagerState = await response.json();
 
-        setTimeout(() => {
-            this.setState(o365Cdn);
-        }, 1000);
-
-
+        this.setState(o365Cdn);
     }
 }
