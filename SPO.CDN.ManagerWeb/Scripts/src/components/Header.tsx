@@ -5,7 +5,11 @@ export interface IHeaderProps {
     SPOSiteUrl?: string;
 }
 
-export class Header extends React.Component<IHeaderProps, null> {
+export interface IHeaderState{
+
+}
+
+export class Header extends React.Component<IHeaderProps, IHeaderState> {
     public render() {
         return <div className='o365Manager-Header'>
             <span className='ms-font-xxl ms-fontSize-xxl'>

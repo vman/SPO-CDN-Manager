@@ -4,8 +4,10 @@ import * as React from 'react';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
-import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
+import { PrimaryButton, /*DefaultButton*/ } from 'office-ui-fabric-react/lib/Button';
 import { MessageBar } from 'office-ui-fabric-react/lib/MessageBar';
+//import { Icon } from 'office-ui-fabric-react/lib/Icon';
+
 import {
     DetailsList,
     DetailsListLayoutMode, SelectionMode
@@ -13,14 +15,14 @@ import {
 
 let _columns = [
     {
-        key: 'column1',
+        key: 'keyDelete',
         name: '',
         fieldName: 'delete',
         minWidth: 50,
         isResizable: false
     },
     {
-        key: 'column2',
+        key: 'keyOrigin',
         name: 'Origin',
         fieldName: 'origin',
         minWidth: 700,
@@ -74,7 +76,7 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
                         <DetailsList
                             items={_items}
                             columns={_columns}
-                            setKey='set'
+                            //onRenderItemColumn={this._renderItemColumn}
                             selectionMode={SelectionMode.none}
                             layoutMode={DetailsListLayoutMode.justified}
                         />
@@ -84,7 +86,7 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
             <Panel
                 isOpen={this.state.showPanel}
                 onDismiss={() => this.setState({ showPanel: false })}
-                type={PanelType.largeFixed}
+                type={PanelType.medium}
                 isLightDismiss={true}
                 headerText='Add New CDN Origin'>
                 <Label>Add the relative url of a SharePoint folder to be set as CDN Origin. Wildcards beginning with */ are also supported.</Label>
@@ -94,6 +96,23 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
             </Panel>
         </div>
     }
+
+    // private _renderItemColumn(item: any, index: any, column: any) {
+    //     let fieldContent = item[column.fieldName];
+    //     item;
+    //     index;
+
+    //     if (column.key === 'keyDelete') {
+    //         return <div>
+    //             <DefaultButton onClick={() => alert('clicked')}>
+    //                 <Icon iconName='Delete' />
+    //             </DefaultButton>
+    //         </div>
+    //     }
+    //     else{
+    //         return ''
+    //     }
+    // }
 
     private _handleAddNewOrigin() {
         this.props.handleAddNewOrigin(this.state.newOrigin);
