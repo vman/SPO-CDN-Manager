@@ -1,12 +1,11 @@
 import * as React from 'react';
 
-//import { List } from 'office-ui-fabric-react/lib/List';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
-import { PrimaryButton, /*DefaultButton*/ } from 'office-ui-fabric-react/lib/Button';
+import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 import { MessageBar } from 'office-ui-fabric-react/lib/MessageBar';
-//import { Icon } from 'office-ui-fabric-react/lib/Icon';
+import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
 import {
     DetailsList,
@@ -76,7 +75,7 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
                         <DetailsList
                             items={_items}
                             columns={_columns}
-                            //onRenderItemColumn={this._renderItemColumn}
+                            onRenderItemColumn={this._renderItemColumn}
                             selectionMode={SelectionMode.none}
                             layoutMode={DetailsListLayoutMode.justified}
                         />
@@ -97,22 +96,17 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
         </div>
     }
 
-    // private _renderItemColumn(item: any, index: any, column: any) {
-    //     let fieldContent = item[column.fieldName];
-    //     item;
-    //     index;
+    private _renderItemColumn(item: any, index: any, column: any) {
+        let fieldContent = item[column.fieldName];
+        index;
 
-    //     if (column.key === 'keyDelete') {
-    //         return <div>
-    //             <DefaultButton onClick={() => alert('clicked')}>
-    //                 <Icon iconName='Delete' />
-    //             </DefaultButton>
-    //         </div>
-    //     }
-    //     else{
-    //         return ''
-    //     }
-    // }
+        if (column.key === 'keyDelete') {
+            return <Icon iconName={'Delete'} onClick={() => alert('clicked')} />
+        }
+        else{
+            return fieldContent;
+        }
+    }
 
     private _handleAddNewOrigin() {
         this.props.handleAddNewOrigin(this.state.newOrigin);
