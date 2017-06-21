@@ -3,9 +3,8 @@ import * as React from 'react';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
-import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
+import { PrimaryButton, IconButton } from 'office-ui-fabric-react/lib/Button';
 import { MessageBar } from 'office-ui-fabric-react/lib/MessageBar';
-import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
 import {
     DetailsList,
@@ -14,25 +13,24 @@ import {
 
 let _columns = [
     {
-        key: 'keyDelete',
+        key: 'column1',
         name: '',
         fieldName: 'delete',
-        minWidth: 50,
-        isResizable: false
+        minWidth: 50
     },
     {
-        key: 'keyOrigin',
-        name: 'Origin',
+        key: 'column2',
+        name: 'Origins',
         fieldName: 'origin',
-        minWidth: 700,
-        isResizable: false
-    },
+        minWidth: 700
+    }
 ];
 
 export interface IOriginsContainerProps {
     Origins: string[];
     handleCreateDefaultOrigins: () => void
     handleAddNewOrigin: (origin: string) => void
+    handleDeleteOrigin: (origin: string) => void
 }
 
 export interface IOriginsContainerState {
@@ -51,16 +49,15 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 
     public render() {
         let _items: any = [];
-        this.props.Origins.map((_origin) =>
+        this.props.Origins.map((_origin, index) =>
             _items.push({
-                key: _origin.toString(),
+                key: index,
                 delete: '',
                 origin: _origin
             })
         );
 
         return <div className='o365Manager-OriginsContainer'>
-
             <div className='ms-Grid'>
                 <div className='ms-Grid-row'>
                     <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
@@ -71,13 +68,14 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
                     </div>
                 </div>
                 <div className='ms-Grid-row'>
-                    <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
+                    <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12 details-list-container'>
                         <DetailsList
                             items={_items}
                             columns={_columns}
-                            onRenderItemColumn={this._renderItemColumn}
+                            onRenderItemColumn={this._renderItemColumn.bind(this)}
                             selectionMode={SelectionMode.none}
                             layoutMode={DetailsListLayoutMode.justified}
+                            isHeaderVisible={true}
                         />
                     </div>
                 </div>
@@ -97,15 +95,20 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
     }
 
     private _renderItemColumn(item: any, index: any, column: any) {
-        let fieldContent = item[column.fieldName];
+        const fieldContent = item[column.fieldName];
         index;
 
-        if (column.key === 'keyDelete') {
-            return <Icon iconName={'Delete'} onClick={() => alert('clicked')} />
+        if (column.key === 'column1') {
+            return <IconButton iconProps={{ iconName: 'Delete' }} onClick={this._handleDeleteOrigin.bind(this, item)} />
         }
-        else{
-            return fieldContent;
+        else {
+            return <Label>{fieldContent}</Label>;
         }
+    }
+
+    private _handleDeleteOrigin(item: any) {
+        
+        this.props.handleDeleteOrigin(item.origin)
     }
 
     private _handleAddNewOrigin() {

@@ -36,7 +36,8 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
                                     <OriginsContainer
                                         Origins={this.state.Origins}
                                         handleCreateDefaultOrigins={this._createDefaultOrigins.bind(this)}
-                                        handleAddNewOrigin={this._addNewOrigin.bind(this)} />
+                                        handleAddNewOrigin={this._addNewOrigin.bind(this)}
+                                        handleDeleteOrigin={this._deleteOrigin.bind(this)} />
                                 </PivotItem>
                                 <PivotItem linkText='Filetypes'>
                                     <FileTypesContainer FileTypes={this.state.Filetypes} />
@@ -66,6 +67,23 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 
     componentDidMount() {
         this._getCDNSettings();
+    }
+
+    private async _deleteOrigin(origin: string){
+        
+        const response = await fetch(`/Home/RemoveOrigin?originURL=${origin}`, {
+            credentials: 'same-origin',
+            method: 'POST'
+        });
+
+        if (!response.ok) {
+            const responseText = await response.text();
+            throw new Error(responseText);
+        };
+
+        const _origins: string[] = await response.json();
+
+        this.setState({ Origins: _origins });
     }
 
     private async _addNewOrigin(origin: string) {
