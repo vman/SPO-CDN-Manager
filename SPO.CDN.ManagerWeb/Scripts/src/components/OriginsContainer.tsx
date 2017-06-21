@@ -3,8 +3,9 @@ import * as React from 'react';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Panel, PanelType } from 'office-ui-fabric-react/lib/Panel';
-import { PrimaryButton, IconButton } from 'office-ui-fabric-react/lib/Button';
+import { PrimaryButton, IconButton , DefaultButton } from 'office-ui-fabric-react/lib/Button';
 import { MessageBar } from 'office-ui-fabric-react/lib/MessageBar';
+//import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
 
 import {
     DetailsList,
@@ -91,6 +92,18 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
                 <PrimaryButton text='Add' onClick={this._handleAddNewOrigin.bind(this)} />
                 <MessageBar>It can take up to 15 minutes for the CDN origin to be available for publishing assets</MessageBar>
             </Panel>
+            {/*<Dialog
+                isOpen={this.state.showDialog}
+                type={DialogType.largeHeader}
+                onDismiss={this._closeDialog.bind(this)}
+                title='Change CDN Settings?'
+                subText='Are you sure you want to change the CDN settings for your tenant?'
+                isBlocking={true}>
+                <DialogFooter>
+                    <DefaultButton onClick={this._dialogYesClicked.bind(this)} text='Yes' />
+                    <DefaultButton onClick={this._closeDialog.bind(this)} text='No' />
+                </DialogFooter>
+            </Dialog>*/}
         </div>
     }
 
