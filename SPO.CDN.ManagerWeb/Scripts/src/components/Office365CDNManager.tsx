@@ -32,17 +32,17 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
                     <div className='ms-Grid-row'>
                         <div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
                             <Pivot linkSize={PivotLinkSize.large}>
-                                <PivotItem linkText='Origins'>
+                                <PivotItem linkText='Origins' itemIcon='Globe'>
                                     <OriginsContainer
                                         Origins={this.state.Origins}
                                         handleCreateDefaultOrigins={this._createDefaultOrigins.bind(this)}
                                         handleAddNewOrigin={this._addNewOrigin.bind(this)}
                                         handleDeleteOrigin={this._deleteOrigin.bind(this)} />
                                 </PivotItem>
-                                <PivotItem linkText='Filetypes'>
+                                <PivotItem linkText='Filetypes' itemIcon='OpenFile'>
                                     <FileTypesContainer FileTypes={this.state.Filetypes} />
                                 </PivotItem>
-                                <PivotItem linkText='Turn CDN On/Off'>
+                                <PivotItem linkText='Turn CDN On/Off' itemIcon='Settings' >
                                     <ToggleCDNContainer
                                         Enabled={this.state.PublicCDNEnabled}
                                         toggleCDN={this._toggleCDN.bind(this)} />
