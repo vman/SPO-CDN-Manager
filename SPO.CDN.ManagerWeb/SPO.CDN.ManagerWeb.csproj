@@ -336,10 +336,12 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\src\app.tsx" />
+    <TypeScriptCompile Include="Scripts\src\components\DialogContainer.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\FileTypesContainer.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\Header.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\Office365CDNManager.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\OriginsContainer.tsx" />
+    <TypeScriptCompile Include="Scripts\src\components\PanelContainer.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\ToggleCDNContainer.tsx" />
     <TypeScriptCompile Include="snippets.ts" />
   </ItemGroup>

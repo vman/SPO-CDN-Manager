@@ -5,6 +5,7 @@ import { FileTypesContainer } from './FileTypesContainer';
 import { ToggleCDNContainer } from './ToggleCDNContainer';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
 import './O365CDNManager.module.scss';
 
@@ -13,12 +14,28 @@ interface IOffice365CDNManagerState {
     Filetypes: string[];
     Origins: string[];
     SPOSiteUrl: string;
+    showSpinner?: boolean;
+    errorMessage: string;
+    successMessage: string;
 }
 
 interface IOffice365CDNManagerProps {
 }
 
 export class Office365CDNManager extends React.Component<IOffice365CDNManagerProps, IOffice365CDNManagerState> {
+
+    constructor(props: IOffice365CDNManagerProps) {
+        super(props);
+        this.state = {
+            PublicCDNEnabled: false,
+            Filetypes: [],
+            Origins: [],
+            SPOSiteUrl: '',
+            showSpinner: true,
+            errorMessage: '',
+            successMessage: ''
+        };
+    }
 
     public render() {
         return <Fabric>
@@ -34,10 +51,15 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
                             <Pivot linkSize={PivotLinkSize.large}>
                                 <PivotItem linkText='Origins' itemIcon='Globe'>
                                     <OriginsContainer
-                                        Origins={this.state.Origins}
-                                        handleCreateDefaultOrigins={this._createDefaultOrigins.bind(this)}
-                                        handleAddNewOrigin={this._addNewOrigin.bind(this)}
-                                        handleDeleteOrigin={this._deleteOrigin.bind(this)} />
+                                            Origins={this.state.Origins}
+                                            errorMessage={this.state.errorMessage}
+                                            successMessage={this.state.successMessage}                                       
+                                            handleCreateDefaultOrigins={this._createDefaultOrigins.bind(this)}
+                                            handleAddNewOrigin={this._addNewOrigin.bind(this)}
+                                            handleDeleteOrigin={this._deleteOrigin.bind(this)} />
+                                    {this.state.showSpinner &&
+                                        <Spinner size={ SpinnerSize.large } />
+                                    }
                                 </PivotItem>
                                 <PivotItem linkText='Filetypes' itemIcon='OpenFile'>
                                     <FileTypesContainer FileTypes={this.state.Filetypes} />
@@ -55,22 +77,12 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
         </Fabric>
     }
 
-    constructor(props: IOffice365CDNManagerProps) {
-        super(props);
-        this.state = {
-            PublicCDNEnabled: false,
-            Filetypes: [],
-            Origins: [],
-            SPOSiteUrl: ''
-        };
-    }
-
     componentDidMount() {
         this._getCDNSettings();
     }
 
-    private async _deleteOrigin(origin: string){
-        
+    private async _deleteOrigin(origin: string) {
+
         const response = await fetch(`/Home/RemoveOrigin?originURL=${origin}`, {
             credentials: 'same-origin',
             method: 'POST'
@@ -95,12 +107,13 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 
         if (!response.ok) {
             const responseText = await response.text();
+            this.setState({ errorMessage: responseText});
             throw new Error(responseText);
         };
 
         const _origins: string[] = await response.json();
 
-        this.setState({ Origins: _origins });
+        this.setState({ Origins: _origins, successMessage:'Done' });
 
     }
 
@@ -149,10 +162,15 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 
     private async _getCDNSettings() {
 
-        const response = await fetch('/Home/GetCDNSettings', { credentials: 'include' });
+        const response = await fetch('/Home/GetCDNSettings', { 
+            credentials: 'same-origin'
+         });
 
         const o365Cdn: IOffice365CDNManagerState = await response.json();
 
         this.setState(o365Cdn);
+        this.setState({
+            showSpinner:false
+        })
     }
 }
