@@ -1,5 +1,4 @@
 import * as React from 'react';
-//import { Label } from 'office-ui-fabric-react/lib/Label'
 
 export interface IHeaderProps {
     SPOSiteUrl?: string;

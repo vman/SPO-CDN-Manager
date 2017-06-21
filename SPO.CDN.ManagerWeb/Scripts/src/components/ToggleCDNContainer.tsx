@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
-import { Dialog, DialogType, DialogFooter } from 'office-ui-fabric-react/lib/Dialog';
-import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { DialogContainer } from './DialogContainer';
 
 export interface IToggleCDNContainerProps {
     Enabled: boolean
@@ -32,18 +31,12 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
                 checked={this.state.isChecked}
                 onChanged={this._checked.bind(this)} />
 
-            <Dialog
-                isOpen={this.state.showDialog}
-                type={DialogType.largeHeader}
-                onDismiss={this._closeDialog.bind(this)}
-                title='Change CDN Settings?'
-                subText='Are you sure you want to change the CDN settings for your tenant?'
-                isBlocking={true}>
-                <DialogFooter>
-                    <DefaultButton onClick={this._dialogYesClicked.bind(this)} text='Yes' />
-                    <DefaultButton onClick={this._closeDialog.bind(this)} text='No' />
-                </DialogFooter>
-            </Dialog>
+			<DialogContainer
+				showDialog={this.state.showDialog}
+				submitClicked={this._dialogYesClicked.bind(this)}
+				cancelClicked={this._closeDialog.bind(this)}
+				dialogTitle='Change CDN Settings?'
+				dialogSubText='Are you sure you want to change the CDN settings for your tenant?' />
         </div>
     }
 

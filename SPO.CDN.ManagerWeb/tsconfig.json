@@ -11,9 +11,9 @@
     "pretty": true,
     "alwaysStrict": true,
     "strict": true,
-    //"noUnusedLocals": true, /* Report errors on unused locals. */
-    //"noUnusedParameters": true, /* Report errors on unused parameters. */
-    //"noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
+    "noUnusedLocals": true, /* Report errors on unused locals. */
+    "noUnusedParameters": true, /* Report errors on unused parameters. */
+    "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
     "noFallthroughCasesInSwitch": true,
     "lib": [
       "es2015",
