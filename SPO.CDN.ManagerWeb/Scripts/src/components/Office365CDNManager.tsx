@@ -5,6 +5,7 @@ import { FileTypesContainer } from './FileTypesContainer';
 import { ToggleCDNContainer } from './ToggleCDNContainer';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
 
 import './O365CDNManager.module.scss';
@@ -46,18 +47,20 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 						<div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
 							<Pivot linkSize={PivotLinkSize.large}>
 								<PivotItem linkText='Origins' itemIcon='Globe'>
-									<OriginsContainer 
-										Origins={this.state.Origins} 
-										showSpinner={this.state.showSpinner} 
+									<OriginsContainer
+										Origins={this.state.Origins}
 										handleStateUpdate={this._handleStateUpdate.bind(this)} />
+									{this.state.showSpinner &&
+										<Spinner size={SpinnerSize.large} />
+									}
 								</PivotItem>
 								<PivotItem linkText='Filetypes' itemIcon='OpenFile'>
-									<FileTypesContainer 
+									<FileTypesContainer
 										FileTypes={this.state.Filetypes}
 										handleStateUpdate={this._handleStateUpdate.bind(this)} />
 								</PivotItem>
 								<PivotItem linkText='Turn CDN On/Off' itemIcon='Settings' >
-									<ToggleCDNContainer 
+									<ToggleCDNContainer
 										Enabled={this.state.PublicCDNEnabled} handleStateUpdate={this._handleStateUpdate.bind(this)} />
 								</PivotItem>
 							</Pivot>
@@ -85,11 +88,11 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 			Filetypes: o365Cdn.Filetypes,
 			Origins: o365Cdn.Origins,
 			SPOSiteUrl: o365Cdn.SPOSiteUrl,
-			showSpinner: false 
+			showSpinner: false
 		});
 	}
 
-	private _handleStateUpdate(newState: any){
+	private _handleStateUpdate(newState: any) {
 		this.setState(newState);
 	}
 }

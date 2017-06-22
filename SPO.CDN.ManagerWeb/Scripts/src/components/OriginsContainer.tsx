@@ -6,12 +6,10 @@ import { DialogContainer } from './DialogContainer';
 import { PanelContainer } from './PanelContainer';
 import { DetailsList, DetailsListLayoutMode, SelectionMode } from 'office-ui-fabric-react/lib/DetailsList';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
 
 export interface IOriginsContainerProps {
 	Origins: string[];
-	showSpinner: boolean;
 	handleStateUpdate: (newSate: any) => void;
 }
 
@@ -40,7 +38,7 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 			messageBarErrorText: ''
 		};
 	}
-
+	
 	public render() {
 
 		let _items: any = [];
@@ -68,9 +66,6 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 				</div>
 				<div className='ms-Grid-row'>
 					<div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12 details-list-container'>
-						{this.props.showSpinner &&
-							<Spinner size={SpinnerSize.large} />
-						}
 						<DetailsList
 							items={_items}
 							columns={[
