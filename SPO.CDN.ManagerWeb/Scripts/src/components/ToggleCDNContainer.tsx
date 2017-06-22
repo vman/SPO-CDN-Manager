@@ -4,7 +4,7 @@ import { DialogContainer } from './DialogContainer';
 
 export interface IToggleCDNContainerProps {
     Enabled: boolean
-    toggleCDN: (checked: boolean) => void
+    handleStateUpdate: (newState: any) => void;
 }
 
 export interface IToggleCDNContainerState {
@@ -40,9 +40,31 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
         </div>
     }
 
-    private _dialogYesClicked() {
-        this.props.toggleCDN(this.state.isChecked)
-        this.setState({ showDialog: false });
+    private async _dialogYesClicked() {
+        
+		try {
+
+			this.props.handleStateUpdate({ PublicCDNEnabled: this.state.isChecked });
+			this.setState({ showDialog: false });
+
+			const response = await fetch(`/Home/SetCDN?value=${this.state.isChecked}`, {
+				credentials: 'same-origin',
+				method: 'POST'
+			});
+
+			if (!response.ok) {
+				const responseText = await response.text();
+				throw new Error(responseText);
+			};
+
+			const responseJSON: boolean = await response.json();
+
+			this.props.handleStateUpdate({ PublicCDNEnabled: responseJSON });
+
+		} catch (error) {
+			this.props.handleStateUpdate({ PublicCDNEnabled: !this.state.isChecked });
+			console.log(error);
+		}
     }
 
     private _checked(_isChecked: boolean) {
