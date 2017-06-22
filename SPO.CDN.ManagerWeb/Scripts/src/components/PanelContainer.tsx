@@ -18,7 +18,7 @@ export interface IPanelContainerProps {
 	handleCancelClicked: () => void;
 	handleTextFieldChanged: () => void;
 	handleSubmitClicked: () => void;
-	messagebarInfoText: string;
+	messagebarInfoText?: string;
 	messagebarResultText?: string;
 	isRequestSuccess: boolean;
 }
@@ -36,13 +36,15 @@ export class PanelContainer extends React.Component<IPanelContainerProps, IPanel
 			<Label>{this.props.panelSubText}</Label>
 			<TextField label={this.props.textFieldLabel} placeholder={this.props.textFieldPlaceHolder} onChanged={this.props.handleTextFieldChanged} />
 			<PrimaryButton text='Add' onClick={this.props.handleSubmitClicked} />
-			<MessageBar>{this.props.messagebarInfoText}</MessageBar>
-			
-			
+
+			{this.props.messagebarInfoText &&
+				<MessageBar>{this.props.messagebarInfoText}</MessageBar>
+			}
+
 			{this.props.messagebarResultText != '' && this.props.isRequestSuccess &&
 				<MessageBar messageBarType={MessageBarType.success}>{this.props.messagebarResultText}</MessageBar>
 			}
-			
+
 			{this.props.messagebarResultText != '' && !this.props.isRequestSuccess &&
 				<MessageBar messageBarType={MessageBarType.error}>{this.props.messagebarResultText}</MessageBar>
 			}

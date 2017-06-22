@@ -9,7 +9,7 @@ import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 
 import './O365CDNManager.module.scss';
 
-interface IOffice365CDNManagerState {
+export interface IOffice365CDNManagerState {
 	PublicCDNEnabled: boolean;
 	Filetypes: string[];
 	Origins: string[];
@@ -53,7 +53,8 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 								</PivotItem>
 								<PivotItem linkText='Filetypes' itemIcon='OpenFile'>
 									<FileTypesContainer 
-										FileTypes={this.state.Filetypes} />
+										FileTypes={this.state.Filetypes}
+										handleStateUpdate={this._handleStateUpdate.bind(this)} />
 								</PivotItem>
 								<PivotItem linkText='Turn CDN On/Off' itemIcon='Settings' >
 									<ToggleCDNContainer 
@@ -83,6 +84,7 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 			PublicCDNEnabled: o365Cdn.PublicCDNEnabled,
 			Filetypes: o365Cdn.Filetypes,
 			Origins: o365Cdn.Origins,
+			SPOSiteUrl: o365Cdn.SPOSiteUrl,
 			showSpinner: false 
 		});
 	}

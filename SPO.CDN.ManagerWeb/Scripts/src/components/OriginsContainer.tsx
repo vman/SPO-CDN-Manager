@@ -8,6 +8,7 @@ import { DetailsList, DetailsListLayoutMode, SelectionMode } from 'office-ui-fab
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
+
 export interface IOriginsContainerProps {
 	Origins: string[];
 	showSpinner: boolean;
@@ -57,9 +58,8 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 				<div className='ms-Grid-row'>
 					<div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
 						<div className='Origins-Button-Container'>
-							<PrimaryButton className='Origins-AddNewOrigins' text='Add New Origin' onClick={this._showPanel.bind(this)} />
+							<PrimaryButton className='Origins-AddNewOrigins' text='Add New Origin' onClick={() => this.setState({showAddNewOriginPanel: true})} />
 							<PrimaryButton text='Create Default Origins' onClick={() => this.setState({ showCreateDefaultOriginsDialog: true })} />
-							
 							{this.state.messageBarErrorText != '' &&
 								<MessageBar messageBarType={MessageBarType.error}>{this.state.messageBarErrorText}</MessageBar>
 							}
@@ -234,12 +234,6 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 	private _ontxtAddOriginChanged(value: string): void {
 		return this.setState({
 			newOrigin: value
-		});
-	}
-
-	private _showPanel() {
-		this.setState({
-			showAddNewOriginPanel: true
 		});
 	}
 
