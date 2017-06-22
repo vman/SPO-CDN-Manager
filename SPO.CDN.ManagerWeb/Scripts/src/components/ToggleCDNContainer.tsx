@@ -3,33 +3,31 @@ import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 import { DialogContainer } from './DialogContainer';
 
 export interface IToggleCDNContainerProps {
-    Enabled: boolean
-    handleStateUpdate: (newState: any) => void;
+	Enabled: boolean
+	handleStateUpdate: (newState: any) => void;
 }
 
 export interface IToggleCDNContainerState {
-    showDialog: boolean;
-    isChecked: boolean;
+	showDialog: boolean;
 }
 
 export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps, IToggleCDNContainerState> {
 
-    constructor(props: IToggleCDNContainerProps) {
-        super(props);
-        this.state = {
-            showDialog: false,
-            isChecked: this.props.Enabled
-        };
-    }
+	constructor(props: IToggleCDNContainerProps) {
+		super(props);
+		this.state = {
+			showDialog: false
+		};
+	}
 
-    public render() {
-        return <div className='o365Manager-ToggleCDNContainer'>
-            <Toggle
-                label='Use Office 365 Public CDN'
-                onText='On'
-                offText='Off'
-                checked={this.state.isChecked}
-                onChanged={this._checked.bind(this)} />
+	public render() {
+		return <div className='o365Manager-ToggleCDNContainer'>
+			<Toggle
+				label='Use Office 365 Public CDN'
+				onText='On'
+				offText='Off'
+				checked={this.props.Enabled}
+				onChanged={this._checked.bind(this)} />
 
 			<DialogContainer
 				showDialog={this.state.showDialog}
@@ -37,17 +35,16 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
 				cancelClicked={this._closeDialog.bind(this)}
 				dialogTitle='Change CDN Settings?'
 				dialogSubText='Are you sure you want to change the CDN settings for your tenant?' />
-        </div>
-    }
+		</div>
+	}
 
-    private async _dialogYesClicked() {
-        
+	private async _dialogYesClicked() {
+
 		try {
 
-			this.props.handleStateUpdate({ PublicCDNEnabled: this.state.isChecked });
 			this.setState({ showDialog: false });
 
-			const response = await fetch(`/Home/SetCDN?value=${this.state.isChecked}`, {
+			const response = await fetch(`/Home/SetCDN?value=${this.props.Enabled}`, {
 				credentials: 'same-origin',
 				method: 'POST'
 			});
@@ -59,25 +56,36 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
 
 			const responseJSON: boolean = await response.json();
 
-			this.props.handleStateUpdate({ PublicCDNEnabled: responseJSON });
+			this.props.handleStateUpdate({
+				PublicCDNEnabled: responseJSON
+			});
 
 		} catch (error) {
-			this.props.handleStateUpdate({ PublicCDNEnabled: !this.state.isChecked });
+			this.props.handleStateUpdate((prevState: any) => ({
+				PublicCDNEnabled: !prevState.PublicCDNEnabled
+			}));
+
 			console.log(error);
 		}
-    }
+	}
 
-    private _checked(_isChecked: boolean) {
-        this.setState({
-            isChecked: _isChecked,
-            showDialog: true
-        });
-    }
+	private _checked(_isChecked: boolean) {
+		this.props.handleStateUpdate((prevState: any) => ({
+			PublicCDNEnabled: !prevState.PublicCDNEnabled
+		}));
 
-    private _closeDialog() {
-        this.setState({
-            isChecked: !this.state.isChecked,
-            showDialog: false
-        });
-    }
+		this.setState({
+			showDialog: true
+		});
+	}
+
+	private _closeDialog() {
+		this.props.handleStateUpdate((prevState: any) => ({
+			PublicCDNEnabled: !prevState.PublicCDNEnabled
+		}));
+
+		this.setState({
+			showDialog: false
+		});
+	}
 }
