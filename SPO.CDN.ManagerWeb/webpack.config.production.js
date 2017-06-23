@@ -13,6 +13,9 @@ module.exports = {
 		extensions: [".ts", ".tsx", ".js", ".json"]
 	},
 	plugins: [
+		new webpack.ProvidePlugin({
+			'Promise': 'es6-promise'
+		}),
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': '"production"' // Reduces 78 kb in React
 		}),
@@ -20,23 +23,23 @@ module.exports = {
 			minimize: true,
 			compress: {
 				warnings: false,
-                screw_ie8: true,
-                conditionals: true,
-                unused: true,
-                comparisons: true,
-                sequences: true,
-                dead_code: true,
-                evaluate: true,
-                if_return: true,
-                join_vars: true,
-                drop_console: true,
-                drop_debugger: true
+				screw_ie8: true,
+				conditionals: true,
+				unused: true,
+				comparisons: true,
+				sequences: true,
+				dead_code: true,
+				evaluate: true,
+				if_return: true,
+				join_vars: true,
+				drop_console: true,
+				drop_debugger: true
 			},
 			debug: false,
-            sourceMap: false,
-            output: {
-                comments: false
-            }
+			sourceMap: false,
+			output: {
+				comments: false
+			}
 		})
 	],
 	module: {
