@@ -166,6 +166,11 @@ export class FileTypesContainer extends React.Component<IFileTypesContainerProps
 		this.props.handleStateUpdate({
 			Filetypes: _fileTypes
 		});
+
+		this.setState({
+			isRequestSuccess: true, 
+			requestResult: 'Done' 
+		});
 	}
 
 	private _ontxtAddFiletypeChanged(value: string): void {

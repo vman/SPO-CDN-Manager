@@ -15,7 +15,8 @@
     "es6-promise": "^4.1.0",
     "office-ui-fabric-react": "^4.7.2",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "@types/prop-types": "^15.5.1",

@@ -31,7 +31,7 @@ namespace SPO.CDN.ManagerWeb
       */
 
       bundles.Add(new ScriptBundle("~/bundles/cdnmanager").Include(
-                "~/Scripts/dist/spo.cdn.manager.bundle.min.js"));
+                "~/Scripts/dist/spo.cdn.manager.bundle.js"));
     }
   }
 }
