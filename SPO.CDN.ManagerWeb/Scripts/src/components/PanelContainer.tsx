@@ -23,7 +23,6 @@ export interface IPanelContainerProps {
 	isRequestSuccess: boolean;
 }
 
-
 export class PanelContainer extends React.Component<IPanelContainerProps, IPanelContainerPropsState> {
 	public render() {
 
@@ -34,21 +33,24 @@ export class PanelContainer extends React.Component<IPanelContainerProps, IPanel
 			isLightDismiss={true}
 			headerText={this.props.panelHeader}>
 			<Label>{this.props.panelSubText}</Label>
-			<TextField label={this.props.textFieldLabel} placeholder={this.props.textFieldPlaceHolder} onChanged={this.props.handleTextFieldChanged} />
+			<TextField
+				label={this.props.textFieldLabel}
+				placeholder={this.props.textFieldPlaceHolder}
+				onChanged={this.props.handleTextFieldChanged} />
 			<PrimaryButton text='Add' onClick={this.props.handleSubmitClicked} />
 
 			{this.props.messagebarInfoText &&
 				<MessageBar>{this.props.messagebarInfoText}</MessageBar>
 			}
 
-			{this.props.messagebarResultText != '' && this.props.isRequestSuccess &&
+			{this.props.messagebarResultText !== '' && this.props.isRequestSuccess &&
 				<MessageBar messageBarType={MessageBarType.success}>{this.props.messagebarResultText}</MessageBar>
 			}
 
-			{this.props.messagebarResultText != '' && !this.props.isRequestSuccess &&
+			{this.props.messagebarResultText !== '' && !this.props.isRequestSuccess &&
 				<MessageBar messageBarType={MessageBarType.error}>{this.props.messagebarResultText}</MessageBar>
 			}
 
-		</Panel>
+		</Panel>;
 	}
 }

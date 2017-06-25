@@ -1,12 +1,10 @@
 import * as React from 'react';
-
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import { PrimaryButton, IconButton } from 'office-ui-fabric-react/lib/Button';
 import { DialogContainer } from './DialogContainer';
 import { PanelContainer } from './PanelContainer';
 import { DetailsList, DetailsListLayoutMode, SelectionMode } from 'office-ui-fabric-react/lib/DetailsList';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
-
 
 export interface IOriginsContainerProps {
 	Origins: string[];
@@ -38,10 +36,9 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 			messageBarErrorText: ''
 		};
 	}
-	
 	public render() {
 
-		let _items: any = [];
+		const _items: any = [];
 
 		this.props.Origins.map((_origin, index) =>
 			_items.push({
@@ -56,9 +53,14 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 				<div className='ms-Grid-row'>
 					<div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
 						<div className='Origins-Button-Container'>
-							<PrimaryButton className='Origins-AddNewOrigins' text='Add New Origin' onClick={() => this.setState({showAddNewOriginPanel: true})} />
-							<PrimaryButton text='Create Default Origins' onClick={() => this.setState({ showCreateDefaultOriginsDialog: true })} />
-							{this.state.messageBarErrorText != '' &&
+							<PrimaryButton
+								className='Origins-AddNewOrigins'
+								text='Add New Origin'
+								onClick={() => this.setState({showAddNewOriginPanel: true})} />
+							<PrimaryButton
+								text='Create Default Origins'
+								onClick={() => this.setState({ showCreateDefaultOriginsDialog: true })} />
+							{this.state.messageBarErrorText !== '' &&
 								<MessageBar messageBarType={MessageBarType.error}>{this.state.messageBarErrorText}</MessageBar>
 							}
 						</div>
@@ -97,7 +99,8 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 				handleCancelClicked={() => this.setState({ showAddNewOriginPanel: false })}
 				handleTextFieldChanged={this._ontxtAddOriginChanged.bind(this)}
 				panelHeader='Add New CDN Origin'
-				panelSubText='Add the relative url of a SharePoint folder to be set as CDN Origin. Wildcards beginning with */ are also supported.'
+				panelSubText={`Add the relative url of a SharePoint folder to be set as CDN Origin.
+								Wildcards beginning with */ are also supported.`}
 				textFieldLabel='Relative Url of Folder'
 				textFieldPlaceHolder='/sites/intranet/publishingimages'
 				messagebarInfoText='It can take up to 15 minutes for the CDN origin to be available for publishing assets'
@@ -118,19 +121,18 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 				dialogTitle='Delete a CDN Origin?'
 				dialogSubText='Are you sure you want to delete the CDN origin?'
 				content={this.state.originToDelete} />
-		</div>
+		</div>;
 	}
 
 	private _renderItemColumn(item: any, index: any, column: any) {
 		const fieldContent = item[column.fieldName];
-		index;
 
 		if (column.key === 'column1') {
 
 			const strOrgin: string = item.origin;
 
-			if (strOrgin.indexOf('configuration pending') != -1) {
-				return <IconButton iconProps={{ iconName: 'CloudUpload' }} />
+			if (strOrgin.indexOf('configuration pending') !== -1) {
+				return <IconButton iconProps={{ iconName: 'CloudUpload' }} />;
 			}
 			else {
 				return <IconButton
@@ -138,7 +140,7 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 					onClick={() => this.setState({
 						showDeleteOriginsDialog: true,
 						originToDelete: item.origin
-					})} />
+					})} />;
 			}
 
 		}
@@ -161,10 +163,10 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 		if (!response.ok) {
 			const responseText = await response.text();
 			this.setState({
-				messageBarErrorText:responseText
+				messageBarErrorText: responseText
 			});
 			throw new Error(responseText);
-		};
+		}
 
 		const _origins: string[] = await response.json();
 
@@ -188,7 +190,7 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 			const responseText = await response.text();
 			this.setState({ requestResult: responseText });
 			throw new Error(responseText);
-		};
+		}
 
 		const _origins: string[] = await response.json();
 
@@ -212,17 +214,17 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 			});
 
 			throw new Error(responseText);
-		};
+		}
 
 		const _origins: string[] = await response.json();
 
 		this.props.handleStateUpdate({
-			Origins: _origins 
+			Origins: _origins
 		});
 
 		this.setState({
-			isRequestSuccess: true, 
-			requestResult: 'Done' 
+			isRequestSuccess: true,
+			requestResult: 'Done'
 		});
 	}
 

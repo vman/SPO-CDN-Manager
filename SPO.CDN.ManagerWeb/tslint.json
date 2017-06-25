@@ -4,6 +4,20 @@
         "tslint:recommended"
     ],
     "jsRules": {},
-    "rules": {},
+    "rules": {
+        "quotemark": [
+            "single"
+        ],
+        "trailing-comma": [true, "never"],
+        "indent": [true, "tabs", 4],
+        "no-consecutive-blank-lines":true,
+        "ordered-imports":[ false ],
+        "object-literal-sort-keys": false,
+        "member-access": [ false ],
+        "no-empty-interface": false,
+        "eofline": true,
+        "one-line": [false, "check-catch", "check-finally", "check-else", "check-open-brace"],
+        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
+    },
     "rulesDirectory": []
 }

@@ -34,7 +34,7 @@ export class FileTypesContainer extends React.Component<IFileTypesContainerProps
 	}
 
 	public render() {
-		let _items: any = [];
+		const _items: any = [];
 
 		this.props.FileTypes.map((_filetype, index) =>
 			_items.push({
@@ -49,7 +49,10 @@ export class FileTypesContainer extends React.Component<IFileTypesContainerProps
 				<div className='ms-Grid-row'>
 					<div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
 						<div className='Origins-Button-Container'>
-							<PrimaryButton className='FileTypes-AddNewFileType' text='Add Filetype' onClick={() => this.setState({ showPanel: true })} />
+							<PrimaryButton
+								className='FileTypes-AddNewFileType'
+								text='Add Filetype'
+								onClick={() => this.setState({ showPanel: true })} />
 						</div>
 					</div>
 				</div>
@@ -103,14 +106,13 @@ export class FileTypesContainer extends React.Component<IFileTypesContainerProps
 
 	private _renderItemColumn(item: any, index: any, column: any) {
 		const fieldContent = item[column.fieldName];
-		index;
 		if (column.key === 'column1') {
 			return <IconButton
 				iconProps={{ iconName: 'Delete' }}
 				onClick={() => this.setState({
 					showDeleteFileTypeDialog: true,
 					fileTypeToDelete: item.filetype
-				})} />
+				})} />;
 		}
 		else {
 			return <Label>{fieldContent}</Label>;
@@ -118,9 +120,9 @@ export class FileTypesContainer extends React.Component<IFileTypesContainerProps
 	}
 
 	private _deleteFileType() {
-		let initialFileTypes = this.props.FileTypes;
-		let newFileTypes = initialFileTypes.filter((_fileType) => {
-			return _fileType != this.state.fileTypeToDelete;
+		const initialFileTypes = this.props.FileTypes;
+		const newFileTypes = initialFileTypes.filter((_fileType) => {
+			return _fileType !== this.state.fileTypeToDelete;
 		});
 
 		this.setState({
@@ -131,7 +133,7 @@ export class FileTypesContainer extends React.Component<IFileTypesContainerProps
 	}
 
 	private _addNewFileType() {
-		let _fileTypes = this.props.FileTypes;
+		const _fileTypes = this.props.FileTypes;
 		_fileTypes.push(this.state.newFileType);
 
 		this._setFileTypes(_fileTypes);
@@ -159,7 +161,7 @@ export class FileTypesContainer extends React.Component<IFileTypesContainerProps
 			});
 
 			throw new Error(responseText);
-		};
+		}
 
 		const _fileTypes: string[] = await response.json();
 
@@ -168,13 +170,13 @@ export class FileTypesContainer extends React.Component<IFileTypesContainerProps
 		});
 
 		this.setState({
-			isRequestSuccess: true, 
-			requestResult: 'Done' 
+			isRequestSuccess: true,
+			requestResult: 'Done'
 		});
 	}
 
 	private _ontxtAddFiletypeChanged(value: string): void {
-		this.setState({  
+		this.setState({
 			newFileType: value
 		});
 	}

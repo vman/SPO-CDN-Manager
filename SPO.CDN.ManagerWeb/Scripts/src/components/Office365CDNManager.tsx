@@ -6,8 +6,6 @@ import { ToggleCDNContainer } from './ToggleCDNContainer';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-
-
 import './O365CDNManager.module.scss';
 
 export interface IOffice365CDNManagerState {
@@ -68,7 +66,7 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 					</div>
 				</div>
 			</div>
-		</Fabric>
+		</Fabric>;
 	}
 
 	componentDidMount() {
