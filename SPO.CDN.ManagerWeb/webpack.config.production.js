@@ -49,6 +49,14 @@ module.exports = {
 				test: /\.tsx?$/,
 				loader: "awesome-typescript-loader"
 			},
+			{
+ 				test: /\.tsx?$/,
+ 				enforce: 'pre',
+ 				loader: 'tslint-loader',
+ 				options: {
+					configFileName: 'tslint.json'
+ 				}
+ 			},
 			// All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
 			{
 				enforce: "pre",
