@@ -1,7 +1,7 @@
 var webpack = require('webpack')
 
 module.exports = {
-	entry: "./Scripts/src/app.tsx",
+	entry: ["whatwg-fetch","./Scripts/src/app.tsx"],
 	output: {
 		filename: "spo.cdn.manager.bundle.js",
 		path: __dirname + "/Scripts/dist"
@@ -16,9 +16,9 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.ProvidePlugin({
-		'Promise': 'es6-promise',
-		'fetch':'whatwg-fetch'
-	})
+			'Promise': 'es6-promise',
+			//'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+		})
 	],
 	module: {
 		rules: [

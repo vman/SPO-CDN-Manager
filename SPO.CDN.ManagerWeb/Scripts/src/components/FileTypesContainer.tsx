@@ -108,7 +108,7 @@ export class FileTypesContainer extends React.Component<IFileTypesContainerProps
 		const fieldContent = item[column.fieldName];
 		if (column.key === 'column1') {
 			return <IconButton
-				iconProps={{ iconName: 'Delete' }}
+				iconProps={{ iconName: 'Trash' }}
 				onClick={() => this.setState({
 					showDeleteFileTypeDialog: true,
 					fileTypeToDelete: item.filetype
@@ -143,12 +143,15 @@ export class FileTypesContainer extends React.Component<IFileTypesContainerProps
 
 		const reqHeaders = new Headers({
 			'content-type': 'application/json; charset=utf-8',
-			'dataType': 'json'
+			'dataType': 'json',
+			'Cache-Control': 'no-cache, no-store, must-revalidate',
+			'Pragma': 'no-cache'
 		});
 
 		const response = await fetch(`/Home/SetFiletypes`, {
 			credentials: 'same-origin',
 			method: 'POST',
+			cache: 'no-store',
 			headers: reqHeaders,
 			body: JSON.stringify({ filetypes: newFileTypes })
 		});

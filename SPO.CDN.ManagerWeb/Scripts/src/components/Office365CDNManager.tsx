@@ -74,9 +74,14 @@ export class Office365CDNManager extends React.Component<IOffice365CDNManagerPro
 	}
 
 	private async _getCDNSettings() {
+		const reqHeaders = new Headers({
+			'Cache-Control': 'no-cache, no-store, must-revalidate',
+			'Pragma': 'no-cache'
+		});
 
 		const response = await fetch('/Home/GetCDNSettings', {
-			credentials: 'same-origin'
+			credentials: 'same-origin',
+			headers: reqHeaders
 		});
 
 		const o365Cdn: IOffice365CDNManagerState = await response.json();

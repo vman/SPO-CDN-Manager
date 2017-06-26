@@ -17,7 +17,8 @@
         "no-empty-interface": false,
         "eofline": true,
         "one-line": [false, "check-catch", "check-finally", "check-else", "check-open-brace"],
-        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
+        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+		"comment-format": [ false ]
     },
     "rulesDirectory": []
 }

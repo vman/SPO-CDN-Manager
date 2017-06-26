@@ -13,9 +13,9 @@ module.exports = {
 		extensions: [".ts", ".tsx", ".js", ".json"]
 	},
 	plugins: [
-		new webpack.ProvidePlugin({
-			'Promise': 'es6-promise'
-		}),
+		// new webpack.ProvidePlugin({
+		// 	'Promise': 'es6-promise'
+		// }),
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': '"production"' // Reduces 78 kb in React
 		}),

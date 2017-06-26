@@ -136,11 +136,8 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 			}
 			else {
 				return <IconButton
-					iconProps={{ iconName: 'Delete' }}
-					onClick={() => this.setState({
-						showDeleteOriginsDialog: true,
-						originToDelete: item.origin
-					})} />;
+				 iconProps={{ iconName: 'Trash' }}
+				 onClick={() => this.setState({ showDeleteOriginsDialog: true, originToDelete: item.origin})} />;
 			}
 
 		}
@@ -155,9 +152,15 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 			showCreateDefaultOriginsDialog: false
 		});
 
+		const reqHeaders = new Headers({
+			'Cache-Control': 'no-cache, no-store, must-revalidate',
+			'Pragma': 'no-cache'
+		});
+
 		const response = await fetch(`/Home/CreateDefaultOrigins`, {
 			credentials: 'same-origin',
-			method: 'POST'
+			method: 'POST',
+			headers: reqHeaders
 		});
 
 		if (!response.ok) {
@@ -181,9 +184,15 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 			showDeleteOriginsDialog: false
 		});
 
+		const reqHeaders = new Headers({
+			'Cache-Control': 'no-cache, no-store, must-revalidate',
+			'Pragma': 'no-cache'
+		});
+
 		const response = await fetch(`/Home/RemoveOrigin?originURL=${this.state.originToDelete}`, {
 			credentials: 'same-origin',
-			method: 'POST'
+			method: 'POST',
+			headers: reqHeaders
 		});
 
 		if (!response.ok) {
@@ -201,9 +210,15 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 
 	private async _handleAddNewOrigin() {
 
+		const reqHeaders = new Headers({
+			'Cache-Control': 'no-cache, no-store, must-revalidate',
+			'Pragma': 'no-cache'
+		});
+
 		const response = await fetch(`/Home/AddOrigin?folderUrl=${this.state.newOrigin}`, {
 			credentials: 'same-origin',
-			method: 'POST'
+			method: 'POST',
+			headers: reqHeaders
 		});
 
 		if (!response.ok) {
