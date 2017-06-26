@@ -1,7 +1,7 @@
 {
   "name": "spo.cdn.manager",
   "version": "1.1.0",
-  "description": "Website to manage Office 365 cdn",
+  "description": "App to manage Office 365 CDN",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,12 +16,16 @@
     "office-ui-fabric-react": "^4.7.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "redux": "^3.7.1",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "@types/prop-types": "^15.5.1",
     "@types/react": "^15.0.25",
     "@types/react-dom": "^15.5.0",
+    "@types/redux-logger": "^3.0.0",
     "awesome-typescript-loader": "^3.1.3",
     "css-loader": "^0.28.4",
     "node-sass": "^4.5.3",
