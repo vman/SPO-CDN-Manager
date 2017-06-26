@@ -1,7 +1,7 @@
 var webpack = require('webpack')
 
 module.exports = {
-	entry: "./Scripts/src/app.tsx",
+	entry: ["whatwg-fetch","./Scripts/src/app.tsx"],
 	output: {
 		filename: "spo.cdn.manager.bundle.min.js",
 		path: __dirname + "/Scripts/dist"
@@ -13,9 +13,9 @@ module.exports = {
 		extensions: [".ts", ".tsx", ".js", ".json"]
 	},
 	plugins: [
-		// new webpack.ProvidePlugin({
-		// 	'Promise': 'es6-promise'
-		// }),
+		new webpack.ProvidePlugin({
+			'Promise': 'es6-promise'
+		}),
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': '"production"' // Reduces 78 kb in React
 		}),
