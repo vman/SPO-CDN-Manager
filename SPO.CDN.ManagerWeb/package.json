@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "es6-promise": "^4.1.0",
-    "office-ui-fabric-react": "^4.7.2",
+    "office-ui-fabric-react": "^4.11.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "redux": "^3.7.1",

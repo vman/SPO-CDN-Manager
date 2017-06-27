@@ -24,7 +24,6 @@
     "./Scripts/src/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "wwwroot"
+    "./node_modules"
   ]
 }
