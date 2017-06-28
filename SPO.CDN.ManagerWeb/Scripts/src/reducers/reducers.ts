@@ -1,35 +1,11 @@
-import { Action, FETCH_CDN_SETTINGS_REQUEST, FETCH_CDN_SETTINGS_SUCCESS } from '../actions/actionCreators';
+import { combineReducers } from 'redux';
+import { Action,
+	FETCH_CDN_SETTINGS_REQUEST,
+	FETCH_CDN_SETTINGS_SUCCESS,
+	FETCH_CDN_SETTINGS_ERROR } from '../actions/actionCreators';
+import { Office365CDNManagerState } from '../types';
 
-export type State = Readonly<{
-	SPOSiteUrl: string;
-	isLoading: boolean;
-	PublicCDN: Readonly<{
-		Enabled: boolean;
-		showDialog: boolean;
-	}>;
-	Filetypes: Readonly<{
-		items: string[],
-		showPanel: boolean;
-		showDialog: boolean;
-		fileTypeToAdd: string;
-		fileTypeToDelete: string;
-		isRequestSuccess: boolean;
-		requestResult: string;
-	}>;
-	Origins: Readonly<{
-		items: string[],
-		showPanel: boolean;
-		originToAdd: string;
-		originToDelete: string;
-		showCreateDefaultOriginsDialog: boolean;
-		showDeleteOriginsDialog: boolean;
-		isRequestSuccess: boolean;
-		requestResult: string;
-		messageBarErrorText: string;
-	}>;
-}>;
-
-export const initialState: State = {
+export const initialState: Office365CDNManagerState = {
 	SPOSiteUrl: '',
 	isLoading: true,
 	PublicCDN: {
@@ -58,7 +34,8 @@ export const initialState: State = {
 	}
 };
 
-export default function reducer(state: State = initialState, action: Action): State {
+const cdnSettingsReducer = (state: Office365CDNManagerState = initialState, action: Action):
+Office365CDNManagerState => {
 	switch (action.type) {
 		case FETCH_CDN_SETTINGS_REQUEST:
 			return {
@@ -70,6 +47,17 @@ export default function reducer(state: State = initialState, action: Action): St
 				isLoading: false,
 				Origins: action.payload.Origins
 			};
+		case FETCH_CDN_SETTINGS_ERROR:
+			return {
+				...state,
+				isLoading: false
+			};
 		default: return state;
 	}
-}
+};
+
+const rootReducer = combineReducers({
+  cdnSettingsReducer
+});
+
+export default rootReducer;

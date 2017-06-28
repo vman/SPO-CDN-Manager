@@ -25,6 +25,7 @@ module.exports = {
 			{
 				test: /\.tsx?$/,
 				loader: "awesome-typescript-loader",
+				//exclude: path.resolve(__dirname, "node_modules"),
 				options: {
 					configFileName: 'tsconfig.json'
 				}

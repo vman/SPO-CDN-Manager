@@ -1,23 +1,25 @@
+import { Office365CDNManagerState } from '../types';
 
+//Setup for Actions
 export const FETCH_CDN_SETTINGS_REQUEST = 'FETCH_CDN_SETTINGS_REQUEST';
 export const FETCH_CDN_SETTINGS_SUCCESS = 'FETCH_CDN_SETTINGS_SUCCESS';
 export const FETCH_CDN_SETTINGS_ERROR = 'FETCH_CDN_SETTINGS_ERROR';
-
 export type Action =
 	{ type: typeof FETCH_CDN_SETTINGS_REQUEST } |
-	{ type: typeof FETCH_CDN_SETTINGS_SUCCESS, payload: any } |
-	{ type: typeof FETCH_CDN_SETTINGS_ERROR, payload: any };
+	{ type: typeof FETCH_CDN_SETTINGS_SUCCESS, payload: Office365CDNManagerState } |
+	{ type: typeof FETCH_CDN_SETTINGS_ERROR, payload: string };
 
-const requestCDNSettings = () => ({
+//Action Creators which create and return Actions
+const requestCDNSettings = (): Action => ({
 	type: FETCH_CDN_SETTINGS_REQUEST
 });
 
-const requestCDNSettingsSuccess = (json: any): Action => ({
+const requestCDNSettingsSuccess = (cdnSettings: Office365CDNManagerState): Action => ({
 	type: FETCH_CDN_SETTINGS_SUCCESS,
-	payload: json
+	payload: cdnSettings
 });
 
-const requestCDNSettingsError = (error: any): Action => ({
+const requestCDNSettingsError = (error: string): Action => ({
 	type: FETCH_CDN_SETTINGS_ERROR,
 	payload: error
 });

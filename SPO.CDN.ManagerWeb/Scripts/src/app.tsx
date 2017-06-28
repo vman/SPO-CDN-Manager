@@ -19,8 +19,7 @@ const store = createStore(
   )
 );
 
-store
-  .dispatch(fetchCDNSettings())
+store.dispatch(fetchCDNSettings())
   .then(() => console.log(store.getState()));
 
 ReactDOM.render(<Office365CDNManager/>, document.getElementById('cdnManagerContainer'));
