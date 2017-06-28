@@ -9,7 +9,7 @@ export type Action =
 	{ type: typeof FETCH_CDN_SETTINGS_SUCCESS, payload: Office365CDNManagerState } |
 	{ type: typeof FETCH_CDN_SETTINGS_ERROR, payload: string };
 
-//Action Creators which create and return Actions
+//Action Creators to create and return Actions
 const requestCDNSettings = (): Action => ({
 	type: FETCH_CDN_SETTINGS_REQUEST
 });
