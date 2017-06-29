@@ -12,10 +12,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/react-redux": "^4.4.45",
     "es6-promise": "^4.1.1",
     "office-ui-fabric-react": "^4.12.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-redux": "^5.0.5",
     "redux": "^3.7.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",

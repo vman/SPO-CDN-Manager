@@ -1,6 +1,7 @@
 export type Office365CDNManagerState = Readonly<{
 	SPOSiteUrl: string;
 	isLoading: boolean;
+	ErrorMessage: string;
 	PublicCDN: Readonly<{
 		Enabled: boolean;
 		showDialog: boolean;
@@ -23,6 +24,6 @@ export type Office365CDNManagerState = Readonly<{
 		showDeleteOriginsDialog: boolean;
 		isRequestSuccess: boolean;
 		requestResult: string;
-		messageBarErrorText: string;
+		ErrorMessage: string;
 	}>;
 }>;
