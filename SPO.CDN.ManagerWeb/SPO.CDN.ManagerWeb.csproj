@@ -296,8 +296,6 @@
     <Content Include="Scripts\fabric.templates.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\knockout-3.4.0.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -345,7 +343,6 @@
     <TypeScriptCompile Include="Scripts\src\components\OriginsContainer.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\PanelContainer.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\ToggleCDNContainer.tsx" />
-    <TypeScriptCompile Include="snippets.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

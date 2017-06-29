@@ -2,38 +2,38 @@ import { combineReducers } from 'redux';
 import { Action, ActionTypes } from '../actions/actionTypes';
 import { Office365CDNManagerState } from '../types';
 
-// export const initialState: Office365CDNManagerState = {
-// 	SPOSiteUrl: '',
-// 	isLoading: true,
-// 	ErrorMessage: '',
-// 	PublicCDN: {
-// 		Enabled: false,
-// 		showDialog: false
-// 	},
-// 	Filetypes: {
-// 		items: [],
-// 		showPanel: false,
-// 		showDialog: false,
-// 		fileTypeToDelete: '',
-// 		fileTypeToAdd: '',
-// 		requestResult: '',
-// 		isRequestSuccess: false
-// 	},
-// 	Origins: {
-// 		items: [],
-// 		showPanel: false,
-// 		originToAdd: '',
-// 		originToDelete: '',
-// 		showCreateDefaultOriginsDialog: false,
-// 		showDeleteOriginsDialog: false,
-// 		requestResult: '',
-// 		isRequestSuccess: false,
-// 		ErrorMessage: ''
-// 	},
+export const initialState: Office365CDNManagerState = {
+	SPOSiteUrl: '',
+	isLoading: true,
+	ErrorMessage: '',
+	PublicCDN: {
+		Enabled: false,
+		showDialog: false
+	},
+	Filetypes: {
+		items: [],
+		showPanel: false,
+		showDialog: false,
+		fileTypeToDelete: '',
+		fileTypeToAdd: '',
+		requestResult: '',
+		isRequestSuccess: false
+	},
+	Origins: {
+		items: [],
+		showPanel: false,
+		originToAdd: '',
+		originToDelete: '',
+		showCreateDefaultOriginsDialog: false,
+		showDeleteOriginsDialog: false,
+		requestResult: '',
+		isRequestSuccess: false,
+		ErrorMessage: ''
+	},
 
-// };
+};
 
-const cdnSettingsReducer = (state: Office365CDNManagerState, action: Action):
+const cdnSettingsReducer = (state: Office365CDNManagerState = initialState, action: Action):
 	Office365CDNManagerState => {
 	switch (action.type) {
 		case ActionTypes.FETCH_CDN_SETTINGS_REQUEST:
