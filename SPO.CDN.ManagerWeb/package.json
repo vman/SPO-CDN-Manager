@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "es6-promise": "^4.1.1",
-    "office-ui-fabric-react": "^4.12.0",
+    "office-ui-fabric-react": "^4.12.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "redux": "^3.7.1",
@@ -23,8 +23,8 @@
   },
   "devDependencies": {
     "@types/prop-types": "^15.5.1",
-    "@types/react": "^15.0.25",
-    "@types/react-dom": "^15.5.0",
+    "@types/react": "^15.0.33",
+    "@types/react-dom": "^15.5.1",
     "@types/redux-logger": "^3.0.0",
     "awesome-typescript-loader": "^3.2.1",
     "css-loader": "^0.28.4",
