@@ -33,7 +33,35 @@ export const initialState: Office365CDNManagerState = {
 
 };
 
-const cdnSettingsReducer = (state: Office365CDNManagerState = initialState, action: Action):
+export const cdnSettingsReducer = (state: Office365CDNManagerState = initialState, action: Action):
+	Office365CDNManagerState => {
+	switch (action.type) {
+		case ActionTypes.FETCH_CDN_SETTINGS_REQUEST:
+			return {
+				...state, isLoading: true
+			};
+		case ActionTypes.FETCH_CDN_SETTINGS_SUCCESS:
+			return {
+				...state,
+				isLoading: false,
+				Origins: action.payload.Origins,
+				Filetypes: action.payload.Filetypes,
+				PublicCDN: {
+					Enabled: action.payload.PublicCDN.Enabled,
+					showDialog: false
+				}
+			};
+		case ActionTypes.FETCH_CDN_SETTINGS_ERROR:
+			return {
+				...state,
+				isLoading: false,
+				ErrorMessage: action.payload
+			};
+		default: return state;
+	}
+};
+
+export const originsReducer = (state: Office365CDNManagerState = initialState, action: Action):
 	Office365CDNManagerState => {
 	switch (action.type) {
 		case ActionTypes.FETCH_CDN_SETTINGS_REQUEST:
@@ -62,7 +90,8 @@ const cdnSettingsReducer = (state: Office365CDNManagerState = initialState, acti
 };
 
 const rootReducer = combineReducers({
-	cdnSettingsReducer
+	cdnSettingsReducer,
+	originsReducer
 });
 
 export default rootReducer;

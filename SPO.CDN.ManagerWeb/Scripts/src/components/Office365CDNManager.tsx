@@ -11,27 +11,41 @@ import './O365CDNManager.module.scss';
 import { Office365CDNManagerState } from '../types';
 import { connect } from 'react-redux';
 import { fetchCDNSettings } from '../actions/actionCreators';
+import { Dispatch } from 'redux';
 
-// export interface IOffice365CDNManagerState {
-// }
+interface IOffice365CDNManagerProps {
 
-interface IOffice365CDNManagerProps extends Office365CDNManagerState {
-	dispatch: any;
 }
 
-class Office365CDNManager extends React.Component<IOffice365CDNManagerProps, {}> {
+interface IConnectedState {
+	PublicCDNEnabled: boolean;
+	Filetypes: string[];
+	Origins: string[];
+	SPOSiteUrl: string;
+	isLoading: boolean;
+}
 
-	// constructor(props: IOffice365CDNManagerProps) {
-	// 	super(props);
-	// 	this.state = {
-	// 		PublicCDNEnabled: false,
-	// 		Filetypes: [],
-	// 		Origins: [],
-	// 		SPOSiteUrl: '',
-	// 		showSpinner: true
-	// 	};
-	// }
+interface IConnectedDispatch {
+	fetchCDNSettings: () => void;
+}
 
+function mapStateToProps(state: Office365CDNManagerState, ownProps: IOffice365CDNManagerProps): IConnectedState {
+	return {
+		PublicCDNEnabled: state.PublicCDN.Enabled,
+		Filetypes: state.Filetypes.items,
+		Origins: state.Origins.items,
+		SPOSiteUrl: state.SPOSiteUrl,
+		isLoading: state.isLoading
+	};
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConnectedDispatch => ({
+	fetchCDNSettings: () => {
+		dispatch(fetchCDNSettings());
+	},
+});
+
+class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & IConnectedState & IConnectedDispatch, {}> {
 	public render() {
 		return <Fabric>
 			<div className='o365Manager-Container'>
@@ -46,7 +60,7 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps, {}>
 							<Pivot linkSize={PivotLinkSize.large}>
 								<PivotItem linkText='Origins' itemIcon='Globe'>
 									<OriginsContainer
-										Origins={this.props.Origins.items}
+										Origins={this.props.Origins}
 										handleStateUpdate={this._handleStateUpdate.bind(this)} />
 									{this.props.isLoading &&
 										<Spinner size={SpinnerSize.large} />
@@ -54,12 +68,12 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps, {}>
 								</PivotItem>
 								<PivotItem linkText='Filetypes' itemIcon='OpenFile'>
 									<FileTypesContainer
-										FileTypes={this.props.Filetypes.items}
+										FileTypes={this.props.Filetypes}
 										handleStateUpdate={this._handleStateUpdate.bind(this)} />
 								</PivotItem>
 								<PivotItem linkText='Turn CDN On/Off' itemIcon='Settings' >
 									<ToggleCDNContainer
-										Enabled={this.props.PublicCDN.Enabled} handleStateUpdate={this._handleStateUpdate.bind(this)} />
+										Enabled={this.props.PublicCDNEnabled} handleStateUpdate={this._handleStateUpdate.bind(this)} />
 								</PivotItem>
 							</Pivot>
 						</div>
@@ -70,39 +84,12 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps, {}>
 	}
 
 	componentDidMount() {
-		//this._getCDNSettings();
-		this.props.dispatch(fetchCDNSettings());
+		this.props.fetchCDNSettings();
 	}
-
-	// private async _getCDNSettings() {
-	// 	const reqHeaders = new Headers({
-	// 		'Cache-Control': 'no-cache, no-store, must-revalidate',
-	// 		'Pragma': 'no-cache'
-	// 	});
-
-	// 	const response = await fetch('/Home/GetCDNSettings', {
-	// 		credentials: 'same-origin',
-	// 		headers: reqHeaders
-	// 	});
-
-	// 	const o365Cdn: IOffice365CDNManagerState = await response.json();
-
-	// 	this.setState({
-	// 		PublicCDNEnabled: o365Cdn.PublicCDNEnabled,
-	// 		Filetypes: o365Cdn.Filetypes,
-	// 		Origins: o365Cdn.Origins,
-	// 		SPOSiteUrl: o365Cdn.SPOSiteUrl,
-	// 		showSpinner: false
-	// 	});
-	// }
 
 	private _handleStateUpdate(newState: any) {
 		//this.setState(newState);
 	}
 }
 
-function mapStateToProps(state: Office365CDNManagerState) {
-  return state;
-}
-
-export default connect(mapStateToProps)(Office365CDNManager);
+export default connect(mapStateToProps, mapDispatchToProps)(Office365CDNManager);

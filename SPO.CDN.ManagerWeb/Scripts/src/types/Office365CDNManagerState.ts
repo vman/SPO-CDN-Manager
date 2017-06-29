@@ -1,12 +1,12 @@
-export type Office365CDNManagerState = Readonly<{
+export type Office365CDNManagerState = {
 	SPOSiteUrl: string;
 	isLoading: boolean;
 	ErrorMessage: string;
-	PublicCDN: Readonly<{
+	PublicCDN: {
 		Enabled: boolean;
 		showDialog: boolean;
-	}>;
-	Filetypes: Readonly<{
+	};
+	Filetypes: {
 		items: string[],
 		showPanel: boolean;
 		showDialog: boolean;
@@ -14,8 +14,8 @@ export type Office365CDNManagerState = Readonly<{
 		fileTypeToDelete: string;
 		isRequestSuccess: boolean;
 		requestResult: string;
-	}>;
-	Origins: Readonly<{
+	};
+	Origins: {
 		items: string[],
 		showPanel: boolean;
 		originToAdd: string;
@@ -25,5 +25,5 @@ export type Office365CDNManagerState = Readonly<{
 		isRequestSuccess: boolean;
 		requestResult: string;
 		ErrorMessage: string;
-	}>;
-}>;
+	};
+};
