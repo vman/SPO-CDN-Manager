@@ -8,7 +8,7 @@ import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import './O365CDNManager.module.scss';
 
-import { Office365CDNManagerState, Office365CDNManagerStore } from '../types';
+import { Office365CDNManagerState, Office365CDNManagerStore, IOffice365CDNManagerState } from '../types';
 import { connect } from 'react-redux';
 import { fetchCDNSettings } from '../actions/actionCreators';
 import { Dispatch } from 'redux';
@@ -17,11 +17,7 @@ interface IOffice365CDNManagerProps {
 
 }
 
-interface IConnectedState {
-	PublicCDNEnabled: boolean;
-	Filetypes: string[];
-	Origins: string[];
-	SPOSiteUrl: string;
+interface IConnectedState extends IOffice365CDNManagerState {
 	isLoading: boolean;
 }
 
@@ -29,15 +25,13 @@ interface IConnectedDispatch {
 	fetchCDNSettings: () => void;
 }
 
-function mapStateToProps(state: Office365CDNManagerStore, ownProps: IOffice365CDNManagerProps): IConnectedState {
-	return {
-		PublicCDNEnabled: state.CDNSettings.PublicCDN.Enabled,
-		Filetypes: state.CDNSettings.Filetypes.items,
-		Origins: state.CDNSettings.Origins.items,
-		SPOSiteUrl: state.CDNSettings.SPOSiteUrl,
-		isLoading: state.CDNSettings.isLoading
-	};
-}
+const mapStateToProps = (state: Office365CDNManagerStore, ownProps: IOffice365CDNManagerProps): IConnectedState => ({
+	PublicCDNEnabled: state.CDNSettings.PublicCDN.Enabled,
+	Filetypes: state.CDNSettings.Filetypes.items,
+	Origins: state.CDNSettings.Origins.items,
+	SPOSiteUrl: state.CDNSettings.SPOSiteUrl,
+	isLoading: state.CDNSettings.isLoading
+});
 
 const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConnectedDispatch => ({
 	fetchCDNSettings: () => {
