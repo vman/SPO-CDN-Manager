@@ -1,4 +1,4 @@
-import { Office365CDNManagerState } from '../types';
+import { IOffice365CDNManagerState } from '../types';
 
 export enum ActionTypes {
 	FETCH_CDN_SETTINGS_REQUEST = 'FETCH_CDN_SETTINGS_REQUEST',
@@ -8,5 +8,5 @@ export enum ActionTypes {
 
 export type Action =
 	{ type: ActionTypes.FETCH_CDN_SETTINGS_REQUEST } |
-	{ type: ActionTypes.FETCH_CDN_SETTINGS_SUCCESS, payload: Office365CDNManagerState } |
+	{ type: ActionTypes.FETCH_CDN_SETTINGS_SUCCESS, payload: IOffice365CDNManagerState } |
 	{ type: ActionTypes.FETCH_CDN_SETTINGS_ERROR, payload: string };

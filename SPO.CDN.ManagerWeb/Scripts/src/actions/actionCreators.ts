@@ -1,4 +1,4 @@
-import { Office365CDNManagerState } from '../types';
+import { IOffice365CDNManagerState } from '../types';
 import { ActionTypes, Action } from './actionTypes';
 
 //Action Creators to create and return Actions
@@ -6,7 +6,7 @@ const requestCDNSettings = (): Action => ({
 	type: ActionTypes.FETCH_CDN_SETTINGS_REQUEST
 });
 
-const requestCDNSettingsSuccess = (cdnSettings: Office365CDNManagerState): Action => ({
+const requestCDNSettingsSuccess = (cdnSettings: IOffice365CDNManagerState): Action => ({
 	type: ActionTypes.FETCH_CDN_SETTINGS_SUCCESS,
 	payload: cdnSettings
 });
@@ -44,7 +44,7 @@ export function fetchCDNSettings() {
 			(response) => response.json(),
 			(error) => dispatch(requestCDNSettingsError(error))
 			)
-			.then((json) =>
+			.then((json: IOffice365CDNManagerState) =>
 				// We can dispatch many times!
 				// Here, we update the app state with the results of the API call.
 				dispatch(requestCDNSettingsSuccess(json))
