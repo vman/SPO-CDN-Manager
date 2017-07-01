@@ -8,7 +8,7 @@ import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import './O365CDNManager.module.scss';
 
-import { Office365CDNManagerState, Office365CDNManagerStore, IOffice365CDNManagerState } from '../types';
+import { Office365CDNManagerState } from '../types';
 import { connect } from 'react-redux';
 import { fetchCDNSettings } from '../actions/actionCreators';
 import { Dispatch } from 'redux';
@@ -17,21 +17,25 @@ interface IOffice365CDNManagerProps {
 
 }
 
-interface IConnectedState extends IOffice365CDNManagerState {
-	isLoading: boolean;
-}
+// interface IConnectedState extends IOffice365CDNManagerState {
+// 	isLoading: boolean;
+// }
 
 interface IConnectedDispatch {
 	fetchCDNSettings: () => void;
 }
 
-const mapStateToProps = (state: Office365CDNManagerStore, ownProps: IOffice365CDNManagerProps): IConnectedState => ({
-	PublicCDNEnabled: state.CDNSettings.PublicCDN.Enabled,
-	Filetypes: state.CDNSettings.Filetypes.items,
-	Origins: state.CDNSettings.Origins.items,
-	SPOSiteUrl: state.CDNSettings.SPOSiteUrl,
-	isLoading: state.CDNSettings.isLoading
-});
+// const mapStateToProps = (state: Office365CDNManagerState, ownProps: IOffice365CDNManagerProps): IConnectedState => ({
+// 	PublicCDNEnabled: state.PublicCDN.Enabled,
+// 	Filetypes: state.Filetypes.items,
+// 	Origins: state.Origins.items,
+// 	SPOSiteUrl: state.SPOSiteUrl,
+// 	isLoading: state.isLoading
+// });
+
+function mapStateToProps(state: Office365CDNManagerState, ownProps: IOffice365CDNManagerProps): Office365CDNManagerState {
+	return state;
+}
 
 const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConnectedDispatch => ({
 	fetchCDNSettings: () => {
@@ -39,7 +43,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConn
 	},
 });
 
-class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & IConnectedState & IConnectedDispatch, {}> {
+class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & Office365CDNManagerState & IConnectedDispatch, {}> {
 	public render() {
 		return <Fabric>
 			<div className='o365Manager-Container'>
@@ -54,7 +58,7 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & IC
 							<Pivot linkSize={PivotLinkSize.large}>
 								<PivotItem linkText='Origins' itemIcon='Globe'>
 									<OriginsContainer
-										Origins={this.props.Origins}
+										Origins={this.props.Origins.items}
 										handleStateUpdate={this._handleStateUpdate.bind(this)} />
 									{this.props.isLoading &&
 										<Spinner size={SpinnerSize.large} />
@@ -62,12 +66,12 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & IC
 								</PivotItem>
 								<PivotItem linkText='Filetypes' itemIcon='OpenFile'>
 									<FileTypesContainer
-										FileTypes={this.props.Filetypes}
+										FileTypes={this.props.Filetypes.items}
 										handleStateUpdate={this._handleStateUpdate.bind(this)} />
 								</PivotItem>
 								<PivotItem linkText='Turn CDN On/Off' itemIcon='Settings' >
 									<ToggleCDNContainer
-										Enabled={this.props.PublicCDNEnabled} handleStateUpdate={this._handleStateUpdate.bind(this)} />
+										Enabled={this.props.PublicCDN.Enabled} handleStateUpdate={this._handleStateUpdate.bind(this)} />
 								</PivotItem>
 							</Pivot>
 						</div>
