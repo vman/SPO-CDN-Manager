@@ -43,7 +43,7 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
 		</div>;
 	}
 
-	private async _dialogYesClicked() {
+	private _dialogYesClicked() {
 
 		try {
 
