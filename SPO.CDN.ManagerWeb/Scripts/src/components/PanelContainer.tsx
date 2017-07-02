@@ -5,10 +5,6 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 
-export interface IPanelContainerPropsState {
-
-}
-
 export interface IPanelContainerProps {
 	showPanel: boolean;
 	panelHeader: string;
@@ -23,7 +19,7 @@ export interface IPanelContainerProps {
 	isRequestSuccess: boolean;
 }
 
-export class PanelContainer extends React.Component<IPanelContainerProps, IPanelContainerPropsState> {
+export class PanelContainer extends React.Component<IPanelContainerProps, {}> {
 	public render() {
 
 		return <Panel

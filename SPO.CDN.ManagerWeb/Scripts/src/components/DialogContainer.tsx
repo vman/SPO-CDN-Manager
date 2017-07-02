@@ -12,10 +12,7 @@ export interface IDialogContainerProps {
 	content?: string;
 }
 
-export interface IDialogContainerPropsState{
-}
-
-export class DialogContainer extends React.Component<IDialogContainerProps, IDialogContainerPropsState> {
+export class DialogContainer extends React.Component<IDialogContainerProps, {}> {
 
 	public render() {
 		return <Dialog

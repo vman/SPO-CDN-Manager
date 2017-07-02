@@ -1,4 +1,5 @@
 import { ActionTypes, Action } from './actionTypes';
+import { fetchCDNSettings, requestCDNSettingsError } from '../actions/actionCreators';
 
 //Action Creators to create and return Actions
 const toggleCDNRequest = (toggle: boolean): Action => ({
@@ -11,13 +12,20 @@ export const toggleCDNSuccess = (toggle: boolean): Action => ({
 	payload: toggle
 });
 
-const toggleCDNError = (error: string): Action => ({
-	type: ActionTypes.TOGGLE_CDN_ERROR,
-	payload: error
+const toggleCDNError = (): Action => ({
+	type: ActionTypes.TOGGLE_CDN_ERROR
+});
+
+export const showConfirmationDialog = (): Action => ({
+	type: ActionTypes.TOGGLE_CDN_CONFIRM
+});
+
+export const closeConfirmationDialog = (): Action => ({
+	type: ActionTypes.TOGGLE_CDN_CONFIRM_NO
 });
 
 export const toggleCDN = (toggle: boolean) => {
-	return (dispatch: any) => {
+	return async (dispatch: any) => {
 
 		dispatch(toggleCDNRequest(toggle));
 
@@ -26,15 +34,21 @@ export const toggleCDN = (toggle: boolean) => {
 			'Pragma': 'no-cache'
 		});
 
-		return fetch('/Home/GetCDNSettings', {
+		const response = await fetch(`/Home/SetCDN?value=${toggle}`, {
 			credentials: 'same-origin',
+			method: 'POST',
 			headers: reqHeaders
-		}).then(
-			(response) => response.json(),
-			(error) => dispatch(toggleCDNError(error))
-			)
-			.then((json: boolean) => {
-				dispatch(toggleCDNSuccess(json));
-			});
+		});
+
+		if (response.ok) {
+			const responseJSON: boolean = await response.json();
+			dispatch(toggleCDNSuccess(responseJSON));
+			dispatch(fetchCDNSettings());
+		}
+		else {
+			const responseText = await response.text();
+			dispatch(toggleCDNError());
+			dispatch(requestCDNSettingsError(responseText));
+		}
 	};
 };

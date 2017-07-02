@@ -3,7 +3,7 @@ import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 import { DialogContainer } from './DialogContainer';
 import { Office365CDNManagerState } from '../types';
 import { Dispatch } from 'redux';
-import { toggleCDN } from '../actions/toggleCDNActions';
+import { toggleCDN, showConfirmationDialog, closeConfirmationDialog } from '../actions/toggleCDNActions';
 import { connect } from 'react-redux';
 
 export interface IToggleCDNContainerProps {
@@ -11,6 +11,8 @@ export interface IToggleCDNContainerProps {
 
 interface IConnectedDispatch {
 	toggleCDN: (toggle: boolean) => void;
+	showConfirmationDialog: () => void;
+	closeConfirmationDialog: () => void;
 }
 
 function mapStateToProps(state: Office365CDNManagerState, ownProps: IToggleCDNContainerProps): Office365CDNManagerState {
@@ -20,10 +22,16 @@ function mapStateToProps(state: Office365CDNManagerState, ownProps: IToggleCDNCo
 const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConnectedDispatch => ({
 	toggleCDN: (toggle: boolean) => {
 		dispatch(toggleCDN(toggle));
+	},
+	showConfirmationDialog: () => {
+		dispatch(showConfirmationDialog());
+	},
+	closeConfirmationDialog: () => {
+		dispatch(closeConfirmationDialog());
 	}
 });
 
-export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps & Office365CDNManagerState & IConnectedDispatch, {}> {
+class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps & Office365CDNManagerState & IConnectedDispatch, {}> {
 
 	public render() {
 		return <div className='o365Manager-ToggleCDNContainer'>
@@ -44,59 +52,15 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
 	}
 
 	private _dialogYesClicked() {
-
-		try {
-
-			this.setState({ showDialog: false });
-
-			const reqHeaders = new Headers({
-			'Cache-Control': 'no-cache, no-store, must-revalidate',
-			'Pragma': 'no-cache'
-			});
-
-			const response = await fetch(`/Home/SetCDN?value=${this.props.Enabled}`, {
-				credentials: 'same-origin',
-				method: 'POST',
-				headers: reqHeaders
-			});
-
-			if (!response.ok) {
-				const responseText = await response.text();
-				throw new Error(responseText);
-			}
-
-			const responseJSON: boolean = await response.json();
-
-			this.props.handleStateUpdate({
-				PublicCDNEnabled: responseJSON
-			});
-
-		}
-		catch (error) {
-			this.props.handleStateUpdate((prevState: any) => ({
-				PublicCDNEnabled: !prevState.PublicCDNEnabled
-			}));
-		}
+		this.props.toggleCDN(!this.props.ToggleCDN.Enabled);
 	}
 
-	private _checked(_isChecked: boolean) {
-		this.props.handleStateUpdate((prevState: any) => ({
-			PublicCDNEnabled: !prevState.PublicCDNEnabled
-		}));
-
-		this.setState({
-			showDialog: true
-		});
+	private _checked() {
+		this.props.showConfirmationDialog();
 	}
 
 	private _closeDialog() {
-		this.props.handleStateUpdate((prevState: any) => ({
-			PublicCDNEnabled: !prevState.PublicCDNEnabled
-		}));
-
-		this.setState({
-			showDialog: false
-		});
+		this.props.closeConfirmationDialog();
 	}
 }
 

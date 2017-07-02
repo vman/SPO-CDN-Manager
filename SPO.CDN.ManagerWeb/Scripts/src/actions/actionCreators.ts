@@ -14,7 +14,7 @@ const requestCDNSettingsSuccess = (spositeurl: string): Action => ({
 	payload: spositeurl
 });
 
-const requestCDNSettingsError = (error: string): Action => ({
+export const requestCDNSettingsError = (error: string): Action => ({
 	type: ActionTypes.FETCH_CDN_SETTINGS_ERROR,
 	payload: error
 });
