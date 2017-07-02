@@ -1,4 +1,4 @@
-import { IOffice365CDNManagerState } from '../types';
+import { IOffice365CDNManagerDTO } from '../types';
 import { ActionTypes, Action } from './actionTypes';
 import { requestOriginsSuccess } from './originActions';
 import { requestFiletypesSuccess } from './filetypeActions';
@@ -47,7 +47,7 @@ export function fetchCDNSettings() {
 			(response) => response.json(),
 			(error) => dispatch(requestCDNSettingsError(error))
 			)
-			.then((json: IOffice365CDNManagerState) => {
+			.then((json: IOffice365CDNManagerDTO) => {
 				// We can dispatch many times!
 				// Here, we update the app state with the results of the API call.
 

@@ -11,6 +11,7 @@ import './O365CDNManager.module.scss';
 import { Office365CDNManagerState } from '../types';
 import { connect } from 'react-redux';
 import { fetchCDNSettings } from '../actions/actionCreators';
+import { toggleCDN } from '../actions/toggleCDNActions';
 import { Dispatch } from 'redux';
 
 interface IOffice365CDNManagerProps {
@@ -19,6 +20,7 @@ interface IOffice365CDNManagerProps {
 
 interface IConnectedDispatch {
 	fetchCDNSettings: () => void;
+	toggleCDN: (toggle: boolean) => void;
 }
 
 function mapStateToProps(state: Office365CDNManagerState, ownProps: IOffice365CDNManagerProps): Office365CDNManagerState {
@@ -29,6 +31,9 @@ const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConn
 	fetchCDNSettings: () => {
 		dispatch(fetchCDNSettings());
 	},
+	toggleCDN: (toggle: boolean) => {
+		dispatch(toggleCDN(toggle));
+	}
 });
 
 class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & Office365CDNManagerState & IConnectedDispatch, {}> {

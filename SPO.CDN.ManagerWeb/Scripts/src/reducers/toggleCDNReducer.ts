@@ -9,14 +9,20 @@ const initialState: ToggleCDNState = {
 export const toggleCDNReducer = (state: ToggleCDNState = initialState, action: Action): ToggleCDNState => {
 	switch (action.type) {
 		case ActionTypes.TOGGLE_CDN_REQUEST:
-			return state;
+			return {
+				...state,
+				Enabled: !state.Enabled
+			};
 		case ActionTypes.TOGGLE_CDN_SUCCESS:
 			return {
 				...state,
 				Enabled: action.payload
 			};
-		case ActionTypes.TOGGLE_CDN_SUCCESS:
-			return state;
+		case ActionTypes.TOGGLE_CDN_ERROR:
+			return {
+				...state,
+				Enabled: !state.Enabled
+			};
 		default: return state;
 	}
 };
