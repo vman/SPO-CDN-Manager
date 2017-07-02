@@ -19,7 +19,6 @@ interface IOffice365CDNManagerProps {
 
 interface IConnectedDispatch {
 	fetchCDNSettings: () => void;
-	toggleCDN: (toggle: boolean) => void;
 }
 
 function mapStateToProps(state: Office365CDNManagerState, ownProps: IOffice365CDNManagerProps): Office365CDNManagerState {
@@ -29,9 +28,6 @@ function mapStateToProps(state: Office365CDNManagerState, ownProps: IOffice365CD
 const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConnectedDispatch => ({
 	fetchCDNSettings: () => {
 		dispatch(fetchCDNSettings());
-	},
-	toggleCDN: (toggle: boolean) => {
-		dispatch(toggleCDN(toggle));
 	}
 });
 
@@ -63,7 +59,7 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & Of
 								</PivotItem>
 								<PivotItem linkText='Turn CDN On/Off' itemIcon='Settings' >
 									<ToggleCDNContainer
-										Enabled={this.props.ToggleCDN.Enabled} handleStateUpdate={this._handleStateUpdate.bind(this)} />
+										Enabled={this.props.ToggleCDN.Enabled} />
 								</PivotItem>
 							</Pivot>
 						</div>
