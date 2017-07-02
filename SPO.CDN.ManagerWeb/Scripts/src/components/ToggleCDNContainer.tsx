@@ -1,24 +1,29 @@
 import * as React from 'react';
 import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 import { DialogContainer } from './DialogContainer';
+import { Office365CDNManagerState } from '../types';
+import { Dispatch } from 'redux';
+import { toggleCDN } from '../actions/toggleCDNActions';
+import { connect } from 'react-redux';
 
 export interface IToggleCDNContainerProps {
-	Enabled: boolean;
-	handleStateUpdate: (newState: any) => void;
 }
 
-export interface IToggleCDNContainerState {
-	showDialog: boolean;
+interface IConnectedDispatch {
+	toggleCDN: (toggle: boolean) => void;
 }
 
-export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps, IToggleCDNContainerState> {
+function mapStateToProps(state: Office365CDNManagerState, ownProps: IToggleCDNContainerProps): Office365CDNManagerState {
+	return state;
+}
 
-	constructor(props: IToggleCDNContainerProps) {
-		super(props);
-		this.state = {
-			showDialog: false
-		};
+const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConnectedDispatch => ({
+	toggleCDN: (toggle: boolean) => {
+		dispatch(toggleCDN(toggle));
 	}
+});
+
+export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps & Office365CDNManagerState & IConnectedDispatch, {}> {
 
 	public render() {
 		return <div className='o365Manager-ToggleCDNContainer'>
@@ -26,11 +31,11 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
 				label='Use Office 365 Public CDN'
 				onText='On'
 				offText='Off'
-				checked={this.props.Enabled}
+				checked={this.props.ToggleCDN.Enabled}
 				onChanged={this._checked.bind(this)} />
 
 			<DialogContainer
-				showDialog={this.state.showDialog}
+				showDialog={this.props.ToggleCDN.showDialog}
 				submitClicked={this._dialogYesClicked.bind(this)}
 				cancelClicked={this._closeDialog.bind(this)}
 				dialogTitle='Change CDN Settings?'
@@ -94,3 +99,5 @@ export class ToggleCDNContainer extends React.Component<IToggleCDNContainerProps
 		});
 	}
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ToggleCDNContainer);
