@@ -17,21 +17,9 @@ interface IOffice365CDNManagerProps {
 
 }
 
-// interface IConnectedState extends IOffice365CDNManagerState {
-// 	isLoading: boolean;
-// }
-
 interface IConnectedDispatch {
 	fetchCDNSettings: () => void;
 }
-
-// const mapStateToProps = (state: Office365CDNManagerState, ownProps: IOffice365CDNManagerProps): IConnectedState => ({
-// 	PublicCDNEnabled: state.PublicCDN.Enabled,
-// 	Filetypes: state.Filetypes.items,
-// 	Origins: state.Origins.items,
-// 	SPOSiteUrl: state.SPOSiteUrl,
-// 	isLoading: state.isLoading
-// });
 
 function mapStateToProps(state: Office365CDNManagerState, ownProps: IOffice365CDNManagerProps): Office365CDNManagerState {
 	return state;
@@ -50,7 +38,7 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & Of
 				<div className='ms-Grid'>
 					<div className='ms-Grid-row'>
 						<div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
-							<Header SPOSiteUrl={this.props.SPOSiteUrl} />
+							<Header SPOSiteUrl={this.props.Settings.SPOSiteUrl} />
 						</div>
 					</div>
 					<div className='ms-Grid-row'>
@@ -60,7 +48,7 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & Of
 									<OriginsContainer
 										Origins={this.props.Origins.items}
 										handleStateUpdate={this._handleStateUpdate.bind(this)} />
-									{this.props.isLoading &&
+									{this.props.Settings.isLoading &&
 										<Spinner size={SpinnerSize.large} />
 									}
 								</PivotItem>
@@ -71,7 +59,7 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & Of
 								</PivotItem>
 								<PivotItem linkText='Turn CDN On/Off' itemIcon='Settings' >
 									<ToggleCDNContainer
-										Enabled={this.props.PublicCDN.Enabled} handleStateUpdate={this._handleStateUpdate.bind(this)} />
+										Enabled={this.props.ToggleCDN.Enabled} handleStateUpdate={this._handleStateUpdate.bind(this)} />
 								</PivotItem>
 							</Pivot>
 						</div>

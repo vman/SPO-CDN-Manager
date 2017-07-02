@@ -1,14 +1,17 @@
 import { IOffice365CDNManagerState } from '../types';
 import { ActionTypes, Action } from './actionTypes';
+import { requestOriginsSuccess } from './originActions';
+import { requestFiletypesSuccess } from './filetypeActions';
+import { toggleCDNSuccess } from './toggleCDNActions';
 
 //Action Creators to create and return Actions
 const requestCDNSettings = (): Action => ({
 	type: ActionTypes.FETCH_CDN_SETTINGS_REQUEST
 });
 
-const requestCDNSettingsSuccess = (cdnSettings: IOffice365CDNManagerState): Action => ({
+const requestCDNSettingsSuccess = (spositeurl: string): Action => ({
 	type: ActionTypes.FETCH_CDN_SETTINGS_SUCCESS,
-	payload: cdnSettings
+	payload: spositeurl
 });
 
 const requestCDNSettingsError = (error: string): Action => ({
@@ -44,10 +47,14 @@ export function fetchCDNSettings() {
 			(response) => response.json(),
 			(error) => dispatch(requestCDNSettingsError(error))
 			)
-			.then((json: IOffice365CDNManagerState) =>
+			.then((json: IOffice365CDNManagerState) => {
 				// We can dispatch many times!
 				// Here, we update the app state with the results of the API call.
-				dispatch(requestCDNSettingsSuccess(json))
-			);
+
+				dispatch(requestCDNSettingsSuccess(json.SPOSiteUrl));
+				dispatch(requestOriginsSuccess(json.Origins));
+				dispatch(requestFiletypesSuccess(json.Filetypes));
+				dispatch(toggleCDNSuccess(json.PublicCDNEnabled));
+			});
 	};
 }
