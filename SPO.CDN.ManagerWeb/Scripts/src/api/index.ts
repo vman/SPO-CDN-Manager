@@ -4,10 +4,18 @@ const reqHeaders = new Headers({
 });
 
 export async function get(url: string): Promise<any> {
+	return fetchInternal(url, 'GET');
+}
 
+export async function post(url: string): Promise<any> {
+	return fetchInternal(url, 'POST');
+}
+
+const fetchInternal = async (url: string, _method: string) => {
 	const response: Response = await fetch(url, {
 		credentials: 'same-origin',
-		headers: reqHeaders
+		headers: reqHeaders,
+		method: _method
 	});
 
 	if (response.ok) {
@@ -17,4 +25,4 @@ export async function get(url: string): Promise<any> {
 		const errorText = await response.text();
 		throw new Error(errorText);
 	}
-}
+};

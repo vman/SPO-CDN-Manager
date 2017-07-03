@@ -1,5 +1,6 @@
 import { ActionTypes, Action } from './actionTypes';
 import { fetchCDNSettings, requestCDNSettingsError } from '../actions/settingActions';
+import * as api from '../api';
 
 //Action Creators to create and return Actions
 const toggleCDNRequest = (toggle: boolean): Action => ({
@@ -29,26 +30,14 @@ export const toggleCDN = (toggle: boolean) => {
 
 		dispatch(toggleCDNRequest(toggle));
 
-		const reqHeaders = new Headers({
-			'Cache-Control': 'no-cache, no-store, must-revalidate',
-			'Pragma': 'no-cache'
-		});
-
-		const response = await fetch(`/Home/SetCDN?value=${toggle}`, {
-			credentials: 'same-origin',
-			method: 'POST',
-			headers: reqHeaders
-		});
-
-		if (response.ok) {
-			const responseJSON: boolean = await response.json();
-			dispatch(toggleCDNSuccess(responseJSON));
+		try {
+			const result: boolean = await api.post(`/Home/SetCDN?value=${toggle}`);
+			dispatch(toggleCDNSuccess(result));
 			dispatch(fetchCDNSettings());
-		}
-		else {
-			const responseText = await response.text();
+		} catch (error) {
+
 			dispatch(toggleCDNError());
-			dispatch(requestCDNSettingsError(responseText));
+			dispatch(requestCDNSettingsError(error));
 		}
 	};
 };
