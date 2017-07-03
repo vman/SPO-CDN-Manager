@@ -1,5 +1,5 @@
 import { ActionTypes, Action } from './actionTypes';
-import { fetchCDNSettings, requestCDNSettingsError } from '../actions/actionCreators';
+import { fetchCDNSettings, requestCDNSettingsError } from '../actions/settingActions';
 
 //Action Creators to create and return Actions
 const toggleCDNRequest = (toggle: boolean): Action => ({

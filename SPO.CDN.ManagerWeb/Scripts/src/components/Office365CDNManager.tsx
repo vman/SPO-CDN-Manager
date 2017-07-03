@@ -10,7 +10,7 @@ import './O365CDNManager.module.scss';
 
 import { Office365CDNManagerState } from '../types';
 import { connect } from 'react-redux';
-import { fetchCDNSettings } from '../actions/actionCreators';
+import { fetchCDNSettings } from '../actions/settingActions';
 import { Dispatch } from 'redux';
 
 interface IOffice365CDNManagerProps {
