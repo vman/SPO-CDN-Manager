@@ -11,14 +11,71 @@ export const requestOriginsSuccess = (origins: string[]): Action => ({
 	payload: origins
 });
 
-export const requestOriginsError = (error: string): Action => ({
+export const requestOriginsError = (error: Error): Action => ({
 	type: ActionTypes.FETCH_ORIGINS_ERROR,
-	payload: error
+	payload: error.message
 });
 
 const addNewOriginRequest = (): Action => ({
 	type: ActionTypes.ADD_NEW_ORIGIN_REQUEST
 });
+
+export const setOriginToDelete = (originUrl: string): Action => ({
+	type: ActionTypes.SET_ORIGIN_TO_DELETE,
+	payload: originUrl
+});
+
+export const toggleDefaultOriginsDialog = (toggle: boolean): Action => ({
+	type: ActionTypes.TOGGLE_DEFAULT_ORIGIN_DIALOG,
+	payload: toggle
+});
+
+export const toggleDeleteOriginsDialog = (toggle: boolean): Action => ({
+	type: ActionTypes.TOGGLE_DELETE_ORIGIN_DIALOG,
+	payload: toggle
+});
+
+const createDefaultOriginsRequest = (): Action => ({
+	type: ActionTypes.CREATE_DEFAULT_ORIGIN_REQUEST
+});
+
+const deleteOriginsRequest = (): Action => ({
+	type: ActionTypes.DELETE_ORIGIN_REQUEST
+});
+
+export function deleteOrigin(originToDelete: string) {
+
+	return async (dispatch: any) => {
+
+		dispatch(deleteOriginsRequest());
+
+		try {
+			const result: string[] = await api.post(`/Home/RemoveOrigin?originURL=${originToDelete}`);
+
+			dispatch(requestOriginsSuccess(result));
+
+		} catch (error) {
+			dispatch(requestOriginsError(error));
+		}
+	};
+}
+
+export function createDefaultOrigins() {
+
+	return async (dispatch: any) => {
+
+		dispatch(createDefaultOriginsRequest());
+
+		try {
+			const result: string[] = await api.post('/Home/CreateDefaultOrigins');
+
+			dispatch(requestOriginsSuccess(result));
+
+		} catch (error) {
+			dispatch(requestOriginsError(error));
+		}
+	};
+}
 
 export function addNewOrigin() {
 

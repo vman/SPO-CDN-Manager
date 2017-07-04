@@ -27,6 +27,31 @@ export const originsReducer = (state: OriginsState = initialState, action: Actio
 				...state,
 				ErrorMessage: action.payload
 			};
+		case ActionTypes.TOGGLE_DEFAULT_ORIGIN_DIALOG:
+			return {
+				...state,
+				showCreateDefaultOriginsDialog: action.payload
+			};
+		case ActionTypes.CREATE_DEFAULT_ORIGIN_REQUEST:
+			return {
+				...state,
+				showCreateDefaultOriginsDialog: false
+			};
+		case ActionTypes.TOGGLE_DELETE_ORIGIN_DIALOG:
+			return {
+				...state,
+				showDeleteOriginsDialog: action.payload
+			};
+		case ActionTypes.SET_ORIGIN_TO_DELETE:
+			return {
+				...state,
+				originToDelete: action.payload
+			};
+		case ActionTypes.DELETE_ORIGIN_REQUEST:
+			return {
+				...state,
+				showDeleteOriginsDialog: false
+			};
 		default: return state;
 	}
 };

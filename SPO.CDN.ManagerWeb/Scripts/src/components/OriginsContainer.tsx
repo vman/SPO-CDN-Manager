@@ -5,42 +5,56 @@ import { DialogContainer } from './DialogContainer';
 import { PanelContainer } from './PanelContainer';
 import { DetailsList, DetailsListLayoutMode, SelectionMode } from 'office-ui-fabric-react/lib/DetailsList';
 import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import { Office365CDNManagerState } from '../types';
+import { Dispatch } from 'redux';
+import {
+	toggleDefaultOriginsDialog,
+	createDefaultOrigins,
+	deleteOrigin,
+	toggleDeleteOriginsDialog,
+	setOriginToDelete
+} from '../actions/originActions';
+import { connect } from 'react-redux';
 
 export interface IOriginsContainerProps {
-	Origins: string[];
-	handleStateUpdate: (newSate: any) => void;
 }
 
-export interface IOriginsContainerState {
-	showAddNewOriginPanel: boolean;
-	newOrigin: string;
-	originToDelete: string;
-	showCreateDefaultOriginsDialog: boolean;
-	showDeleteOriginsDialog: boolean;
-	isRequestSuccess: boolean;
-	requestResult: string;
-	messageBarErrorText: string;
+interface IConnectedDispatch {
+	toggleDefaultOriginsDialog: (toggle: boolean) => void;
+	toggleDeleteOriginsDialog: (toggle: boolean) => void;
+	createDefaultOrigins: () => void;
+	setOriginToDelete: (originUrl: string) => void;
+	deleteOrigin: (originUrl: string) => void;
 }
 
-export class OriginsContainer extends React.Component<IOriginsContainerProps, IOriginsContainerState> {
-	constructor(props: IOriginsContainerProps) {
-		super(props);
-		this.state = {
-			showAddNewOriginPanel: false,
-			newOrigin: '',
-			originToDelete: '',
-			showCreateDefaultOriginsDialog: false,
-			showDeleteOriginsDialog: false,
-			requestResult: '',
-			isRequestSuccess: false,
-			messageBarErrorText: ''
-		};
+function mapStateToProps(state: Office365CDNManagerState, ownProps: IOriginsContainerProps): Office365CDNManagerState {
+	return state;
+}
+
+const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConnectedDispatch => ({
+	toggleDefaultOriginsDialog: (toggle: boolean) => {
+		dispatch(toggleDefaultOriginsDialog(toggle));
+	},
+	toggleDeleteOriginsDialog: (toggle: boolean) => {
+		dispatch(toggleDeleteOriginsDialog(toggle));
+	},
+	createDefaultOrigins: () => {
+		dispatch(createDefaultOrigins());
+	},
+	setOriginToDelete: (originUrl: string) => {
+		dispatch(setOriginToDelete(originUrl));
+	},
+	deleteOrigin: (originUrl: string) => {
+		dispatch(deleteOrigin(originUrl));
 	}
+});
+
+class OriginsContainer extends React.Component<IOriginsContainerProps & Office365CDNManagerState & IConnectedDispatch, {}> {
 	public render() {
 
 		const _items: any = [];
 
-		this.props.Origins.map((_origin, index) =>
+		this.props.Origins.items.map((_origin, index) =>
 			_items.push({
 				key: index,
 				delete: '',
@@ -56,12 +70,12 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 							<PrimaryButton
 								className='Origins-AddNewOrigins'
 								text='Add New Origin'
-								onClick={() => this.setState({showAddNewOriginPanel: true})} />
+								onClick={() => this.setState({ showAddNewOriginPanel: true })} />
 							<PrimaryButton
 								text='Create Default Origins'
-								onClick={() => this.setState({ showCreateDefaultOriginsDialog: true })} />
-							{this.state.messageBarErrorText !== '' &&
-								<MessageBar messageBarType={MessageBarType.error}>{this.state.messageBarErrorText}</MessageBar>
+								onClick={() => this.props.toggleDefaultOriginsDialog(true)} />
+							{this.props.Origins.ErrorMessage !== '' &&
+								<MessageBar messageBarType={MessageBarType.error}>{this.props.Origins.ErrorMessage}</MessageBar>
 							}
 						</div>
 					</div>
@@ -94,7 +108,7 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 			</div>
 
 			<PanelContainer
-				showPanel={this.state.showAddNewOriginPanel}
+				showPanel={this.props.Origins.showPanel}
 				handleSubmitClicked={this._handleAddNewOrigin.bind(this)}
 				handleCancelClicked={() => this.setState({ showAddNewOriginPanel: false })}
 				handleTextFieldChanged={this._ontxtAddOriginChanged.bind(this)}
@@ -104,23 +118,23 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 				textFieldLabel='Relative Url of Folder'
 				textFieldPlaceHolder='/sites/intranet/publishingimages'
 				messagebarInfoText='It can take up to 15 minutes for the CDN origin to be available for publishing assets'
-				isRequestSuccess={this.state.isRequestSuccess}
-				messagebarResultText={this.state.requestResult} />
+				isRequestSuccess={this.props.Origins.isRequestSuccess}
+				messagebarResultText={this.props.Origins.requestResult} />
 
 			<DialogContainer
-				showDialog={this.state.showCreateDefaultOriginsDialog}
-				submitClicked={this._handleCreateDefaultOrigins.bind(this)}
-				cancelClicked={() => this.setState({ showCreateDefaultOriginsDialog: false })}
+				showDialog={this.props.Origins.showCreateDefaultOriginsDialog}
+				submitClicked={() => this.props.createDefaultOrigins()}
+				cancelClicked={() => this.props.toggleDefaultOriginsDialog(false)}
 				dialogTitle='Create default CDN Origins?'
 				dialogSubText='Are you sure you want to create the default CDN origins?' />
 
 			<DialogContainer
-				showDialog={this.state.showDeleteOriginsDialog}
-				submitClicked={this._handleDeleteOrigin.bind(this)}
-				cancelClicked={() => this.setState({ showDeleteOriginsDialog: false })}
+				showDialog={this.props.Origins.showDeleteOriginsDialog}
+				submitClicked={() => this.props.deleteOrigin(this.props.Origins.originToDelete) }
+				cancelClicked={() => this.props.toggleDeleteOriginsDialog(false)}
 				dialogTitle='Delete a CDN Origin?'
 				dialogSubText='Are you sure you want to delete the CDN origin?'
-				content={this.state.originToDelete} />
+				content={this.props.Origins.originToDelete} />
 		</div>;
 	}
 
@@ -136,8 +150,11 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 			}
 			else {
 				return <IconButton
-				 iconProps={{ iconName: 'Trash' }}
-				 onClick={() => this.setState({ showDeleteOriginsDialog: true, originToDelete: item.origin})} />;
+					iconProps={{ iconName: 'Trash' }}
+					onClick={() => {
+						this.props.setOriginToDelete(item.origin);
+						this.props.toggleDeleteOriginsDialog(true);
+					}} />;
 			}
 
 		}
@@ -146,101 +163,39 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 		}
 	}
 
-	private async _handleCreateDefaultOrigins() {
-
-		this.setState({
-			showCreateDefaultOriginsDialog: false
-		});
-
-		const reqHeaders = new Headers({
-			'Cache-Control': 'no-cache, no-store, must-revalidate',
-			'Pragma': 'no-cache'
-		});
-
-		const response = await fetch(`/Home/CreateDefaultOrigins`, {
-			credentials: 'same-origin',
-			method: 'POST',
-			headers: reqHeaders
-		});
-
-		if (!response.ok) {
-			const responseText = await response.text();
-			this.setState({
-				messageBarErrorText: responseText
-			});
-			throw new Error(responseText);
-		}
-
-		const _origins: string[] = await response.json();
-
-		this.props.handleStateUpdate({
-			Origins: _origins
-		});
-	}
-
-	private async _handleDeleteOrigin() {
-
-		this.setState({
-			showDeleteOriginsDialog: false
-		});
-
-		const reqHeaders = new Headers({
-			'Cache-Control': 'no-cache, no-store, must-revalidate',
-			'Pragma': 'no-cache'
-		});
-
-		const response = await fetch(`/Home/RemoveOrigin?originURL=${this.state.originToDelete}`, {
-			credentials: 'same-origin',
-			method: 'POST',
-			headers: reqHeaders
-		});
-
-		if (!response.ok) {
-			const responseText = await response.text();
-			this.setState({ requestResult: responseText });
-			throw new Error(responseText);
-		}
-
-		const _origins: string[] = await response.json();
-
-		this.props.handleStateUpdate({
-			Origins: _origins
-		});
-	}
-
 	private async _handleAddNewOrigin() {
 
-		const reqHeaders = new Headers({
-			'Cache-Control': 'no-cache, no-store, must-revalidate',
-			'Pragma': 'no-cache'
-		});
+		// const reqHeaders = new Headers({
+		// 	'Cache-Control': 'no-cache, no-store, must-revalidate',
+		// 	'Pragma': 'no-cache'
+		// });
 
-		const response = await fetch(`/Home/AddOrigin?folderUrl=${this.state.newOrigin}`, {
-			credentials: 'same-origin',
-			method: 'POST',
-			headers: reqHeaders
-		});
+		// const response = await fetch(`/Home/AddOrigin?folderUrl=${this.state.newOrigin}`, {
+		// 	credentials: 'same-origin',
+		// 	method: 'POST',
+		// 	headers: reqHeaders
+		// });
 
-		if (!response.ok) {
-			const responseText = await response.text();
-			this.setState({
-				requestResult: responseText,
-				isRequestSuccess: false
-			});
+		// if (!response.ok) {
+		// 	const responseText = await response.text();
+		// 	this.setState({
+		// 		requestResult: responseText,
+		// 		isRequestSuccess: false
+		// 	});
 
-			throw new Error(responseText);
-		}
+		// 	throw new Error(responseText);
+		// }
 
-		const _origins: string[] = await response.json();
+		// const _origins: string[] = await response.json();
 
-		this.props.handleStateUpdate({
-			Origins: _origins
-		});
+		// this.props.handleStateUpdate({
+		// 	Origins: _origins
+		// });
 
-		this.setState({
-			isRequestSuccess: true,
-			requestResult: 'Done'
-		});
+		// this.setState({
+		// 	isRequestSuccess: true,
+		// 	requestResult: 'Done'
+		// });
 	}
 
 	private _ontxtAddOriginChanged(value: string): void {
@@ -250,3 +205,5 @@ export class OriginsContainer extends React.Component<IOriginsContainerProps, IO
 	}
 
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(OriginsContainer);

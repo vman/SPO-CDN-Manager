@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Header } from './Header';
-import { OriginsContainer } from './OriginsContainer';
+import OriginsContainer from './OriginsContainer';
 import { FileTypesContainer } from './FileTypesContainer';
 import ToggleCDNContainer from './ToggleCDNContainer';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
@@ -45,9 +45,7 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & Of
 						<div className='ms-Grid-col ms-u-sm6 ms-u-md4 ms-u-lg12'>
 							<Pivot linkSize={PivotLinkSize.large}>
 								<PivotItem linkText='Origins' itemIcon='Globe'>
-									<OriginsContainer
-										Origins={this.props.Origins.items}
-										handleStateUpdate={this._handleStateUpdate.bind(this)} />
+									<OriginsContainer />
 									{this.props.Settings.isLoading &&
 										<Spinner size={SpinnerSize.large} />
 									}
