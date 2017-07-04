@@ -12,7 +12,7 @@ export interface IPanelContainerProps {
 	textFieldLabel: string;
 	textFieldPlaceHolder: string;
 	handleCancelClicked: () => void;
-	handleTextFieldChanged: () => void;
+	handleTextFieldChanged: (value: string) => void;
 	handleSubmitClicked: () => void;
 	messagebarInfoText?: string;
 	messagebarResultText?: string;

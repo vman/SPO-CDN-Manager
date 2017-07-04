@@ -19,7 +19,11 @@ export enum ActionTypes {
 	DELETE_ORIGIN_REQUEST = 'DELETE_ORIGIN_REQUEST',
 	TOGGLE_DEFAULT_ORIGIN_DIALOG = 'TOGGLE_CREATE_DEFAULT_ORIGIN_DIALOG',
 	TOGGLE_DELETE_ORIGIN_DIALOG = 'TOGGLE_DELETE_ORIGIN_DIALOG',
-	SET_ORIGIN_TO_DELETE = 'SET_ORIGIN_TO_DELETE'
+	SET_ORIGIN_TO_DELETE = 'SET_ORIGIN_TO_DELETE',
+	SET_ORIGIN_TO_ADD = 'SET_ORIGIN_TO_ADD',
+	TOGGLE_ORIGIN_PANEL = 'TOGGLE_ORIGIN_PANEL',
+	ADD_NEW_ORIGIN_SUCCESS = 'ADD_NEW_ORIGIN_SUCCESS',
+	ADD_NEW_ORIGIN_ERROR = 'ADD_NEW_ORIGIN_ERROR'
 }
 
 export type Action =
@@ -41,6 +45,10 @@ export type Action =
 	{ type: ActionTypes.TOGGLE_DEFAULT_ORIGIN_DIALOG, payload: boolean } |
 	{ type: ActionTypes.CREATE_DEFAULT_ORIGIN_REQUEST } |
 	{ type: ActionTypes.ADD_NEW_ORIGIN_REQUEST } |
+	{ type: ActionTypes.ADD_NEW_ORIGIN_SUCCESS } |
+	{ type: ActionTypes.ADD_NEW_ORIGIN_ERROR, payload: string } |
 	{ type: ActionTypes.DELETE_ORIGIN_REQUEST} |
+	{ type: ActionTypes.TOGGLE_ORIGIN_PANEL, payload: boolean } |
 	{ type: ActionTypes.TOGGLE_DELETE_ORIGIN_DIALOG, payload: boolean } |
-	{ type: ActionTypes.SET_ORIGIN_TO_DELETE, payload: string };
+	{ type: ActionTypes.SET_ORIGIN_TO_DELETE, payload: string } |
+	{ type: ActionTypes.SET_ORIGIN_TO_ADD, payload: string };

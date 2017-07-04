@@ -12,7 +12,10 @@ import {
 	createDefaultOrigins,
 	deleteOrigin,
 	toggleDeleteOriginsDialog,
-	setOriginToDelete
+	setOriginToDelete,
+	setOriginToAdd,
+	addOrigin,
+	toggleOriginsPanel
 } from '../actions/originActions';
 import { connect } from 'react-redux';
 
@@ -25,6 +28,9 @@ interface IConnectedDispatch {
 	createDefaultOrigins: () => void;
 	setOriginToDelete: (originUrl: string) => void;
 	deleteOrigin: (originUrl: string) => void;
+	setOriginToAdd: (originUrl: string) => void;
+	addOrigin: (originUrl: string) => void;
+	toggleOriginsPanel: (toggle: boolean) => void;
 }
 
 function mapStateToProps(state: Office365CDNManagerState, ownProps: IOriginsContainerProps): Office365CDNManagerState {
@@ -46,6 +52,15 @@ const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConn
 	},
 	deleteOrigin: (originUrl: string) => {
 		dispatch(deleteOrigin(originUrl));
+	},
+	setOriginToAdd: (originUrl: string) => {
+		dispatch(setOriginToAdd(originUrl));
+	},
+	addOrigin: (originUrl: string) => {
+		dispatch(addOrigin(originUrl));
+	},
+	toggleOriginsPanel: (toggle: boolean) => {
+		dispatch(toggleOriginsPanel(toggle));
 	}
 });
 
@@ -70,7 +85,7 @@ class OriginsContainer extends React.Component<IOriginsContainerProps & Office36
 							<PrimaryButton
 								className='Origins-AddNewOrigins'
 								text='Add New Origin'
-								onClick={() => this.setState({ showAddNewOriginPanel: true })} />
+								onClick={() => this.props.toggleOriginsPanel(true)} />
 							<PrimaryButton
 								text='Create Default Origins'
 								onClick={() => this.props.toggleDefaultOriginsDialog(true)} />
@@ -109,9 +124,9 @@ class OriginsContainer extends React.Component<IOriginsContainerProps & Office36
 
 			<PanelContainer
 				showPanel={this.props.Origins.showPanel}
-				handleSubmitClicked={this._handleAddNewOrigin.bind(this)}
-				handleCancelClicked={() => this.setState({ showAddNewOriginPanel: false })}
-				handleTextFieldChanged={this._ontxtAddOriginChanged.bind(this)}
+				handleSubmitClicked={() => this.props.addOrigin(this.props.Origins.originToAdd)}
+				handleCancelClicked={() => this.props.toggleOriginsPanel(false)}
+				handleTextFieldChanged={(value: string) => this.props.setOriginToAdd(value)}
 				panelHeader='Add New CDN Origin'
 				panelSubText={`Add the relative url of a SharePoint folder to be set as CDN Origin.
 								Wildcards beginning with */ are also supported.`}
@@ -161,47 +176,6 @@ class OriginsContainer extends React.Component<IOriginsContainerProps & Office36
 		else {
 			return <Label>{fieldContent}</Label>;
 		}
-	}
-
-	private async _handleAddNewOrigin() {
-
-		// const reqHeaders = new Headers({
-		// 	'Cache-Control': 'no-cache, no-store, must-revalidate',
-		// 	'Pragma': 'no-cache'
-		// });
-
-		// const response = await fetch(`/Home/AddOrigin?folderUrl=${this.state.newOrigin}`, {
-		// 	credentials: 'same-origin',
-		// 	method: 'POST',
-		// 	headers: reqHeaders
-		// });
-
-		// if (!response.ok) {
-		// 	const responseText = await response.text();
-		// 	this.setState({
-		// 		requestResult: responseText,
-		// 		isRequestSuccess: false
-		// 	});
-
-		// 	throw new Error(responseText);
-		// }
-
-		// const _origins: string[] = await response.json();
-
-		// this.props.handleStateUpdate({
-		// 	Origins: _origins
-		// });
-
-		// this.setState({
-		// 	isRequestSuccess: true,
-		// 	requestResult: 'Done'
-		// });
-	}
-
-	private _ontxtAddOriginChanged(value: string): void {
-		return this.setState({
-			newOrigin: value
-		});
 	}
 
 }

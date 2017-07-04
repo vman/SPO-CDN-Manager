@@ -16,8 +16,22 @@ export const requestOriginsError = (error: Error): Action => ({
 	payload: error.message
 });
 
+const addNewOriginError = (error: Error): Action => ({
+	type: ActionTypes.ADD_NEW_ORIGIN_ERROR,
+	payload: error.message
+});
+
 const addNewOriginRequest = (): Action => ({
 	type: ActionTypes.ADD_NEW_ORIGIN_REQUEST
+});
+
+const addNewOriginSuccess = (): Action => ({
+	type: ActionTypes.ADD_NEW_ORIGIN_SUCCESS
+});
+
+export const setOriginToAdd = (originUrl: string): Action => ({
+	type: ActionTypes.SET_ORIGIN_TO_ADD,
+	payload: originUrl
 });
 
 export const setOriginToDelete = (originUrl: string): Action => ({
@@ -27,6 +41,11 @@ export const setOriginToDelete = (originUrl: string): Action => ({
 
 export const toggleDefaultOriginsDialog = (toggle: boolean): Action => ({
 	type: ActionTypes.TOGGLE_DEFAULT_ORIGIN_DIALOG,
+	payload: toggle
+});
+
+export const toggleOriginsPanel = (toggle: boolean): Action => ({
+	type: ActionTypes.TOGGLE_ORIGIN_PANEL,
 	payload: toggle
 });
 
@@ -77,19 +96,20 @@ export function createDefaultOrigins() {
 	};
 }
 
-export function addNewOrigin() {
+export function addOrigin(originUrl: string) {
 
 	return async (dispatch: any) => {
 
 		dispatch(addNewOriginRequest());
 
 		try {
-			const result: string[] = await api.post('/Home/GetCDNSettings');
+			const result: string[] = await api.post(`/Home/AddOrigin?folderUrl=${originUrl}`);
 
 			dispatch(requestOriginsSuccess(result));
+			dispatch(addNewOriginSuccess());
 
 		} catch (error) {
-			dispatch(requestOriginsError(error));
+			dispatch(addNewOriginError(error));
 		}
 	};
 }
