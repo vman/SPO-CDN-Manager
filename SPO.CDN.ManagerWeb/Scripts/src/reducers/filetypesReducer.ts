@@ -26,6 +26,21 @@ export const fileTypesReducer = (state: FiletypesState = initialState, action: A
 				isRequestSuccess: false,
 				requestResult: action.payload
 			};
+		case ActionTypes.TOGGLE_DELETE_FILETYPE_DIALOG:
+			return {
+				...state,
+				showDialog: action.payload
+			};
+		case ActionTypes.SET_FILETYPE_TO_ADD:
+			return {
+				...state,
+				items: [...state.items, action.payload]
+			};
+		case ActionTypes.SET_FILETYPE_TO_DELETE:
+			return {
+				...state,
+				items: state.items.filter((item) => item !== action.payload)
+			};
 		default: return state;
 	}
 };

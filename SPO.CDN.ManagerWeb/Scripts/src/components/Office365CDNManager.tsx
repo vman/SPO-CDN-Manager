@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Header } from './Header';
 import OriginsContainer from './OriginsContainer';
-import { FileTypesContainer } from './FileTypesContainer';
+import FileTypesContainer from './FileTypesContainer';
 import ToggleCDNContainer from './ToggleCDNContainer';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
@@ -51,9 +51,7 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & Of
 									}
 								</PivotItem>
 								<PivotItem linkText='Filetypes' itemIcon='OpenFile'>
-									<FileTypesContainer
-										FileTypes={this.props.Filetypes.items}
-										handleStateUpdate={this._handleStateUpdate.bind(this)} />
+									<FileTypesContainer />
 								</PivotItem>
 								<PivotItem linkText='Turn CDN On/Off' itemIcon='Settings' >
 									<ToggleCDNContainer />
@@ -68,10 +66,6 @@ class Office365CDNManager extends React.Component<IOffice365CDNManagerProps & Of
 
 	componentDidMount() {
 		this.props.fetchCDNSettings();
-	}
-
-	private _handleStateUpdate(newState: any) {
-		//this.setState(newState);
 	}
 }
 
