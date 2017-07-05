@@ -31,15 +31,39 @@ export const fileTypesReducer = (state: FiletypesState = initialState, action: A
 				...state,
 				showDialog: action.payload
 			};
+		case ActionTypes.TOGGLE_ADD_FILETYPE_PANEL:
+			return {
+				...state,
+				showPanel: action.payload,
+				requestResult: ''
+			};
 		case ActionTypes.SET_FILETYPE_TO_ADD:
 			return {
 				...state,
-				items: [...state.items, action.payload]
+				fileTypeToAdd: action.payload
 			};
 		case ActionTypes.SET_FILETYPE_TO_DELETE:
 			return {
 				...state,
-				items: state.items.filter((item) => item !== action.payload)
+				fileTypeToDelete: action.payload
+			};
+		case ActionTypes.UPDATE_FILETYPES_REQUEST:
+			return {
+				...state,
+				showDialog: false
+			};
+		case ActionTypes.UPDATE_FILETYPES_SUCCESS:
+			return {
+				...state,
+				items: action.payload,
+				isRequestSuccess: true,
+				requestResult: 'Done'
+			};
+		case ActionTypes.UPDATE_FILETYPES_ERROR:
+			return {
+				...state,
+				isRequestSuccess: false,
+				requestResult: action.payload
 			};
 		default: return state;
 	}

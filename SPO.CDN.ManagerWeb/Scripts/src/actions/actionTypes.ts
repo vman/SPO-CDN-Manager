@@ -29,7 +29,11 @@ export enum ActionTypes {
 	TOGGLE_FILETYPE_PANEL = 'TOGGLE_FILETYPE_PANEL',
 	ADD_FILETYPE_REQUEST = 'ADD_FILETYPE_REQUEST',
 	DELETE_FILETYPE_REQUEST = 'DELETE_FILETYPE_REQUEST',
-	TOGGLE_DELETE_FILETYPE_DIALOG = 'TOGGLE_DELETE_FILETYPE_DIALOG'
+	TOGGLE_DELETE_FILETYPE_DIALOG = 'TOGGLE_DELETE_FILETYPE_DIALOG',
+	UPDATE_FILETYPES_REQUEST = 'UPDATE_FILETYPES_REQUEST',
+	TOGGLE_ADD_FILETYPE_PANEL = 'TOGGLE_ADD_FILETYPE_PANEL',
+	UPDATE_FILETYPES_SUCCESS = 'UPDATE_FILETYPES_SUCCESS',
+	UPDATE_FILETYPES_ERROR = 'UPDATE_FILETYPES_ERROR'
 }
 
 export type Action =
@@ -42,6 +46,8 @@ export type Action =
 	{ type: ActionTypes.FETCH_FILETYPES_REQUEST } |
 	{ type: ActionTypes.FETCH_FILETYPES_SUCCESS, payload: string[] } |
 	{ type: ActionTypes.FETCH_FILETYPES_ERROR, payload: string } |
+	{ type: ActionTypes.UPDATE_FILETYPES_SUCCESS, payload: string[] } |
+	{ type: ActionTypes.UPDATE_FILETYPES_ERROR, payload: string } |
 	{ type: ActionTypes.TOGGLE_CDN_CONFIRM } |
 	{ type: ActionTypes.TOGGLE_CDN_CONFIRM_YES } |
 	{ type: ActionTypes.TOGGLE_CDN_CONFIRM_NO } |
@@ -50,6 +56,7 @@ export type Action =
 	{ type: ActionTypes.TOGGLE_CDN_ERROR } |
 	{ type: ActionTypes.TOGGLE_DEFAULT_ORIGIN_DIALOG, payload: boolean } |
 	{ type: ActionTypes.TOGGLE_DELETE_FILETYPE_DIALOG, payload: boolean } |
+	{ type: ActionTypes.TOGGLE_ADD_FILETYPE_PANEL, payload: boolean } |
 	{ type: ActionTypes.CREATE_DEFAULT_ORIGIN_REQUEST } |
 	{ type: ActionTypes.ADD_NEW_ORIGIN_REQUEST } |
 	{ type: ActionTypes.ADD_NEW_ORIGIN_SUCCESS } |
@@ -60,4 +67,5 @@ export type Action =
 	{ type: ActionTypes.SET_ORIGIN_TO_DELETE, payload: string } |
 	{ type: ActionTypes.SET_ORIGIN_TO_ADD, payload: string } |
 	{ type: ActionTypes.SET_FILETYPE_TO_ADD, payload: string } |
-	{ type: ActionTypes.SET_FILETYPE_TO_DELETE, payload: string };
+	{ type: ActionTypes.SET_FILETYPE_TO_DELETE, payload: string } |
+	{ type: ActionTypes.UPDATE_FILETYPES_REQUEST };

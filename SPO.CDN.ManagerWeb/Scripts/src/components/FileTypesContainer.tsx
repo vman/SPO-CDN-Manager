@@ -10,7 +10,10 @@ import { connect } from 'react-redux';
 import {
 	toggleDeleteFiletypeDialog,
 	setFiletypeToDelete,
- 	updateFiletypes } from '../actions/filetypeActions';
+	updateFiletypes,
+	toggleAddFiletypePanel,
+	setFiletypeToAdd
+} from '../actions/filetypeActions';
 
 export interface IFileTypesContainerProps {
 }
@@ -18,7 +21,9 @@ export interface IFileTypesContainerProps {
 interface IConnectedDispatch {
 	toggleDeleteFiletypeDialog: (toggle: boolean) => void;
 	setFiletypeToDelete: (filetype: string) => void;
-	updateFiletypes: () => void;
+	updateFiletypes: (filetypes: string[]) => void;
+	toggleAddFiletypePanel: (toggle: boolean) => void;
+	setFiletypeToAdd: (filetype: string) => void;
 }
 
 function mapStateToProps(state: Office365CDNManagerState, ownProps: IFileTypesContainerProps): Office365CDNManagerState {
@@ -26,14 +31,20 @@ function mapStateToProps(state: Office365CDNManagerState, ownProps: IFileTypesCo
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<Office365CDNManagerState>): IConnectedDispatch => ({
+	setFiletypeToAdd: (filetype: string) => {
+		dispatch(setFiletypeToAdd(filetype));
+	},
 	setFiletypeToDelete: (filetype: string) => {
 		dispatch(setFiletypeToDelete(filetype));
 	},
 	toggleDeleteFiletypeDialog: (toggle: boolean) => {
 		dispatch(toggleDeleteFiletypeDialog(toggle));
 	},
-	updateFiletypes: () => {
-		dispatch(updateFiletypes());
+	toggleAddFiletypePanel: (toggle: boolean) => {
+		dispatch(toggleAddFiletypePanel(toggle));
+	},
+	updateFiletypes: (filetypes: string[]) => {
+		dispatch(updateFiletypes(filetypes));
 	}
 });
 
@@ -58,7 +69,7 @@ class FileTypesContainer extends React.Component<IFileTypesContainerProps & Offi
 							<PrimaryButton
 								className='FileTypes-AddNewFileType'
 								text='Add Filetype'
-								onClick={() => this.setState({ showPanel: true })} />
+								onClick={() => this.props.toggleAddFiletypePanel(true)} />
 						</div>
 					</div>
 				</div>
@@ -90,9 +101,13 @@ class FileTypesContainer extends React.Component<IFileTypesContainerProps & Offi
 			</div>
 			<PanelContainer
 				showPanel={this.props.Filetypes.showPanel}
-				handleSubmitClicked={this._addNewFileType.bind(this)}
-				handleCancelClicked={() => this.setState({ showPanel: false })}
-				handleTextFieldChanged={this._ontxtAddFiletypeChanged.bind(this)}
+				handleSubmitClicked={() => {
+					//Add new filetype to existing filetypes
+					const newFiletypes = this.props.Filetypes.items.concat(this.props.Filetypes.fileTypeToAdd);
+					this.props.updateFiletypes(newFiletypes);
+				}}
+				handleCancelClicked={() => this.props.toggleAddFiletypePanel(false)}
+				handleTextFieldChanged={(value: string) => this.props.setFiletypeToAdd(value)}
 				panelHeader='Add a Filetype'
 				panelSubText='Add a file extention to be included in the CDN'
 				textFieldLabel='File extension'
@@ -102,7 +117,11 @@ class FileTypesContainer extends React.Component<IFileTypesContainerProps & Offi
 
 			<DialogContainer
 				showDialog={this.props.Filetypes.showDialog}
-				submitClicked={() => this.props.updateFiletypes(this.props.Filetypes.items)}
+				submitClicked={() => {
+					//remove the selected filetype from the current filetype
+					const filteredItems = this.props.Filetypes.items.filter((item) => item !== this.props.Filetypes.fileTypeToDelete);
+					this.props.updateFiletypes(filteredItems);
+				}}
 				cancelClicked={() => this.props.toggleDeleteFiletypeDialog(false)}
 				dialogTitle='Delete a File extention?'
 				dialogSubText='Are you sure you want to delete the following File extention?'
@@ -123,71 +142,6 @@ class FileTypesContainer extends React.Component<IFileTypesContainerProps & Offi
 		else {
 			return <Label>{fieldContent}</Label>;
 		}
-	}
-
-	private _deleteFileType() {
-		const initialFileTypes = this.props.Filetypes.items;
-		const newFileTypes = initialFileTypes.filter((_fileType) => {
-			return _fileType !== this.props.Filetypes.fileTypeToDelete;
-		});
-
-		this.setState({
-			showDeleteFileTypeDialog: false
-		});
-
-		this._setFileTypes(newFileTypes);
-	}
-
-	private _addNewFileType() {
-		const _fileTypes = this.props.Filetypes.items;
-		_fileTypes.push(this.props.Filetypes.fileTypeToAdd);
-
-		this._setFileTypes(_fileTypes);
-	}
-
-	private async _setFileTypes(newFileTypes: string[]) {
-
-		// const reqHeaders = new Headers({
-		// 	'content-type': 'application/json; charset=utf-8',
-		// 	'dataType': 'json',
-		// 	'Cache-Control': 'no-cache, no-store, must-revalidate',
-		// 	'Pragma': 'no-cache'
-		// });
-
-		// const response = await fetch(`/Home/SetFiletypes`, {
-		// 	credentials: 'same-origin',
-		// 	method: 'POST',
-		// 	cache: 'no-store',
-		// 	headers: reqHeaders,
-		// 	body: JSON.stringify({ filetypes: newFileTypes })
-		// });
-
-		// if (!response.ok) {
-		// 	const responseText = await response.text();
-		// 	this.setState({
-		// 		requestResult: responseText,
-		// 		isRequestSuccess: false
-		// 	});
-
-		// 	throw new Error(responseText);
-		// }
-
-		// const _fileTypes: string[] = await response.json();
-
-		// // this.props.handleStateUpdate({
-		// // 	Filetypes: _fileTypes
-		// // });
-
-		// this.setState({
-		// 	isRequestSuccess: true,
-		// 	requestResult: 'Done'
-		// });
-	}
-
-	private _ontxtAddFiletypeChanged(value: string): void {
-		// this.setState({
-		// 	newFileType: value
-		// });
 	}
 }
 
