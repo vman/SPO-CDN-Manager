@@ -3,7 +3,7 @@ var webpack = require('webpack')
 module.exports = {
 	entry: ["whatwg-fetch","./Scripts/src/app.tsx"],
 	output: {
-		filename: "spo.cdn.manager.bundle.min.js",
+		filename: "spo.cdn.manager.bundle.js",
 		path: __dirname + "/Scripts/dist"
 	},
 	watch: false,

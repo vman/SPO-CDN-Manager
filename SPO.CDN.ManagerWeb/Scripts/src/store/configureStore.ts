@@ -6,11 +6,11 @@ import rootReducer from '../reducers';
 const loggerMiddleware = createLogger();
 
 export default function configureStore() {
-  return createStore(
- 	rootReducer,
-	applyMiddleware(
-		thunkMiddleware,
-		loggerMiddleware
-	)
-  );
+
+	if (process.env.NODE_ENV === 'production') {
+		return createStore(rootReducer, applyMiddleware(thunkMiddleware));
+	}
+	else {
+		return createStore(rootReducer, applyMiddleware(thunkMiddleware, loggerMiddleware));
+	}
 }

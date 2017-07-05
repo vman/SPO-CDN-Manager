@@ -58,7 +58,8 @@ export const originsReducer = (state: OriginsState = initialState, action: Actio
 		case ActionTypes.TOGGLE_ORIGIN_PANEL:
 			return {
 				...state,
-				showPanel: action.payload
+				showPanel: action.payload,
+				requestResult: ''
 			};
 		case ActionTypes.SET_ORIGIN_TO_DELETE:
 			return {

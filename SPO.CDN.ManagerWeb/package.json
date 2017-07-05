@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/react-redux": "^4.4.45",
     "es6-promise": "^4.1.1",
     "office-ui-fabric-react": "^4.12.1",
     "react": "^15.5.4",
@@ -24,9 +23,11 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
+    "@types/node": "^8.0.7",
     "@types/prop-types": "^15.5.1",
     "@types/react": "^15.0.33",
     "@types/react-dom": "^15.5.1",
+    "@types/react-redux": "^4.4.45",
     "@types/redux-logger": "^3.0.0",
     "awesome-typescript-loader": "^3.2.1",
     "css-loader": "^0.28.4",
