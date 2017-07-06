@@ -335,6 +335,12 @@
     <Content Include="tslint.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\src\actions\actionTypes.ts" />
+    <TypeScriptCompile Include="Scripts\src\actions\fileTypeActions.ts" />
+    <TypeScriptCompile Include="Scripts\src\actions\originActions.ts" />
+    <TypeScriptCompile Include="Scripts\src\actions\settingActions.ts" />
+    <TypeScriptCompile Include="Scripts\src\actions\toggleCDNActions.ts" />
+    <TypeScriptCompile Include="Scripts\src\api\index.ts" />
     <TypeScriptCompile Include="Scripts\src\app.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\DialogContainer.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\FileTypesContainer.tsx" />
@@ -343,6 +349,13 @@
     <TypeScriptCompile Include="Scripts\src\components\OriginsContainer.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\PanelContainer.tsx" />
     <TypeScriptCompile Include="Scripts\src\components\ToggleCDNContainer.tsx" />
+    <TypeScriptCompile Include="Scripts\src\reducers\filetypesReducer.ts" />
+    <TypeScriptCompile Include="Scripts\src\reducers\index.ts" />
+    <TypeScriptCompile Include="Scripts\src\reducers\originsReducer.ts" />
+    <TypeScriptCompile Include="Scripts\src\reducers\settingsReducer.ts" />
+    <TypeScriptCompile Include="Scripts\src\reducers\toggleCDNReducer.ts" />
+    <TypeScriptCompile Include="Scripts\src\store\configureStore.ts" />
+    <TypeScriptCompile Include="Scripts\src\types\index.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
