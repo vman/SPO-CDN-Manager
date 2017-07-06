@@ -2,7 +2,10 @@ var webpack = require('webpack')
 var Visualizer = require('webpack-visualizer-plugin');
 
 module.exports = {
-	entry: ["whatwg-fetch", "babel-polyfill", "./Scripts/src/app.tsx"],
+	entry: ["whatwg-fetch",
+	 "core-js/fn/object/assign",
+	 "core-js/fn/promise",
+	  "./Scripts/src/app.tsx"],
 	output: {
 		filename: "spo.cdn.manager.bundle.js",
 		path: __dirname + "/Scripts/dist"
@@ -15,9 +18,6 @@ module.exports = {
 		extensions: [".ts", ".tsx", ".js", ".json"]
 	},
 	plugins: [
-		new webpack.ProvidePlugin({
-			'Promise': 'es6-promise'
-		}),
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': '"production"' // Reduces 78 kb in React
 		}),

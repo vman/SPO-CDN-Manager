@@ -1,7 +1,10 @@
 var webpack = require('webpack')
 
 module.exports = {
-	entry: ["whatwg-fetch","babel-polyfill","./Scripts/src/app.tsx"],
+	entry: ["whatwg-fetch",
+	 "core-js/fn/object/assign",
+	 "core-js/fn/promise",
+	  "./Scripts/src/app.tsx"],
 	output: {
 		filename: "spo.cdn.manager.bundle.js",
 		path: __dirname + "/Scripts/dist"
@@ -14,11 +17,7 @@ module.exports = {
 		// Add '.ts' and '.tsx' as resolvable extensions.
 		extensions: [".ts", ".tsx", ".js", ".json"]
 	},
-	plugins: [
-		new webpack.ProvidePlugin({
-			'Promise': 'es6-promise'
-		})
-	],
+	plugins: [],
 	module: {
 		rules: [
 			// All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.

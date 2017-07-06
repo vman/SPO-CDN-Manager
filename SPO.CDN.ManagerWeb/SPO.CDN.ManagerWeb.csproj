@@ -292,10 +292,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\CDNManager.js" />
     <Content Include="Scripts\dist\spo.cdn.manager.bundle.js" />
-    <Content Include="Scripts\fabric.min.js" />
-    <Content Include="Scripts\fabric.templates.js" />
-    <Content Include="Scripts\jquery-3.1.1.min.js" />
-    <Content Include="Scripts\knockout-3.4.0.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
