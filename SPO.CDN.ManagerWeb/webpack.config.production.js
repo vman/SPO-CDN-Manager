@@ -1,7 +1,7 @@
 var webpack = require('webpack')
 
 module.exports = {
-	entry: ["whatwg-fetch","./Scripts/src/app.tsx"],
+	entry: ["whatwg-fetch", "babel-polyfill" ,"./Scripts/src/app.tsx"],
 	output: {
 		filename: "spo.cdn.manager.bundle.js",
 		path: __dirname + "/Scripts/dist"
