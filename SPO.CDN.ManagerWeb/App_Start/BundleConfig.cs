@@ -8,7 +8,8 @@ namespace SPO.CDN.ManagerWeb
     // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
     public static void RegisterBundles(BundleCollection bundles)
     {
-      bundles.Add(new ScriptBundle("~/bundles/libs").Include(
+
+      /*bundles.Add(new ScriptBundle("~/bundles/libs").Include(
                   "~/Scripts/jquery-3.1.1.min.js",
                   "~/Scripts/knockout-3.4.0.js"));
 
@@ -26,7 +27,11 @@ namespace SPO.CDN.ManagerWeb
                 "~/Content/fabric.components.min.css",
                 "~/Content/site.css"));
 
-      BundleTable.EnableOptimizations = true;
+      //BundleTable.EnableOptimizations = true;
+      */
+
+      bundles.Add(new ScriptBundle("~/bundles/cdnmanager").Include(
+                "~/Scripts/dist/spo.cdn.manager.bundle.js"));
     }
   }
 }

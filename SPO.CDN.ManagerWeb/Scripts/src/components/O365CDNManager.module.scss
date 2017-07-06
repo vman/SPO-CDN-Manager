@@ -1,0 +1,33 @@
+@import "~office-ui-fabric-react/dist/sass/Fabric.scss";
+
+
+body {
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.Origins-AddNewOrigins {
+    margin-right: 15px;
+}
+
+.Origins-Button-Container{
+    margin-top: 10px;
+}
+
+.details-list-container{
+    margin-top: 12px;
+}
+
+.ms-MessageBar {
+	margin-top: 12px;
+}
+
+.ms-MessageBar-content{
+	padding-top: 8px!important;
+}
