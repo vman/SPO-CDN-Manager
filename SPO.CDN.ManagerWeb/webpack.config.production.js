@@ -1,11 +1,13 @@
 var webpack = require('webpack')
+var Visualizer = require('webpack-visualizer-plugin');
 
 module.exports = {
-	entry: ["whatwg-fetch", "babel-polyfill" ,"./Scripts/src/app.tsx"],
+	entry: ["whatwg-fetch", "babel-polyfill", "./Scripts/src/app.tsx"],
 	output: {
 		filename: "spo.cdn.manager.bundle.js",
 		path: __dirname + "/Scripts/dist"
 	},
+	devtool: "cheap-source-map",
 	watch: false,
 	target: 'web',
 	resolve: {
@@ -40,6 +42,9 @@ module.exports = {
 			output: {
 				comments: false
 			}
+		}),
+		new Visualizer({
+			filename: './statistics.html'
 		})
 	],
 	module: {
@@ -50,13 +55,13 @@ module.exports = {
 				loader: "awesome-typescript-loader"
 			},
 			{
- 				test: /\.tsx?$/,
- 				enforce: 'pre',
- 				loader: 'tslint-loader',
- 				options: {
+				test: /\.tsx?$/,
+				enforce: 'pre',
+				loader: 'tslint-loader',
+				options: {
 					configFileName: 'tslint.json'
- 				}
- 			},
+				}
+			},
 			// All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
 			{
 				enforce: "pre",
