@@ -12,225 +12,221 @@ using System.Web.Mvc;
 
 namespace SPO.CDN.ManagerWeb.Controllers
 {
-  public class HomeController : Controller
-  {
-    [Authorize]
-    public ActionResult Index()
+    public class HomeController : Controller
     {
-      return View();
-    }
-
-    public ActionResult GetCDNSettings()
-    {
-      var cdnManagerModel = new CDNManagerModel();
-
-      using (var clientContext = GetClientContext())
-      {
-        clientContext.Load(clientContext.Web, w => w.Url);
-
-        var tenant = new Office365Tenant(clientContext);
-        var publicCDNEnabled = tenant.GetTenantCdnEnabled(SPOTenantCdnType.Public);
-        var publicCdnOrigins = tenant.GetTenantCdnOrigins(SPOTenantCdnType.Public);
-        var publicCDNPolicies = tenant.GetTenantCdnPolicies(SPOTenantCdnType.Public);
-
-        clientContext.ExecuteQuery();
-
-        cdnManagerModel.PublicCDNEnabled = publicCDNEnabled.Value;
-        cdnManagerModel.Origins = GetCDNOrigins(publicCdnOrigins);
-        var fileTypes = publicCDNPolicies.Where(s => s.StartsWith(SPOTenantCdnPolicyType.IncludeFileExtensions.ToString())).First();
-        cdnManagerModel.Filetypes = ConvertToList(fileTypes);
-        cdnManagerModel.SPOSiteUrl = clientContext.Web.Url;
-
-      }
-
-      return Json(cdnManagerModel, JsonRequestBehavior.AllowGet);
-    }
-
-    [HttpPost]
-    public ActionResult CreateDefaultOrigins()
-    {
-
-      try
-      {
-        IList<CDNOrigin> origins = new List<CDNOrigin>();
-
-        using (var clientContext = GetClientContext())
+        [Authorize]
+        public ActionResult Index()
         {
-          var tenant = new Office365Tenant(clientContext);
-
-          tenant.CreateTenantCdnDefaultOrigins(SPOTenantCdnType.Public);
-
-          var publicCdnOrigins = tenant.GetTenantCdnOrigins(SPOTenantCdnType.Public);
-
-          clientContext.ExecuteQuery();
-
-          origins = GetCDNOrigins(publicCdnOrigins);
+            return View();
         }
 
-        return Json(origins);
-      }
-      catch (Exception ex)
-      {
-        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        return Json(ex.Message);
-      }
-    }
-
-    [HttpPost]
-    public ActionResult SetCDN(bool value)
-    {
-      bool CDNEnabled = false;
-
-      try
-      {
-        using (var clientContext = GetClientContext())
+        public ActionResult GetCDNSettings()
         {
-          var tenant = new Office365Tenant(clientContext);
+            var cdnManagerModel = new CDNManagerModel();
 
-          tenant.SetTenantCdnEnabled(SPOTenantCdnType.Public, value);
+            using (var clientContext = GetClientContext())
+            {
+                clientContext.Load(clientContext.Web, w => w.Url);
 
-          var publicCDNEnabled = tenant.GetTenantCdnEnabled(SPOTenantCdnType.Public);
+                var tenant = new Office365Tenant(clientContext);
+                var publicCDNEnabled = tenant.GetTenantCdnEnabled(SPOTenantCdnType.Public);
+                var publicCdnOrigins = tenant.GetTenantCdnOrigins(SPOTenantCdnType.Public);
+                var publicCDNPolicies = tenant.GetTenantCdnPolicies(SPOTenantCdnType.Public);
 
-          clientContext.ExecuteQuery();
+                clientContext.ExecuteQuery();
 
-          CDNEnabled = publicCDNEnabled.Value;
+                cdnManagerModel.PublicCDNEnabled = publicCDNEnabled.Value;
+                cdnManagerModel.Origins = publicCdnOrigins; //Origins will need refactor. It is just a string now, not an object
+                var fileTypes = publicCDNPolicies.Where(s => s.StartsWith(SPOTenantCdnPolicyType.IncludeFileExtensions.ToString())).First();
+                cdnManagerModel.Filetypes = ConvertToList(fileTypes);
+                cdnManagerModel.SPOSiteUrl = clientContext.Web.Url;
 
-          return Json(CDNEnabled);
-        }
-      }
-      catch (Exception ex)
-      {
-        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        return Json(ex.Message);
-      }
-    }
+            }
 
-    [HttpPost]
-    public ActionResult RemoveOrigin(string originURL)
-    {
-      try
-      {
-        IList<CDNOrigin> origins = new List<CDNOrigin>();
-
-        using (var clientContext = GetClientContext())
-        {
-          var tenant = new Office365Tenant(clientContext);
-
-          tenant.RemoveTenantCdnOrigin(SPOTenantCdnType.Public, originURL);
-
-          var publicCdnOrigins = tenant.GetTenantCdnOrigins(SPOTenantCdnType.Public);
-
-          clientContext.ExecuteQuery();
-
-          origins = GetCDNOrigins(publicCdnOrigins);
+            return Json(cdnManagerModel, JsonRequestBehavior.AllowGet);
         }
 
-        return Json(origins);
-      }
-      catch (Exception ex)
-      {
-        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        return Json(ex.Message);
-      }
-    }
-
-    [HttpPost]
-    public ActionResult AddOrigin(string folderUrl)
-    {
-      try
-      {
-        IList<CDNOrigin> origins = new List<CDNOrigin>();
-
-        using (var clientContext = GetClientContext())
+        [HttpPost]
+        public ActionResult CreateDefaultOrigins()
         {
-          var tenant = new Office365Tenant(clientContext);
 
-          tenant.AddTenantCdnOrigin(SPOTenantCdnType.Public, folderUrl);
+            try
+            {
+                IList<string> publicCdnOrigins = new List<string>();
 
-          var publicCdnOrigins = tenant.GetTenantCdnOrigins(SPOTenantCdnType.Public);
+                using (var clientContext = GetClientContext())
+                {
+                    var tenant = new Office365Tenant(clientContext);
 
-          clientContext.ExecuteQuery();
+                    tenant.CreateTenantCdnDefaultOrigins(SPOTenantCdnType.Public);
 
-          origins = GetCDNOrigins(publicCdnOrigins);
+                    publicCdnOrigins = tenant.GetTenantCdnOrigins(SPOTenantCdnType.Public);
+
+                    clientContext.ExecuteQuery();
+                }
+
+                return Json(publicCdnOrigins);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(ex.Message);
+            }
         }
 
-        return Json(origins);
-      }
-      catch (Exception ex)
-      {
-        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        return Json(ex.Message);
-      }
-    }
-
-
-    [HttpPost]
-    public ActionResult SetFiletypes(List<string> filetypes)
-    {
-      try
-      {
-        string cdnFileTypes;
-
-        using (var clientContext = GetClientContext())
+        [HttpPost]
+        public ActionResult SetCDN(bool value)
         {
-          var tenant = new Office365Tenant(clientContext);
+            bool CDNEnabled = false;
 
-          var newFileTypes = string.Join(",", filetypes);
+            try
+            {
+                using (var clientContext = GetClientContext())
+                {
+                    var tenant = new Office365Tenant(clientContext);
 
-          tenant.SetTenantCdnPolicy(SPOTenantCdnType.Public, SPOTenantCdnPolicyType.IncludeFileExtensions, newFileTypes);
+                    tenant.SetTenantCdnEnabled(SPOTenantCdnType.Public, value);
 
-          var publicCDNPolicies = tenant.GetTenantCdnPolicies(SPOTenantCdnType.Public);
+                    var publicCDNEnabled = tenant.GetTenantCdnEnabled(SPOTenantCdnType.Public);
 
-          clientContext.ExecuteQuery();
+                    clientContext.ExecuteQuery();
 
-          cdnFileTypes = publicCDNPolicies.Where(s => s.StartsWith(SPOTenantCdnPolicyType.IncludeFileExtensions.ToString())).First();
+                    CDNEnabled = publicCDNEnabled.Value;
+
+                    return Json(CDNEnabled);
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(ex.Message);
+            }
         }
 
-        return Json(ConvertToList(cdnFileTypes));
-      }
-      catch (Exception ex)
-      {
-        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        return Json(ex.Message);
-      }
+        [HttpPost]
+        public ActionResult RemoveOrigin(string originURL)
+        {
+            try
+            {
+                IList<string> publicCdnOrigins = new List<string>();
+
+                using (var clientContext = GetClientContext())
+                {
+                    var tenant = new Office365Tenant(clientContext);
+
+                    tenant.RemoveTenantCdnOrigin(SPOTenantCdnType.Public, originURL);
+
+                    publicCdnOrigins = tenant.GetTenantCdnOrigins(SPOTenantCdnType.Public);
+
+                    clientContext.ExecuteQuery();
+                }
+
+                return Json(publicCdnOrigins);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AddOrigin(string folderUrl)
+        {
+            try
+            {
+                IList<string> publicCdnOrigins = new List<string>();
+
+                using (var clientContext = GetClientContext())
+                {
+                    var tenant = new Office365Tenant(clientContext);
+
+                    tenant.AddTenantCdnOrigin(SPOTenantCdnType.Public, folderUrl);
+
+                    publicCdnOrigins = tenant.GetTenantCdnOrigins(SPOTenantCdnType.Public);
+
+                    clientContext.ExecuteQuery();
+                }
+
+                return Json(publicCdnOrigins);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(ex.Message);
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult SetFiletypes(List<string> filetypes)
+        {
+            try
+            {
+                string cdnFileTypes;
+
+                using (var clientContext = GetClientContext())
+                {
+                    var tenant = new Office365Tenant(clientContext);
+
+                    var newFileTypes = string.Join(",", filetypes);
+
+                    tenant.SetTenantCdnPolicy(SPOTenantCdnType.Public, SPOTenantCdnPolicyType.IncludeFileExtensions, newFileTypes);
+
+                    var publicCDNPolicies = tenant.GetTenantCdnPolicies(SPOTenantCdnType.Public);
+
+                    clientContext.ExecuteQuery();
+
+                    cdnFileTypes = publicCDNPolicies.Where(s => s.StartsWith(SPOTenantCdnPolicyType.IncludeFileExtensions.ToString())).First();
+                }
+
+                return Json(ConvertToList(cdnFileTypes));
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(ex.Message);
+            }
+        }
+
+        private ClientContext GetClientContext()
+        {
+            var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+            var clientContext = CDNManagerContextProvider.GetWebApplicationClientContext(new RedisTokenCache(signInUserId));
+
+            return clientContext;
+
+
+        }
+
+        private IList<string> GetCDNOrigins(IList<string> publicCdnOrigins)
+        {
+            //var cdnOrigins = new List<CDNOrigin>();
+
+            //foreach (string origin in publicCdnOrigins)
+            //{
+            //  var cdnOrigin = new CDNOrigin();
+            //  cdnOrigin.Url = origin;
+
+            //  cdnOrigins.Add(cdnOrigin);
+            //}
+
+            //return cdnOrigins;
+
+            return publicCdnOrigins;
+        }
+
+        private IList<string> ConvertToList(string publicCdnAllowedFileTypes)
+        {
+            var fileTypes = new List<string>();
+            string commaSeperatedFileTypes = publicCdnAllowedFileTypes.Split(';')[1];
+            if (!string.IsNullOrWhiteSpace(commaSeperatedFileTypes))
+            {
+                fileTypes = commaSeperatedFileTypes.Split(',').ToList();
+            }
+            return fileTypes;
+        }
     }
-
-    private ClientContext GetClientContext()
-    {
-      var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-
-      var clientContext = CDNManagerContextProvider.GetWebApplicationClientContext(new RedisTokenCache(signInUserId));
-
-      return clientContext;
-
-
-    }
-
-    private IList<CDNOrigin> GetCDNOrigins(IList<string> publicCdnOrigins)
-    {
-      var cdnOrigins = new List<CDNOrigin>();
-
-      foreach (string origin in publicCdnOrigins)
-      {
-        var cdnOrigin = new CDNOrigin();
-        cdnOrigin.Url = origin;
-
-        cdnOrigins.Add(cdnOrigin);
-      }
-
-      return cdnOrigins;
-    }
-
-    private IList<string> ConvertToList(string publicCdnAllowedFileTypes)
-    {
-      var fileTypes = new List<string>();
-      string commaSeperatedFileTypes = publicCdnAllowedFileTypes.Split(';')[1];
-      if (!string.IsNullOrWhiteSpace(commaSeperatedFileTypes))
-      {
-        fileTypes = commaSeperatedFileTypes.Split(',').ToList();
-      }
-      return fileTypes;
-    }
-  }
 }
