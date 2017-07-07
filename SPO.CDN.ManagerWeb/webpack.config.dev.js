@@ -1,4 +1,5 @@
-var webpack = require('webpack')
+var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
 	entry: ["whatwg-fetch",
@@ -17,7 +18,12 @@ module.exports = {
 		// Add '.ts' and '.tsx' as resolvable extensions.
 		extensions: [".ts", ".tsx", ".js", ".json"]
 	},
-	plugins: [],
+	plugins: [
+		new ExtractTextPlugin({
+			filename: 'spo.cdn.manager.css',
+			allChunks: true
+		})
+	],
 	module: {
 		rules: [
 			// All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
@@ -44,13 +50,10 @@ module.exports = {
 			},
 			{
 				test: /\.scss$/,
-				use: [{
-					loader: "style-loader" // creates style nodes from JS strings
-				}, {
-					loader: "css-loader" // translates CSS into CommonJS
-				}, {
-					loader: "sass-loader" // compiles Sass to CSS
-				}]
+				loader: ExtractTextPlugin.extract({
+					use: ['css-loader', 'sass-loader'],
+					fallback: 'style-loader'
+				})
 			}
 		]
 	}
