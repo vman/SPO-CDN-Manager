@@ -292,6 +292,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\CDNManager.js" />
     <Content Include="Scripts\dist\spo.cdn.manager.bundle.js" />
+    <Content Include="Scripts\dist\spo.cdn.manager.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

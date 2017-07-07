@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "office-ui-fabric-react": "^4.12.1",
+    "office-ui-fabric-react": "4.12.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
@@ -22,9 +22,9 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "@types/node": "^8.0.7",
+    "@types/node": "^8.0.8",
     "@types/prop-types": "^15.5.1",
-    "@types/react": "^15.0.33",
+    "@types/react": "^15.0.35",
     "@types/react-dom": "^15.5.1",
     "@types/react-redux": "^4.4.45",
     "@types/redux-logger": "^3.0.0",
@@ -36,10 +36,10 @@
     "sass-loader": "^6.0.6",
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.18.2",
-    "tslint": "^5.4.3",
+    "tslint": "^5.5.0",
     "tslint-loader": "^3.5.3",
     "typescript": "^2.4.1",
-    "webpack": "^3.0.0",
+    "webpack": "^3.1.0",
     "webpack-visualizer-plugin": "^0.1.11"
   }
 }
