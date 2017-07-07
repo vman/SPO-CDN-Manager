@@ -1,16 +1,17 @@
 var webpack = require('webpack')
 var Visualizer = require('webpack-visualizer-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
 	entry: ["whatwg-fetch",
-	 "core-js/fn/object/assign",
-	 "core-js/fn/promise",
-	  "./Scripts/src/app.tsx"],
+		"core-js/fn/object/assign",
+		"core-js/fn/promise",
+		"./Scripts/src/app.tsx"],
 	output: {
 		filename: "spo.cdn.manager.bundle.js",
 		path: __dirname + "/Scripts/dist"
 	},
-	devtool: "cheap-source-map",
+	devtool: false,
 	watch: false,
 	target: 'web',
 	resolve: {
@@ -45,6 +46,10 @@ module.exports = {
 		}),
 		new Visualizer({
 			filename: './statistics.html'
+		}),
+		new ExtractTextPlugin({
+			filename: 'spo.cdn.manager.css',
+			allChunks: true
 		})
 	],
 	module: {
@@ -62,21 +67,12 @@ module.exports = {
 					configFileName: 'tslint.json'
 				}
 			},
-			// All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-			{
-				enforce: "pre",
-				test: /\.js$/,
-				loader: "source-map-loader"
-			},
 			{
 				test: /\.scss$/,
-				use: [{
-					loader: "style-loader" // creates style nodes from JS strings
-				}, {
-					loader: "css-loader" // translates CSS into CommonJS
-				}, {
-					loader: "sass-loader" // compiles Sass to CSS
-				}]
+				loader: ExtractTextPlugin.extract({
+					use: ['css-loader', 'sass-loader'],
+					fallback: 'style-loader'
+				})
 			}
 		]
 	}
