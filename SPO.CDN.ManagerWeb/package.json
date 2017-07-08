@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@uifabric/styling": "^0.13.2",
     "office-ui-fabric-react": "4.12.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

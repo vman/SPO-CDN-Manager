@@ -104,13 +104,15 @@ class OriginsContainer extends React.Component<IOriginsContainerProps & Office36
 									key: 'column1',
 									name: '',
 									fieldName: 'delete',
-									minWidth: 50
+									minWidth: 40,
+									maxWidth: 40
 								},
 								{
 									key: 'column2',
 									name: 'Origins',
 									fieldName: 'origin',
-									minWidth: 700
+									minWidth: 700,
+									maxWidth: 700
 								}
 							]}
 							onRenderItemColumn={this._renderItemColumn.bind(this)}
