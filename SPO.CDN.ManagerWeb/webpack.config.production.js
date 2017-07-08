@@ -3,12 +3,33 @@ var Visualizer = require('webpack-visualizer-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-	entry: ["whatwg-fetch",
-		"core-js/fn/object/assign",
-		"core-js/fn/promise",
-		"./Scripts/src/app.tsx"],
+	entry: {
+		vendor: ["react",
+				"react-dom",
+				"react-redux",
+				"redux",
+				"redux-logger",
+				"redux-thunk",
+				"whatwg-fetch", 
+				"core-js/fn/object/assign", 
+				"core-js/fn/promise",
+				"@uifabric/styling",
+				"office-ui-fabric-react/lib/Label",
+				"office-ui-fabric-react/lib/Button",
+				"office-ui-fabric-react/lib/DetailsList",
+				"office-ui-fabric-react/lib/MessageBar",
+				"office-ui-fabric-react/lib/Pivot",
+				"office-ui-fabric-react/lib/Spinner",
+				"office-ui-fabric-react/lib/Panel",
+				"office-ui-fabric-react/lib/TextField",
+				"office-ui-fabric-react/lib/Toggle",
+				"office-ui-fabric-react/lib/Fabric"],
+		index: ["./Scripts/src/app.tsx"],
+		dialog: ["office-ui-fabric-react/lib/Dialog",
+		"./Scripts/src/components/DialogContainer.tsx"]
+	},
 	output: {
-		filename: "spo.cdn.manager.bundle.js",
+		filename: "spo.cdn.manager.[name].js",
 		path: __dirname + "/Scripts/dist"
 	},
 	devtool: false,
@@ -45,11 +66,21 @@ module.exports = {
 			}
 		}),
 		new Visualizer({
-			filename: './statistics.html'
+			filename: './statistics.prod.html'
 		}),
 		new ExtractTextPlugin({
 			filename: 'spo.cdn.manager.css',
 			allChunks: true
+		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: "vendor",
+
+			//filename: "spo.cdn.manager.vendor.js",
+			// (Give the chunk a different name)
+
+			minChunks: Infinity,
+			// (with more entries, this ensures that no other module
+			//  goes into the vendor chunk)
 		})
 	],
 	module: {
