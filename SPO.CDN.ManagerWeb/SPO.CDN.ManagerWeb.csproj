@@ -290,9 +290,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\CDNManager.js" />
     <Content Include="Scripts\dist\spo.cdn.manager.bundle.js" />
     <Content Include="Scripts\dist\spo.cdn.manager.css" />
+    <Content Include="Scripts\src\legacy\CDNManager.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

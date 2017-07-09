@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --config ./webpack.config.dev.js",
-    "ship": "webpack --config ./webpack.config.production.js"
+    "prod": "webpack --config ./webpack.config.production.js"
   },
   "private": true,
   "author": "",

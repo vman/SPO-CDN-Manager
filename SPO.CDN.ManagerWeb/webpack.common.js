@@ -7,7 +7,6 @@ module.exports = {
 				"react-dom",
 				"react-redux",
 				"redux",
-				"redux-logger",
 				"redux-thunk",
 				"whatwg-fetch", 
 				"core-js/fn/object/assign", 
@@ -20,20 +19,18 @@ module.exports = {
 				"office-ui-fabric-react/lib/Pivot",
 				"office-ui-fabric-react/lib/Spinner",
 				"office-ui-fabric-react/lib/TextField",
-				"office-ui-fabric-react/lib/Toggle",
-				"office-ui-fabric-react/lib/Fabric"],
-		index:  ["./Scripts/src/app.tsx"],
-		dialog: ["office-ui-fabric-react/lib/Dialog",
-				 "./Scripts/src/components/DialogContainer.tsx"],
-		panel:  ["office-ui-fabric-react/lib/Panel",
-			     "./Scripts/src/components/PanelContainer.tsx"]
+				"office-ui-fabric-react/lib/Fabric",
+				"office-ui-fabric-react/lib/Dialog",
+				"office-ui-fabric-react/lib/Panel",
+				"office-ui-fabric-react/lib/Toggle"
+				],
+		app:  ["./Scripts/src/app.tsx"]
 	},
 	output: {
 		filename: "spo.cdn.manager.[name].js",
 		path: __dirname + "/Scripts/dist"
 	},
 	resolve: {
-		// Add '.ts' and '.tsx' as resolvable extensions.
 		extensions: [".ts", ".tsx", ".js", ".json"]
 	},
 	plugins: [
@@ -63,12 +60,6 @@ module.exports = {
 				options: {
 					configFileName: 'tslint.json'
 				}
-			},
-			// All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-			{
-				enforce: "pre",
-				test: /\.js$/,
-				loader: "source-map-loader"
 			},
 			{
 				test: /\.scss$/,
