@@ -30,8 +30,8 @@ namespace SPO.CDN.ManagerWeb
       //BundleTable.EnableOptimizations = true;
       */
 
-      bundles.Add(new ScriptBundle("~/bundles/cdnmanager").Include(
-                "~/Scripts/dist/spo.cdn.manager.bundle.js"));
+      //bundles.Add(new ScriptBundle("~/bundles/cdnmanager").Include(
+      //          "~/Scripts/dist/spo.cdn.manager.bundle.js"));
     }
   }
 }

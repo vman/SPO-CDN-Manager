@@ -82,13 +82,15 @@ class FileTypesContainer extends React.Component<IFileTypesContainerProps & Offi
 									key: 'column1',
 									name: '',
 									fieldName: 'delete',
-									minWidth: 50
+									minWidth: 40,
+									maxWidth: 40
 								},
 								{
 									key: 'column2',
 									name: 'Origins',
 									fieldName: 'filetype',
-									minWidth: 300
+									minWidth: 300,
+									maxWidth: 300
 								}
 							]}
 							onRenderItemColumn={this._renderItemColumn.bind(this)}
