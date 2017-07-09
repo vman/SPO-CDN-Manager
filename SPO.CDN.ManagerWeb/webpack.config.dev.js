@@ -20,13 +20,14 @@ module.exports = {
 				"office-ui-fabric-react/lib/MessageBar",
 				"office-ui-fabric-react/lib/Pivot",
 				"office-ui-fabric-react/lib/Spinner",
-				"office-ui-fabric-react/lib/Panel",
 				"office-ui-fabric-react/lib/TextField",
 				"office-ui-fabric-react/lib/Toggle",
 				"office-ui-fabric-react/lib/Fabric"],
-		index: ["./Scripts/src/app.tsx"],
+		index:  ["./Scripts/src/app.tsx"],
 		dialog: ["office-ui-fabric-react/lib/Dialog",
-		"./Scripts/src/components/DialogContainer.tsx"]
+				 "./Scripts/src/components/DialogContainer.tsx"],
+		panel:  ["office-ui-fabric-react/lib/Panel",
+			     "./Scripts/src/components/PanelContainer.tsx"]
 	},
 	output: {
 		filename: "spo.cdn.manager.[name].js",
