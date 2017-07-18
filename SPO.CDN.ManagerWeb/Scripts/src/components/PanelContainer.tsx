@@ -6,47 +6,47 @@ import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBa
 import { PrimaryButton } from 'office-ui-fabric-react/lib/Button';
 
 export interface IPanelContainerProps {
-	showPanel: boolean;
-	panelHeader: string;
-	panelSubText: string;
-	textFieldLabel: string;
-	textFieldPlaceHolder: string;
-	handleCancelClicked: () => void;
-	handleTextFieldChanged: (value: string) => void;
-	handleSubmitClicked: () => void;
-	messagebarInfoText?: string;
-	messagebarResultText?: string;
-	isRequestSuccess: boolean;
+    showPanel: boolean;
+    panelHeader: string;
+    panelSubText: string;
+    textFieldLabel: string;
+    textFieldPlaceHolder: string;
+    handleCancelClicked: () => void;
+    handleTextFieldChanged: (value: string) => void;
+    handleSubmitClicked: () => void;
+    messagebarInfoText?: string;
+    messagebarResultText?: string;
+    isRequestSuccess: boolean;
 }
 
 export class PanelContainer extends React.Component<IPanelContainerProps, {}> {
-	public render() {
+    public render() {
 
-		return <Panel
-			isOpen={this.props.showPanel}
-			onDismiss={this.props.handleCancelClicked}
-			type={PanelType.medium}
-			isLightDismiss={true}
-			headerText={this.props.panelHeader}>
-			<Label>{this.props.panelSubText}</Label>
-			<TextField
-				label={this.props.textFieldLabel}
-				placeholder={this.props.textFieldPlaceHolder}
-				onChanged={this.props.handleTextFieldChanged} />
-			<PrimaryButton text='Add' onClick={this.props.handleSubmitClicked} />
+        return <Panel
+            isOpen={this.props.showPanel}
+            onDismiss={this.props.handleCancelClicked}
+            type={PanelType.medium}
+            isLightDismiss={true}
+            headerText={this.props.panelHeader}>
+            <Label>{this.props.panelSubText}</Label>
+            <TextField
+                label={this.props.textFieldLabel}
+                placeholder={this.props.textFieldPlaceHolder}
+                onChanged={this.props.handleTextFieldChanged} />
+            <PrimaryButton text='Add' onClick={this.props.handleSubmitClicked} />
 
-			{this.props.messagebarInfoText &&
-				<MessageBar>{this.props.messagebarInfoText}</MessageBar>
-			}
+            {this.props.messagebarInfoText &&
+                <MessageBar>{this.props.messagebarInfoText}</MessageBar>
+            }
 
-			{this.props.messagebarResultText !== '' && this.props.isRequestSuccess &&
-				<MessageBar messageBarType={MessageBarType.success}>{this.props.messagebarResultText}</MessageBar>
-			}
+            {this.props.messagebarResultText !== '' && this.props.isRequestSuccess &&
+                <MessageBar messageBarType={MessageBarType.success}>{this.props.messagebarResultText}</MessageBar>
+            }
 
-			{this.props.messagebarResultText !== '' && !this.props.isRequestSuccess &&
-				<MessageBar messageBarType={MessageBarType.error}>{this.props.messagebarResultText}</MessageBar>
-			}
+            {this.props.messagebarResultText !== '' && !this.props.isRequestSuccess &&
+                <MessageBar messageBarType={MessageBarType.error}>{this.props.messagebarResultText}</MessageBar>
+            }
 
-		</Panel>;
-	}
+        </Panel>;
+    }
 }

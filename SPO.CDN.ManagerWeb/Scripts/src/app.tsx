@@ -8,5 +8,5 @@ import Office365CDNManager from './components/Office365CDNManager';
 const store = configureStore();
 
 ReactDOM.render(<Provider store={store}>
-	<Office365CDNManager />
+    <Office365CDNManager />
 </Provider>, document.getElementById('cdnManagerContainer'));

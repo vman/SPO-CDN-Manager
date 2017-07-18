@@ -1,272 +1,272 @@
 ﻿(function ($) {
 
-	var cdnManagerViewModel;
+    var cdnManagerViewModel;
 
-	function CDNManagerViewModel() {
+    function CDNManagerViewModel() {
 
-		this.EnablePublicCDN = ko.observable(false);
-		this.Origins = ko.observableArray([]);
-		this.Filetypes = ko.observableArray([]);
-		this.SPOSiteUrl = ko.observable("");
+        this.EnablePublicCDN = ko.observable(false);
+        this.Origins = ko.observableArray([]);
+        this.Filetypes = ko.observableArray([]);
+        this.SPOSiteUrl = ko.observable("");
 
-		this.InternalFiletypes = ko.observableArray([]);
-		this.CurrentOriginID = ko.observable("");
-		this.CurrentOriginUrl = ko.observable("");
-		this.CurrentFiletype = ko.observable("");
+        this.InternalFiletypes = ko.observableArray([]);
+        this.CurrentOriginID = ko.observable("");
+        this.CurrentOriginUrl = ko.observable("");
+        this.CurrentFiletype = ko.observable("");
 
-		this.isLoading = ko.observable(true);
+        this.isLoading = ko.observable(true);
 
-		this.showEmptyOriginsMsg = ko.observable(false);
+        this.showEmptyOriginsMsg = ko.observable(false);
 
-		this.addOriginError = ko.observable(false);
-		this.addOriginSuccess = ko.observable(false);
-		this.addOriginErrorMessage = ko.observable("");
+        this.addOriginError = ko.observable(false);
+        this.addOriginSuccess = ko.observable(false);
+        this.addOriginErrorMessage = ko.observable("");
 
-		this.addFiletypeError = ko.observable(false);
-		this.addFiletypeSuccess = ko.observable(false);
-		this.addFiletypeErrorMessage = ko.observable("");
-	}
+        this.addFiletypeError = ko.observable(false);
+        this.addFiletypeSuccess = ko.observable(false);
+        this.addFiletypeErrorMessage = ko.observable("");
+    }
 
-	$(document).ready(function () {
+    $(document).ready(function () {
 
-		cdnManagerViewModel = new CDNManagerViewModel();
+        cdnManagerViewModel = new CDNManagerViewModel();
 
-		ko.applyBindings(cdnManagerViewModel, document.getElementById('cdnManagerContainer'));
+        ko.applyBindings(cdnManagerViewModel, document.getElementById('cdnManagerContainer'));
 
-		InitOfficeUIFabricComponents();
+        InitOfficeUIFabricComponents();
 
-		//fix for I.E caching the ajax calls
-		$.ajaxSetup({ cache: false });
+        //fix for I.E caching the ajax calls
+        $.ajaxSetup({ cache: false });
 
-		$.ajax("/Home/GetCDNSettings")
-			.then(function (data) {
+        $.ajax("/Home/GetCDNSettings")
+            .then(function (data) {
 
-				cdnManagerViewModel.EnablePublicCDN(data.PublicCDNEnabled);
-				cdnManagerViewModel.Filetypes(data.Filetypes);
-				cdnManagerViewModel.InternalFiletypes(data.Filetypes);
-				cdnManagerViewModel.Origins(data.Origins);
-				cdnManagerViewModel.SPOSiteUrl(data.SPOSiteUrl);
+                cdnManagerViewModel.EnablePublicCDN(data.PublicCDNEnabled);
+                cdnManagerViewModel.Filetypes(data.Filetypes);
+                cdnManagerViewModel.InternalFiletypes(data.Filetypes);
+                cdnManagerViewModel.Origins(data.Origins);
+                cdnManagerViewModel.SPOSiteUrl(data.SPOSiteUrl);
 
-				if (cdnManagerViewModel.Origins().length == 0) {
-					cdnManagerViewModel.showEmptyOriginsMsg(true);
-				}
+                if (cdnManagerViewModel.Origins().length == 0) {
+                    cdnManagerViewModel.showEmptyOriginsMsg(true);
+                }
 
-				InitOfficeUIFabricDialogs();
+                InitOfficeUIFabricDialogs();
 
-			}, function (jqxr, errorCode, errorThrown) {
-				console.log(jqxr.responseText);
-			}).always(function () {
-				cdnManagerViewModel.isLoading(false);
-			});
+            }, function (jqxr, errorCode, errorThrown) {
+                console.log(jqxr.responseText);
+            }).always(function () {
+                cdnManagerViewModel.isLoading(false);
+            });
 
-		$("#add-cdn-origin").on("click", function () {
+        $("#add-cdn-origin").on("click", function () {
 
-			var folderUrl = $("#txt-cdn-origin").val();
+            var folderUrl = $("#txt-cdn-origin").val();
 
-			$.ajax({
-				url: "/Home/AddOrigin?folderUrl=" + folderUrl,
-				method: "POST",
-				dataType: "json",
-				contentType: "application/json; charset=utf-8"
-			})
-				.then(function (data) {
+            $.ajax({
+                url: "/Home/AddOrigin?folderUrl=" + folderUrl,
+                method: "POST",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8"
+            })
+                .then(function (data) {
 
-					cdnManagerViewModel.Origins(data);
-					cdnManagerViewModel.addOriginError(false);
-					cdnManagerViewModel.addOriginSuccess(true);
-					cdnManagerViewModel.showEmptyOriginsMsg(false);
-					CreateOfficeUIFabricDialog(".origins-Dialog-Container", ".btnDeleteOrigin", ".origins-Dialog");
+                    cdnManagerViewModel.Origins(data);
+                    cdnManagerViewModel.addOriginError(false);
+                    cdnManagerViewModel.addOriginSuccess(true);
+                    cdnManagerViewModel.showEmptyOriginsMsg(false);
+                    CreateOfficeUIFabricDialog(".origins-Dialog-Container", ".btnDeleteOrigin", ".origins-Dialog");
 
-				}, function (jqxr, errorCode, errorThrown) {
-					cdnManagerViewModel.addOriginSuccess(false);
-					cdnManagerViewModel.addOriginErrorMessage(jqxr.responseText);
-					cdnManagerViewModel.addOriginError(true);
-					console.log(jqxr.responseText);
-				});
-		});
+                }, function (jqxr, errorCode, errorThrown) {
+                    cdnManagerViewModel.addOriginSuccess(false);
+                    cdnManagerViewModel.addOriginErrorMessage(jqxr.responseText);
+                    cdnManagerViewModel.addOriginError(true);
+                    console.log(jqxr.responseText);
+                });
+        });
 
-		$("#add-cdn-filetype").on("click", function () {
+        $("#add-cdn-filetype").on("click", function () {
 
-			var newFileType = $("#txt-cdn-filetype").val();
+            var newFileType = $("#txt-cdn-filetype").val();
 
-			cdnManagerViewModel.InternalFiletypes.push(newFileType);
+            cdnManagerViewModel.InternalFiletypes.push(newFileType);
 
-			SetCDNFiletypes(true);
-		});
+            SetCDNFiletypes(true);
+        });
 
-		$("#cdn-yes-button").on("click", setCDNValue);
-		$("#cdn-no-button").on("click", function () {
-			cdnManagerViewModel.EnablePublicCDN(!cdnManagerViewModel.EnablePublicCDN());
-		});
-		$("#delete-origin-yes").on("click", deleteOrigin);
-		$("#delete-filetype-yes").on("click", deleteFiletype);
+        $("#cdn-yes-button").on("click", setCDNValue);
+        $("#cdn-no-button").on("click", function () {
+            cdnManagerViewModel.EnablePublicCDN(!cdnManagerViewModel.EnablePublicCDN());
+        });
+        $("#delete-origin-yes").on("click", deleteOrigin);
+        $("#delete-filetype-yes").on("click", deleteFiletype);
 
-		CreateOfficeUIFabricDialog(".createdefaultorigins-Dialog-Container", ".btnDefaultOrigins", ".createdefaultorigins-Dialog");
-		$("#createdefault-origin-yes").on("click", createDefaultOrigins);
-});
+        CreateOfficeUIFabricDialog(".createdefaultorigins-Dialog-Container", ".btnDefaultOrigins", ".createdefaultorigins-Dialog");
+        $("#createdefault-origin-yes").on("click", createDefaultOrigins);
+    });
 
-function createDefaultOrigins() {
-
-	    $.ajax({
-		    url: "/Home/CreateDefaultOrigins",
-		    method: "POST",
-		    dataType: "json",
-		    contentType: "application/json; charset=utf-8"
-	    })
-		.then(function (data) {
-
-			cdnManagerViewModel.Origins(data);
-			cdnManagerViewModel.showEmptyOriginsMsg(false);
-			CreateOfficeUIFabricDialog(".origins-Dialog-Container", ".btnDeleteOrigin", ".origins-Dialog");
-
-		}, function (jqxr, errorCode, errorThrown) {
-			console.log(jqxr.responseText);
-		});
-
-}
-
-
-function deleteFiletype() {
-
-	cdnManagerViewModel.InternalFiletypes.remove(cdnManagerViewModel.CurrentFiletype());
-
-	SetCDNFiletypes(false);
-}
-
-function deleteOrigin() {
-
-	$.ajax({
-		url: "/Home/RemoveOrigin?originURL=" + cdnManagerViewModel.CurrentOriginUrl(),
-		method: "POST",
-		dataType: "json",
-		contentType: "application/json; charset=utf-8"
-	})
-		.then(function (data) {
-			cdnManagerViewModel.Origins(data);
-			CreateOfficeUIFabricDialog(".origins-Dialog-Container", ".btnDeleteOrigin", ".origins-Dialog");
-
-		}, function (jqxr, errorCode, errorThrown) {
-			console.log(jqxr.responseText);
-		});
-
-}
-
-function setCDNValue() {
-
-	var setCDN = $("#cdn-enabled-Toggle").is(':checked');
-	$.ajax({
-		url: "/Home/SetCDN?value=" + setCDN,
-		method: "POST",
-		dataType: "json",
-		contentType: "application/json; charset=utf-8"
-	})
-		.then(function (data) {
-
-			cdnManagerViewModel.EnablePublicCDN(data);
-
-		}, function (jqxr, errorCode, errorThrown) {
-			console.log(jqxr.responseText);
-		});
-}
-
-function SetCDNFiletypes(addFiletype) {
-	$.ajax({
-		url: "/Home/SetFiletypes",
-		dataType: "json",
-		contentType: "application/json; charset=utf-8",
-		data: JSON.stringify({ filetypes: cdnManagerViewModel.InternalFiletypes() }),
-		method: "POST"
-	})
-		.then(function (data) {
-
-			if (addFiletype) {
-				cdnManagerViewModel.addFiletypeError(false);
-				cdnManagerViewModel.addFiletypeSuccess(true);
-			}
-
-			cdnManagerViewModel.Filetypes(data);
-			CreateOfficeUIFabricDialog(".fileTypes-Dialog-Container", ".btnDeleteFileType", ".fileTypes-Dialog");
-
-		}, function (jqxr, errorCode, errorThrown) {
-
-			if (addFiletype) {
-				cdnManagerViewModel.addFiletypeSuccess(false);
-				cdnManagerViewModel.addFiletypeErrorMessage(jqxr.responseText);
-				cdnManagerViewModel.addFiletypeError(true);
-			}
-
-			cdnManagerViewModel.InternalFiletypes(cdnManagerViewModel.Filetypes());
-			console.log(jqxr.responseText);
-		});
-}
-
-function InitOfficeUIFabricDialogs() {
-
-	CreateOfficeUIFabricDialog(".origins-Dialog-Container", ".btnDeleteOrigin", ".origins-Dialog");
-	CreateOfficeUIFabricDialog(".fileTypes-Dialog-Container", ".btnDeleteFileType", ".fileTypes-Dialog");
-	CreateOfficeUIFabricDialog(".set-CDN-Dialog-Container", "#cdn-enabled-Toggle", ".set-CDN-Dialog");
-}
-
-function InitOfficeUIFabricComponents() {
-
-	if (typeof fabric !== "undefined") {
-		if ('Spinner' in fabric) {
-			var elements = document.querySelectorAll('.ms-Spinner');
-			var i = elements.length;
-			var component;
-			while (i--) {
-				component = new fabric['Spinner'](elements[i]);
-			}
-		}
-	}
-
-	var TextFieldElements = document.querySelectorAll(".ms-TextField");
-	for (var i = 0; i < TextFieldElements.length; i++) {
-		new fabric['TextField'](TextFieldElements[i]);
-	}
-
-	var PanelExamples = document.getElementsByClassName("ms-PanelExample");
-	for (var i = 0; i < PanelExamples.length; i++) {
-		(function () {
-			var PanelExampleButton = PanelExamples[i].querySelector(".ms-Button");
-			var PanelExamplePanel = PanelExamples[i].querySelector(".ms-Panel");
-			PanelExampleButton.addEventListener("click", function (i) {
-				new fabric['Panel'](PanelExamplePanel);
-			});
-		}());
-	}
-
-	var ToggleElements = document.querySelectorAll(".ms-Toggle");
-	for (var i = 0; i < ToggleElements.length; i++) {
-		new fabric['Toggle'](ToggleElements[i]);
-	}
-
-	var PivotElements = document.querySelectorAll(".ms-Pivot");
-	for (var i = 0; i < PivotElements.length; i++) {
-		new fabric['Pivot'](PivotElements[i]);
-	}
-}
-
-function CreateOfficeUIFabricDialog(dialogContainerID, buttonID, dialogID) {
-	var example = document.querySelector(dialogContainerID);
-	var dialog = example.querySelector(dialogID);
-
-	var actionButtonElements = example.querySelectorAll(".ms-Dialog-action");
-
-	var dialogComponent = new fabric['Dialog'](dialog);
-
-	$(buttonID).on("click", function () {
-		var currentButton = $(this);
-		if (currentButton.attr("originUrl")) {
-			cdnManagerViewModel.CurrentOriginUrl(currentButton.attr("originUrl"));
-			cdnManagerViewModel.CurrentOriginID(currentButton.attr("originID"));
-		}
-		else if (currentButton.attr("filetype")) {
-			cdnManagerViewModel.CurrentFiletype(currentButton.attr("filetype"));
-		}
-
-		dialogComponent.open();
-	});
-}
+    function createDefaultOrigins() {
+
+        $.ajax({
+            url: "/Home/CreateDefaultOrigins",
+            method: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8"
+        })
+            .then(function (data) {
+
+                cdnManagerViewModel.Origins(data);
+                cdnManagerViewModel.showEmptyOriginsMsg(false);
+                CreateOfficeUIFabricDialog(".origins-Dialog-Container", ".btnDeleteOrigin", ".origins-Dialog");
+
+            }, function (jqxr, errorCode, errorThrown) {
+                console.log(jqxr.responseText);
+            });
+
+    }
+
+
+    function deleteFiletype() {
+
+        cdnManagerViewModel.InternalFiletypes.remove(cdnManagerViewModel.CurrentFiletype());
+
+        SetCDNFiletypes(false);
+    }
+
+    function deleteOrigin() {
+
+        $.ajax({
+            url: "/Home/RemoveOrigin?originURL=" + cdnManagerViewModel.CurrentOriginUrl(),
+            method: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8"
+        })
+            .then(function (data) {
+                cdnManagerViewModel.Origins(data);
+                CreateOfficeUIFabricDialog(".origins-Dialog-Container", ".btnDeleteOrigin", ".origins-Dialog");
+
+            }, function (jqxr, errorCode, errorThrown) {
+                console.log(jqxr.responseText);
+            });
+
+    }
+
+    function setCDNValue() {
+
+        var setCDN = $("#cdn-enabled-Toggle").is(':checked');
+        $.ajax({
+            url: "/Home/SetCDN?value=" + setCDN,
+            method: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8"
+        })
+            .then(function (data) {
+
+                cdnManagerViewModel.EnablePublicCDN(data);
+
+            }, function (jqxr, errorCode, errorThrown) {
+                console.log(jqxr.responseText);
+            });
+    }
+
+    function SetCDNFiletypes(addFiletype) {
+        $.ajax({
+            url: "/Home/SetFiletypes",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({ filetypes: cdnManagerViewModel.InternalFiletypes() }),
+            method: "POST"
+        })
+            .then(function (data) {
+
+                if (addFiletype) {
+                    cdnManagerViewModel.addFiletypeError(false);
+                    cdnManagerViewModel.addFiletypeSuccess(true);
+                }
+
+                cdnManagerViewModel.Filetypes(data);
+                CreateOfficeUIFabricDialog(".fileTypes-Dialog-Container", ".btnDeleteFileType", ".fileTypes-Dialog");
+
+            }, function (jqxr, errorCode, errorThrown) {
+
+                if (addFiletype) {
+                    cdnManagerViewModel.addFiletypeSuccess(false);
+                    cdnManagerViewModel.addFiletypeErrorMessage(jqxr.responseText);
+                    cdnManagerViewModel.addFiletypeError(true);
+                }
+
+                cdnManagerViewModel.InternalFiletypes(cdnManagerViewModel.Filetypes());
+                console.log(jqxr.responseText);
+            });
+    }
+
+    function InitOfficeUIFabricDialogs() {
+
+        CreateOfficeUIFabricDialog(".origins-Dialog-Container", ".btnDeleteOrigin", ".origins-Dialog");
+        CreateOfficeUIFabricDialog(".fileTypes-Dialog-Container", ".btnDeleteFileType", ".fileTypes-Dialog");
+        CreateOfficeUIFabricDialog(".set-CDN-Dialog-Container", "#cdn-enabled-Toggle", ".set-CDN-Dialog");
+    }
+
+    function InitOfficeUIFabricComponents() {
+
+        if (typeof fabric !== "undefined") {
+            if ('Spinner' in fabric) {
+                var elements = document.querySelectorAll('.ms-Spinner');
+                var i = elements.length;
+                var component;
+                while (i--) {
+                    component = new fabric['Spinner'](elements[i]);
+                }
+            }
+        }
+
+        var TextFieldElements = document.querySelectorAll(".ms-TextField");
+        for (var i = 0; i < TextFieldElements.length; i++) {
+            new fabric['TextField'](TextFieldElements[i]);
+        }
+
+        var PanelExamples = document.getElementsByClassName("ms-PanelExample");
+        for (var i = 0; i < PanelExamples.length; i++) {
+            (function () {
+                var PanelExampleButton = PanelExamples[i].querySelector(".ms-Button");
+                var PanelExamplePanel = PanelExamples[i].querySelector(".ms-Panel");
+                PanelExampleButton.addEventListener("click", function (i) {
+                    new fabric['Panel'](PanelExamplePanel);
+                });
+            }());
+        }
+
+        var ToggleElements = document.querySelectorAll(".ms-Toggle");
+        for (var i = 0; i < ToggleElements.length; i++) {
+            new fabric['Toggle'](ToggleElements[i]);
+        }
+
+        var PivotElements = document.querySelectorAll(".ms-Pivot");
+        for (var i = 0; i < PivotElements.length; i++) {
+            new fabric['Pivot'](PivotElements[i]);
+        }
+    }
+
+    function CreateOfficeUIFabricDialog(dialogContainerID, buttonID, dialogID) {
+        var example = document.querySelector(dialogContainerID);
+        var dialog = example.querySelector(dialogID);
+
+        var actionButtonElements = example.querySelectorAll(".ms-Dialog-action");
+
+        var dialogComponent = new fabric['Dialog'](dialog);
+
+        $(buttonID).on("click", function () {
+            var currentButton = $(this);
+            if (currentButton.attr("originUrl")) {
+                cdnManagerViewModel.CurrentOriginUrl(currentButton.attr("originUrl"));
+                cdnManagerViewModel.CurrentOriginID(currentButton.attr("originID"));
+            }
+            else if (currentButton.attr("filetype")) {
+                cdnManagerViewModel.CurrentFiletype(currentButton.attr("filetype"));
+            }
+
+            dialogComponent.open();
+        });
+    }
 
 })(jQuery);
