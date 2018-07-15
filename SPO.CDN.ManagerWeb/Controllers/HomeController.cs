@@ -194,7 +194,7 @@ namespace SPO.CDN.ManagerWeb.Controllers
             var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
-            var clientContext = CDNManagerContextProvider.GetWebApplicationClientContext(new RedisTokenCache(signInUserId));
+            var clientContext = CDNManagerContextProvider.GetWebApplicationClientContext(new SessionADALCache(signInUserId));
 
             return clientContext;
 

@@ -15,8 +15,8 @@ namespace SPO.CDN.ManagerWeb.Helpers
         public static String Authority = "https://login.microsoftonline.com/common/";
         public static string AuthorizationUri = "https://login.microsoftonline.com/";
 
-        private static string _discoverySvcResourceId = "https://api.office.com/discovery/";
-        private static string _discoverySvcEndpointUri = "https://api.office.com/discovery/v2.0/me/services?$select=capability,serviceResourceId&$filter=capability eq 'RootSite'";
+        private static string _graphResourceId = "https://graph.microsoft.com/";
+        private static string _graphSPRootUri = "https://graph.microsoft.com/v1.0/sites/root?$select=webUrl";
 
         public static String ClientId
         {
@@ -49,19 +49,19 @@ namespace SPO.CDN.ManagerWeb.Helpers
         }
 
 
-        public static string DiscoveryServiceResourceId
+        public static string GraphResourceId
         {
             get
             {
-                return _discoverySvcResourceId;
+                return _graphResourceId;
             }
         }
 
-        public static Uri DiscoveryServiceEndpointUri
+        public static Uri GraphSPRootUri
         {
             get
             {
-                return new Uri(_discoverySvcEndpointUri);
+                return new Uri(_graphSPRootUri);
             }
         }
     }

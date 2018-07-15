@@ -1,18 +1,15 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Owin;
-using Owin;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IdentityModel.Claims;
-using System.Linq;
-using System.Web;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
-using SPO.CDN.ManagerWeb.Models;
+using Owin;
 using SPO.CDN.ManagerWeb.Helpers;
+using SPO.CDN.ManagerWeb.Models;
+using System;
+using System.IdentityModel.Claims;
+using System.Threading.Tasks;
+using System.Web;
 
 [assembly: OwinStartup(typeof(SPO.CDN.ManagerWeb.Startup))]
 
@@ -61,7 +58,7 @@ namespace SPO.CDN.ManagerWeb
 
                             AuthenticationContext authContext = new AuthenticationContext(
                                 SettingsHelper.AADInstance + tenantId,
-                                new RedisTokenCache(signedInUserID));
+                                new SessionADALCache(signedInUserID));
                             AuthenticationResult result = authContext.AcquireTokenByAuthorizationCode(
                                 code, new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)),
                                 credential, SettingsHelper.MicrosoftGraphResourceId);
