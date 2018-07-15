@@ -9,13 +9,13 @@ using System.Web.Script.Serialization;
 
 namespace SPO.CDN.ManagerWeb
 {
-  public static class CDNManagerContextProvider
+    public static class CDNManagerContextProvider
     {
         public static string GetSharePointResourceID(TokenCache tokenCache)
         {
-            var accessToken = GetTokenForApplication(SettingsHelper.DiscoveryServiceResourceId, tokenCache);
+            var accessToken = GetTokenForApplication(SettingsHelper.GraphResourceId, tokenCache);
 
-            var request = HttpWebRequest.CreateHttp(SettingsHelper.DiscoveryServiceEndpointUri);
+            var request = HttpWebRequest.CreateHttp(SettingsHelper.GraphSPRootUri);
             request.Method = "GET";
             request.Headers["Authorization"] = "Bearer " + accessToken;
 
@@ -28,14 +28,7 @@ namespace SPO.CDN.ManagerWeb
                     JavaScriptSerializer js = new JavaScriptSerializer();
                     var obj = js.Deserialize<dynamic>(reader.ReadToEnd());
 
-                    foreach (var o in obj["value"][0])
-                    {
-                        if (o.Key == "serviceResourceId")
-                        {
-                            spResourceID = o.Value;
-                            break;
-                        }
-                    }
+                    spResourceID = obj["webUrl"];
                 }
             }
 

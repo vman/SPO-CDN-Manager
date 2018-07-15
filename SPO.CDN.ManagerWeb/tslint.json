@@ -15,8 +15,8 @@
         ],
         "indent": [
             true,
-            "tabs",
-            4
+            "spaces",
+            2
         ],
         "no-consecutive-blank-lines": true,
         "ordered-imports": [
@@ -46,7 +46,7 @@
         ],
         "max-line-length": [
             true,
-            150
+            180
         ]
     },
     "rulesDirectory": []
