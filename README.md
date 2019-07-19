@@ -1,4 +1,4 @@
-# SharePoint Online Public CDN Manager
+# Office 365 Public CDN Manager
 
 ### Check it out now:  [https://spocdnmanager.azurewebsites.net/](https://spocdnmanager.azurewebsites.net/) 
 
